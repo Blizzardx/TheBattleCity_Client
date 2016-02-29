@@ -1,0 +1,382 @@
+{
+  "ConfigIndex": [
+    {
+      "AssetsId": "0",
+      "ConfigFolderPath": "Moudle/Tank/Prefab",
+      "ConfigName": "Tank_0",
+      "AssetsType": "2"
+    },
+	{
+      "AssetsId": "3000",
+      "ConfigFolderPath": "Moudle/Tank/Materials",
+      "ConfigName": "Tank_0",
+      "AssetsType": "4"
+    },
+	{
+      "AssetsId": "3001",
+      "ConfigFolderPath": "Moudle/Tank/Materials",
+      "ConfigName": "Tank_1",
+      "AssetsType": "4"
+    },
+	{
+      "AssetsId": "3002",
+      "ConfigFolderPath": "Moudle/Tank/Materials",
+      "ConfigName": "Tank_2",
+      "AssetsType": "4"
+    },
+	{
+      "AssetsId": "6000",
+      "ConfigFolderPath": "Moudle/Tank/Animation",
+      "ConfigName": "Tank_0",
+      "AssetsType": "6"
+    },
+    {
+      "AssetsId": "10001",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "music_defeat",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10002",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "music_menu",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10003",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "RoomList",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10004",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "music_defeat",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10005",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "music_level_a",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10006",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "music_level_b",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10007",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "music_level_c",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10008",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "music_level_d",
+      "AssetsType": "2"
+    },
+    {
+      "AssetsId": "10009",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "music_victory",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10010",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "BattleFailed",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10011",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "music_defeat",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10012",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "music_level_e",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10101",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "sfx_pulse",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10102",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "sfx_explosion",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10103",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "sfx_lightning",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10104",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "sfx_pulse",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10105",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "sfx_ray",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10106",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "sfx_reload",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "10201",
+      "ConfigFolderPath": "Audio",
+      "ConfigName": "OnClick",
+      "AssetsType": "3"
+    },
+    {
+      "AssetsId": "20000",
+      "ConfigFolderPath": "Moudle/Bullet/Prefab",
+      "ConfigName": "Bullet_0",
+      "AssetsType": "2"
+    },
+    {
+      "AssetsId": "30000",
+      "ConfigFolderPath": "Moudle/Bullet/Materials",
+      "ConfigName": "Bullet_0",
+      "AssetsType": "4"
+    },
+    {
+      "AssetsId": "30001",
+      "ConfigFolderPath": "Moudle/Bullet/Materials",
+      "ConfigName": "Bullet_1",
+      "AssetsType": "4"
+    },
+    {
+      "AssetsId": "30002",
+      "ConfigFolderPath": "Moudle/Bullet/Materials",
+      "ConfigName": "Bullet_2",
+      "AssetsType": "4"
+    },
+    {
+      "AssetsId": "30003",
+      "ConfigFolderPath": "Moudle/Bullet/Materials",
+      "ConfigName": "Bullet_3",
+      "AssetsType": "4"
+    },
+    {
+      "AssetsId": "30004",
+      "ConfigFolderPath": "Moudle/Bullet/Materials",
+      "ConfigName": "Bullet_4",
+      "AssetsType": "4"
+    },
+    {
+      "AssetsId": "40000",
+      "ConfigFolderPath": "Moudle/Bullet/Prefab",
+      "ConfigName": "BulletLight_0",
+      "AssetsType": "2"
+    },
+    {
+      "AssetsId": "50000",
+      "ConfigFolderPath": "Moudle/Bullet/Materials",
+      "ConfigName": "BulletLight_0",
+      "AssetsType": "4"
+    },
+    {
+      "AssetsId": "50001",
+      "ConfigFolderPath": "Moudle/Bullet/Materials",
+      "ConfigName": "BulletLight_1",
+      "AssetsType": "4"
+    },
+    {
+      "AssetsId": "50002",
+      "ConfigFolderPath": "Moudle/Bullet/Materials",
+      "ConfigName": "BulletLight_2",
+      "AssetsType": "4"
+    },
+    {
+      "AssetsId": "50003",
+      "ConfigFolderPath": "Moudle/Bullet/Materials",
+      "ConfigName": "BulletLight_3",
+      "AssetsType": "4"
+    },
+    {
+      "AssetsId": "50004",
+      "ConfigFolderPath": "Moudle/Bullet/Materials",
+      "ConfigName": "BulletLight_4",
+      "AssetsType": "4"
+    },
+    {
+      "AssetsId": "60000",
+      "ConfigFolderPath": "Moudle/Explosion/Prefab",
+      "ConfigName": "Explosion_0",
+      "AssetsType": "2"
+    },
+    {
+      "AssetsId": "60001",
+      "ConfigFolderPath": "Moudle/Explosion/Prefab",
+      "ConfigName": "Explosion_1",
+      "AssetsType": "2"
+    },
+    {
+      "AssetsId": "70000",
+      "ConfigFolderPath": "Moudle/Explosion/Materials",
+      "ConfigName": "Explosion",
+      "AssetsType": "4"
+    },
+    {
+      "AssetsId": "80000",
+      "ConfigFolderPath": "Moudle/Explosion/Texture",
+      "ConfigName": "Explosion_0",
+      "AssetsType": "4"
+    },
+    {
+      "AssetsId": "80001",
+      "ConfigFolderPath": "Moudle/Explosion/Texture",
+      "ConfigName": "Explosion_1",
+      "AssetsType": "4"
+    },
+    {
+      "AssetsId": "90000",
+      "ConfigFolderPath": "Moudle/Scene/Prefab",
+      "ConfigName": "StaticScene_0",
+      "AssetsType": "2"
+    },
+    {
+      "AssetsId": "100000",
+      "ConfigFolderPath": "Moudle/Scene/Prefab",
+      "ConfigName": "Wall",
+      "AssetsType": "2"
+    }
+  ],
+  "TankIndex": [
+    {
+      "Type": "0",
+      "AssetsId": "0"
+    }
+  ],
+  "TankMaterialIndex": [
+    {
+      "Type": "0",
+      "AssetsId": "3000"
+    },
+	{
+      "Type": "1",
+      "AssetsId": "3001"
+    },
+	{
+      "Type": "2",
+      "AssetsId": "3002"
+    }
+  ],
+  "TankAnimationIndex": [
+    {
+      "Type": "0",
+      "AssetsId": "6000"
+    }
+  ],
+  "BulletIndex": [
+    {
+      "Type": "0",
+      "AssetsId": "20000"
+    }
+  ],
+  "BulletTextureIndex": [
+    {
+      "Type": "0",
+      "AssetsId": "30000"
+    },
+    {
+      "Type": "1",
+      "AssetsId": "30001"
+    },
+    {
+      "Type": "2",
+      "AssetsId": "30002"
+    },
+    {
+      "Type": "3",
+      "AssetsId": "30003"
+    },
+    {
+      "Type": "4",
+      "AssetsId": "30004"
+    }
+  ],
+  "BulletLightIndex": [
+    {
+      "Type": "0",
+      "AssetsId": "40000"
+    }
+  ],
+  "BulletLightTextureIndex": [
+    {
+      "Type": "0",
+      "AssetsId": "50000"
+    },
+    {
+      "Type": "1",
+      "AssetsId": "50001"
+    },
+    {
+      "Type": "2",
+      "AssetsId": "50002"
+    },
+    {
+      "Type": "3",
+      "AssetsId": "50003"
+    },
+    {
+      "Type": "4",
+      "AssetsId": "50004"
+    }
+  ],
+  "ExplosionIndex": [
+    {
+      "Type": "0",
+      "AssetsId": "60000"
+    },
+    {
+      "Type": "1",
+      "AssetsId": "60001"
+    }
+  ],
+  "ExplosionMaterialsIndex": [
+    {
+      "Type": "0",
+      "AssetsId": "70000"
+    }
+  ],
+  "ExplosionAnimationIndex": [
+    {
+      "Type": "0",
+      "AssetsId": "80000"
+    },
+    {
+      "Type": "1",
+      "AssetsId": "80001"
+    }
+  ],
+  "SceneIndex": [
+    {
+      "Type": "0",
+      "AssetsId": "90000"
+    }
+  ],
+  "WallIndex": [
+    {
+      "Type": "0",
+      "AssetsId": "100000"
+    }
+  ]
+}
