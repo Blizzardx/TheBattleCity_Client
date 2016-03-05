@@ -114,7 +114,7 @@ using UnityEngine;
             }
             else
             {
-                Debug.LogWarning("Key:" + index + ";cloKey:" + cloKey + " is inValid.");
+                Debuger.LogWarning("Key:" + index + ";cloKey:" + cloKey + " is inValid.");
                 return false;
             }
         }
@@ -127,7 +127,7 @@ using UnityEngine;
             }
             else
             {
-                Debug.LogWarning("Key:" + index + ";cloIndex:" + cloIndex + " is inValid.");
+                Debuger.LogWarning("Key:" + index + ";cloIndex:" + cloIndex + " is inValid.");
                 return false;
             }
         }
@@ -247,7 +247,7 @@ using UnityEngine;
             }
             catch 
             {
-                Debug.LogWarning("CSVObject Parse error " + text.ToString().Substring(0, 80));
+                Debuger.LogWarning("CSVObject Parse error " + text.ToString().Substring(0, 80));
             }
         }//end  
 

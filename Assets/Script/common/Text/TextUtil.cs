@@ -16,27 +16,27 @@ using UnityEngine;
         {
             if (string.IsNullOrEmpty(text))
             {
-                Debug.LogWarning(TAG + ".ToBase64String, text is null.");
+                Debuger.LogWarning(TAG + ".ToBase64String, text is null.");
                 return "";
             }
 
-            Debug.Log(TAG + ".ToBase64String, before text: " + text);
+            Debuger.Log(TAG + ".ToBase64String, before text: " + text);
 
             byte[] url = Encoding.UTF8.GetBytes(text);
             string result = Convert.ToBase64String(url);
 
-            Debug.Log(TAG + ".ToBase64String, after text: " + result);
+            Debuger.Log(TAG + ".ToBase64String, after text: " + result);
 
             return result;
         }
         public static string ToSHA1String(string text)
         {
             //		if (string.IsNullOrEmpty (text)) {
-            //			Debug.LogWarning (TAG + ".ToSHA1String, text is null.");
+            //			Debuger.LogWarning (TAG + ".ToSHA1String, text is null.");
             //			return "";
             //		}
             //		
-            //		Debug.Log (TAG + ".ToSHA1String, before text: " + text);
+            //		Debuger.Log (TAG + ".ToSHA1String, before text: " + text);
             //		byte[] StrRes = Encoding.Default.GetBytes (text);
             //		HashAlgorithm iSHA = new SHA1CryptoServiceProvider ();
             //		StrRes = iSHA.ComputeHash (StrRes);
@@ -46,7 +46,7 @@ using UnityEngine;
             //		}
             //		
             //		string result = EnText.ToString ();
-            //		Debug.Log (TAG + ".ToSHA1String, after text: " + result);
+            //		Debuger.Log (TAG + ".ToSHA1String, after text: " + result);
             //		return result;
             return "";
         }
@@ -63,7 +63,7 @@ using UnityEngine;
                 }
             }
 
-            Debug.Log("GetStringArray, resultParam: " + resultParam);
+            Debuger.Log("GetStringArray, resultParam: " + resultParam);
             return resultParam;
         }
         /// <summary>
@@ -73,7 +73,7 @@ using UnityEngine;
         {
             if (parameters == null || parameters.Length == 0)
             {
-                Debug.LogError("IsArrayEmpty, parameters is null...");
+                Debuger.LogError("IsArrayEmpty, parameters is null...");
                 return true;
             }
 
