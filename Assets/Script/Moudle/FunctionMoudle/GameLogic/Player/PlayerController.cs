@@ -32,7 +32,6 @@ public class PlayerController
     {
         return m_Player;
     }
-
     private void OnDestroy()
     {
         m_Player = null;

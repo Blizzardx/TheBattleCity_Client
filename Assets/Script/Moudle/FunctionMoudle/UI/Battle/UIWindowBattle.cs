@@ -10,6 +10,7 @@ public class UIWindowBattle:WindowBase
     private GameObject m_ObjHandlerFollowPoint;
     private const float m_iFollowLimitSize = 77.0f;
     private Action<Vector2> m_HandlerResCallBack;
+    private Action<Vector3> m_FireResCallBack;
     private Vector3 m_vInitPos;
     private Camera m_UICamera;
     private bool m_bIsActive;
@@ -45,8 +46,17 @@ public class UIWindowBattle:WindowBase
     {
         m_HandlerResCallBack = callback;
     }
+    public void SetFireCallBack(Action<Vector3> callBack)
+    {
+        m_FireResCallBack = callBack;
+    }
     private void Update()
     {
+        if (null == m_HandlerResCallBack || m_FireResCallBack == null)
+        {
+            return;
+        }
+
         if (!m_bIsActive)
         {
             return;
@@ -62,8 +72,26 @@ public class UIWindowBattle:WindowBase
         }
         else
         {
+            m_HandlerResCallBack(Vector2.zero);
             //hide handler icon
             m_ObjHandlerRoot.SetActive(false);
+        }
+
+        //fire
+        if (Input.touchCount > 0)
+        {
+            for (int i = 0; i < Input.touchCount; ++i)
+            {
+                if (Input.touches[i].phase == TouchPhase.Ended)
+                {
+                    HandlerFire(Input.touches[i].position);
+                    break;
+                }
+            }
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            HandlerFire(Input.mousePosition);
         }
     }
 
@@ -84,10 +112,6 @@ public class UIWindowBattle:WindowBase
     }
     private void HandlerRes(Vector3 touchPosition)
     {
-        if (null == m_HandlerResCallBack)
-        {
-            return;
-        }
 
         if (CheckFirstTouch(touchPosition))
         {
@@ -149,5 +173,9 @@ public class UIWindowBattle:WindowBase
         dir.Normalize();
 
         m_HandlerResCallBack(dir);
+    }
+    private void HandlerFire(Vector3 touchPosition)
+    {
+        m_FireResCallBack(touchPosition);
     }
 }

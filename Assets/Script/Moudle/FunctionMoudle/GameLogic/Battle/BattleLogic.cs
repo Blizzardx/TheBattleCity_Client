@@ -6,6 +6,7 @@ public class BattleLogic : LogicBase<BattleLogic>
     public string m_strPreLoadMap = "Map_0";
     public PlayerController m_PlayerController;
     private UIWindowBattle m_BattleWindow;
+    private Camera m_SceneCamera;
 
     public override void StartLogic()
     {
@@ -19,6 +20,8 @@ public class BattleLogic : LogicBase<BattleLogic>
         //set player postion
         ComponentTool.Attach(MapManager.Instance.GetCurrentMapInfo().GetPlayerPosition()[0],
             m_PlayerController.GetPlayer().transform);
+
+        m_SceneCamera = MapManager.Instance.GetCurrentMapInfo().GetSceneCamera();
     }
 
     public void OnStart()
@@ -30,10 +33,21 @@ public class BattleLogic : LogicBase<BattleLogic>
 
         //set call back
         m_BattleWindow.SetInputCallBack(m_PlayerController.GetPlayer().Move);
+        m_BattleWindow.SetFireCallBack(OnPlayerFire);
     }
     public override void EndLogic()
     {
         
     }
 
+    private void OnPlayerFire(Vector3 touchPosition)
+    {
+        //check
+        Ray ray = m_SceneCamera.ScreenPointToRay(touchPosition);
+        RaycastHit hitInfo;
+        if (Physics.Raycast(ray, out hitInfo))
+        {
+            m_PlayerController.GetPlayer().Fire(hitInfo.point);
+        }
+    }
 }

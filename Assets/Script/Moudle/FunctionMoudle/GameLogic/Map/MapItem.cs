@@ -10,9 +10,16 @@ public class MapItem : MonoBehaviour
     [SerializeField]
     private List<Wall> m_WallList;
 
+    [SerializeField] 
+    private Camera m_SceneCamera;
 
     public List<Transform> GetPlayerPosition()
     {
         return m_PlayerPos;
+    }
+
+    public Camera GetSceneCamera()
+    {
+        return m_SceneCamera;
     }
 }
