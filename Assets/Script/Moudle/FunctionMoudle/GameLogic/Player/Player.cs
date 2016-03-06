@@ -67,11 +67,12 @@ public class Player : MonoBehaviour
             OnMoveChangedEvent();
         }
     }
-
     public void Fire(Vector3 dir)
     {
         dir.y = 0;
         m_TransformGun.LookAt(dir);
+        m_GunAnimator.SetTrigger("Fire");
+        BulletManager.Instance.CreateBullet("Bullet_0", m_TransformFirePos.position, (dir-m_TransformFirePos.position).normalized);
     }
     public void Update()
     {
