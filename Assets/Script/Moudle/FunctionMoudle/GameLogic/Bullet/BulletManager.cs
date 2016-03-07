@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class BulletManager :Singleton<BulletManager>
 {
+    private const int m_iBulletColletionMaxCount = 10;
     private Dictionary<string, List<Bullet>> m_BulletStack; 
     private List<Bullet> m_BulletStore;
 
@@ -13,14 +14,20 @@ public class BulletManager :Singleton<BulletManager>
     }
     public void CreateBullet(string name,Vector3 pos,Vector3 dir)
     {
-        var obj =ResourceManager.Instance.LoadBuildInResource<GameObject>("Bullet/" + name, AssetType.Moudle);
+        var obj = TryGetBulletFromStack(name);
+
         if (null == obj)
         {
-            Debuger.LogWarning("Can't load bullet : " + name);
-            return;
-        }
+            obj =ResourceManager.Instance.LoadBuildInResource<GameObject>("Bullet/" + name, AssetType.Moudle);
 
-        obj = GameObject.Instantiate(obj);
+            if (null == obj)
+            {
+                Debuger.LogWarning("Can't load bullet : " + name);
+                return;
+            }
+
+            obj = GameObject.Instantiate(obj);
+        }
 
         Bullet elem = obj.GetComponent<Bullet>();
         if (null == elem)
@@ -34,11 +41,56 @@ public class BulletManager :Singleton<BulletManager>
         elem.transform.forward = dir;
         elem.gameObject.name = name;
         elem.SetOnDestroy(OnBulletDestroy);
+        elem.SetOnCollection(OnBulletCollection);
+        elem.gameObject.SetActive(true);
+        elem.Reset();
     }
-
     private void OnBulletDestroy(Bullet elem)
     {
+        
+    }
+    private void OnBulletCollection(Bullet elem)
+    {
+        CollectionBullet(elem);
+    }
+    private void CollectionBullet(Bullet elem)
+    {
+        elem.gameObject.SetActive(false);
+
         m_BulletStore.Remove(elem);
-        m_BulletStack.Remove(elem.gameObject.name);
+
+        // check colletion count
+        if (m_BulletStack.ContainsKey(elem.name))
+        {
+            if (m_BulletStack[elem.name].Count < m_iBulletColletionMaxCount)
+            {
+                m_BulletStack[elem.name].Add(elem);
+            }
+            else
+            {
+                GameObject.Destroy(elem.gameObject);
+            }
+        }
+        else
+        {
+            List<Bullet> bulletStore = new List<Bullet>();
+            bulletStore.Add(elem);
+            m_BulletStack.Add(elem.name, bulletStore);
+        }
+    }
+
+    private GameObject TryGetBulletFromStack(string name)
+    {
+        List<Bullet> list = null;
+        if (m_BulletStack.TryGetValue(name, out list))
+        {
+            if (list.Count > 0)
+            {
+                Bullet res = list[0];
+                list.RemoveAt(0);
+                return res.gameObject;
+            }
+        }
+        return null;
     }
 }

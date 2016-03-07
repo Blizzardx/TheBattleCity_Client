@@ -8,14 +8,20 @@ public class Bullet : MonoBehaviour
     private float m_fSpeed;
 
     private Action<Bullet> m_OnDestroyCallBack;
+    private Action<Bullet> m_OnCollectionCallBack;
     private MoveBase m_MoveHandler;
 
     public void SetOnDestroy(Action<Bullet> OnDestroyCallBack)
     {
         m_OnDestroyCallBack = OnDestroyCallBack;
     }
+
+    public void SetOnCollection(Action<Bullet> onCollectionCallBack)
+    {
+        m_OnCollectionCallBack = onCollectionCallBack;
+    }
 	// Use this for initialization
-	void Start ()
+	public void Reset ()
     {
         m_MoveHandler = new MoveBase();
 	    m_MoveHandler.ResetDir(transform.forward * m_fSpeed, Time.time, transform.position);
@@ -36,5 +42,22 @@ public class Bullet : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         Debuger.Log("trigger " + other.name);
+        Wall wall = other.GetComponent<Wall>();
+        if (null != wall)
+        {
+            wall.HandlerBullet(this);
+            
+        }
+    }
+    public void CollectionBullet()
+    {
+        if (null != m_OnCollectionCallBack)
+        {
+            m_OnCollectionCallBack(this);
+        }
+        else
+        {
+            GameObject.Destroy(gameObject);
+        }
     }
 }
