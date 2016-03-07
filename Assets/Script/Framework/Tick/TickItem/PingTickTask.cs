@@ -1,5 +1,4 @@
-﻿using NetFramework.Auto;
-using NetWork.Auto;
+﻿using NetWork.Auto;
 using UnityEngine;
 using System.Collections;
 

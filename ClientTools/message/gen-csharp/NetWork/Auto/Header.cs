@@ -21,48 +21,34 @@ namespace NetWork.Auto
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public partial class ThriftVector3 : TBase
+  public partial class Header : TBase
   {
-    private int _x;
-    private int _y;
-    private int _z;
+    private long _orderId;
+    private string _sk;
 
-    public int X
+    public long OrderId
     {
       get
       {
-        return _x;
+        return _orderId;
       }
       set
       {
-        __isset.x = true;
-        this._x = value;
+        __isset.orderId = true;
+        this._orderId = value;
       }
     }
 
-    public int Y
+    public string Sk
     {
       get
       {
-        return _y;
+        return _sk;
       }
       set
       {
-        __isset.y = true;
-        this._y = value;
-      }
-    }
-
-    public int Z
-    {
-      get
-      {
-        return _z;
-      }
-      set
-      {
-        __isset.z = true;
-        this._z = value;
+        __isset.sk = true;
+        this._sk = value;
       }
     }
 
@@ -72,12 +58,11 @@ namespace NetWork.Auto
     [Serializable]
     #endif
     public struct Isset {
-      public bool x;
-      public bool y;
-      public bool z;
+      public bool orderId;
+      public bool sk;
     }
 
-    public ThriftVector3() {
+    public Header() {
     }
 
     public void Read (TProtocol iprot)
@@ -92,23 +77,16 @@ namespace NetWork.Auto
         }
         switch (field.ID)
         {
-          case 1:
-            if (field.Type == TType.I32) {
-              X = iprot.ReadI32();
+          case 10:
+            if (field.Type == TType.I64) {
+              OrderId = iprot.ReadI64();
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
             break;
-          case 2:
-            if (field.Type == TType.I32) {
-              Y = iprot.ReadI32();
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 3:
-            if (field.Type == TType.I32) {
-              Z = iprot.ReadI32();
+          case 20:
+            if (field.Type == TType.String) {
+              Sk = iprot.ReadString();
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -123,31 +101,23 @@ namespace NetWork.Auto
     }
 
     public void Write(TProtocol oprot) {
-      TStruct struc = new TStruct("ThriftVector3");
+      TStruct struc = new TStruct("Header");
       oprot.WriteStructBegin(struc);
       TField field = new TField();
-      if (__isset.x) {
-        field.Name = "x";
-        field.Type = TType.I32;
-        field.ID = 1;
+      if (__isset.orderId) {
+        field.Name = "orderId";
+        field.Type = TType.I64;
+        field.ID = 10;
         oprot.WriteFieldBegin(field);
-        oprot.WriteI32(X);
+        oprot.WriteI64(OrderId);
         oprot.WriteFieldEnd();
       }
-      if (__isset.y) {
-        field.Name = "y";
-        field.Type = TType.I32;
-        field.ID = 2;
+      if (Sk != null && __isset.sk) {
+        field.Name = "sk";
+        field.Type = TType.String;
+        field.ID = 20;
         oprot.WriteFieldBegin(field);
-        oprot.WriteI32(Y);
-        oprot.WriteFieldEnd();
-      }
-      if (__isset.z) {
-        field.Name = "z";
-        field.Type = TType.I32;
-        field.ID = 3;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteI32(Z);
+        oprot.WriteString(Sk);
         oprot.WriteFieldEnd();
       }
       oprot.WriteFieldStop();
@@ -155,13 +125,11 @@ namespace NetWork.Auto
     }
 
     public override string ToString() {
-      StringBuilder sb = new StringBuilder("ThriftVector3(");
-      sb.Append("X: ");
-      sb.Append(X);
-      sb.Append(",Y: ");
-      sb.Append(Y);
-      sb.Append(",Z: ");
-      sb.Append(Z);
+      StringBuilder sb = new StringBuilder("Header(");
+      sb.Append("OrderId: ");
+      sb.Append(OrderId);
+      sb.Append(",Sk: ");
+      sb.Append(Sk);
       sb.Append(")");
       return sb.ToString();
     }

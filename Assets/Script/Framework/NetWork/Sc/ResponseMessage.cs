@@ -16,7 +16,7 @@ namespace NetWork
 
         public TBase Message { get; set; }
 
-        public MEventList EventList { get; set; }
+        //public MEventList EventList { get; set; }
 
         public int MessageId { get; set; }
 

@@ -156,8 +156,8 @@ namespace NetWork
             responseMessage.Message = message;
             ThriftSerialize.DeSerialize(message, messageBytes);
 
-            responseMessage.EventList = new MEventList();
-            ThriftSerialize.DeSerialize(responseMessage.EventList, eventListBytes);
+            //responseMessage.EventList = new MEventList();
+            //ThriftSerialize.DeSerialize(responseMessage.EventList, eventListBytes);
 
 
             return responseMessage;

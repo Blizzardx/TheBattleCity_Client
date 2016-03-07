@@ -85,16 +85,16 @@ namespace NetWork
             {
                 if((int)(responseMessage.StatusCode) == 403)
                 {
-                    MessageManager.Instance.AddToMessageQueue(new MessageObject(ClientCustomMessageDefine.C_ENABLE_BLOCK, null));
-                    //TODO 状态码不正确
-                    TipManager.Instance.Alert("提示", "登录已过期，请重新登录","重新登录", (res) =>
-                    {
-                        MessageManager.Instance.AddToMessageQueue(new MessageObject(ClientCustomMessageDefine.C_DISABLE_BLOCK, null));
-                        if (res)
-                        {
-                            StageManager.Instance.ChangeState(GameStateType.LoginState);
-                        }
-                    });
+                    //MessageManager.Instance.AddToMessageQueue(new MessageObject(ClientCustomMessageDefine.C_ENABLE_BLOCK, null));
+                    ////TODO 状态码不正确
+                    //TipManager.Instance.Alert("提示", "登录已过期，请重新登录","重新登录", (res) =>
+                    //{
+                    //    MessageManager.Instance.AddToMessageQueue(new MessageObject(ClientCustomMessageDefine.C_DISABLE_BLOCK, null));
+                    //    if (res)
+                    //    {
+                    //        StageManager.Instance.ChangeState(GameStateType.LoginState);
+                    //    }
+                    //});
                 }
                 else
                 {
@@ -113,21 +113,21 @@ namespace NetWork
                 return AsyncState.Done;
             }
 
-            if (AppManager.Instance.m_bIsShowDebugMsg)
-            {
-                Debuger.Log("rec msg: " + responseMessage.Message.ToString());
-                for (int i = 0; responseMessage.EventList.Events != null && i < responseMessage.EventList.Events.Count; ++i)
-                {
-                    Debuger.Log("rec event: " + responseMessage.EventList.Events[i].ToString());
-                }
-            }
+            //if (AppManager.Instance.m_bIsShowDebugMsg)
+            //{
+            //    Debuger.Log("rec msg: " + responseMessage.Message.ToString());
+            //    for (int i = 0; responseMessage.EventList.Events != null && i < responseMessage.EventList.Events.Count; ++i)
+            //    {
+            //        Debuger.Log("rec event: " + responseMessage.EventList.Events[i].ToString());
+            //    }
+            //}
 
-            if (responseMessage.EventList != null)
-            {
-                //统一事件处理
-                MessageManager.Instance.AddToMessageQueue(new MessageObject(ClientCustomMessageDefine.C_MESSAGE_EVENT_LIST, responseMessage.EventList));
+            //if (responseMessage.EventList != null)
+            //{
+            //    //统一事件处理
+            //    MessageManager.Instance.AddToMessageQueue(new MessageObject(ClientCustomMessageDefine.C_MESSAGE_EVENT_LIST, responseMessage.EventList));
 
-            }
+            //}
 
             AfterRequest((RESP)responseMessage.Message);
 

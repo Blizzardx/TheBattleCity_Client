@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Common.Auto
+namespace NetWork.Auto
 {
 	public partial class ThriftVector3
 	{
