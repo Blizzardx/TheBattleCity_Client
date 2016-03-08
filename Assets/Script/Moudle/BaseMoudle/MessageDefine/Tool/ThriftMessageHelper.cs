@@ -16,7 +16,8 @@ namespace NetWork
 
         static ThriftMessageHelper()
         {
-            //REQ_ID_MSG.Add(MessageIdConstants.REGISTER, typeof(RegisterRequest));
+            REQ_ID_MSG.Add(MessageIdConstants.CS_PING, typeof(CSPingMsg));
+            REQ_ID_MSG.Add(MessageIdConstants.CS_PONG, typeof(CSPongMsg));
             //REQ_ID_MSG.Add(MessageIdConstants.LOGIN, typeof(LoginRequest));
             //REQ_ID_MSG.Add(MessageIdConstants.CREATE_NEW_CHAR, typeof(CreateNewCharRequest));
             //REQ_ID_MSG.Add(MessageIdConstants.ENTER_GAME, typeof(EnterGameRequest));
@@ -30,7 +31,7 @@ namespace NetWork
             //REQ_ID_MSG.Add(MessageIdConstants.ACCEPT_BID, typeof(AcceptBidRequest));
             //REQ_ID_MSG.Add(MessageIdConstants.REFUSE_BID, typeof(RefuseBidRequest));
             //REQ_ID_MSG.Add(MessageIdConstants.ClOSE_SALE, typeof(CloseSaleRequest));
-            
+
 
 
             foreach (KeyValuePair<int, System.Type> kv in REQ_ID_MSG)

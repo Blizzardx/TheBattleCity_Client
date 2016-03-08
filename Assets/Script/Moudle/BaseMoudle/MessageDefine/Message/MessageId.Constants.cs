@@ -17,15 +17,7 @@ namespace NetWork.Auto
 {
   public static class MessageIdConstants
   {
-    public static int CS_CHARACTER_RENAME = 103001;
-    public static int CS_SYNC_PUTON_SKILL = 103002;
-    public static int CS_CHAR_SKILL_LEVEL_UP = 103003;
-    public static int CS_HERO_EQUIPMENT_ENHANCE = 103004;
-    public static int CS_CHAR_EQUIPMENT_BRING_UP = 103005;
-    public static int CS_INLAY_GEM = 103006;
-    public static int CS_REMOVE_GEM = 103007;
-    public static int CS_CHAR_EQUIPMENT_LEVEL_UP = 103008;
-    public static int CS_QUICK_COMPLETE_EQUIPMENT_BRING_UP = 103009;
-    public static int CS_CANCEL_EQUIPMENT_BRING_UP = 103010;
+    public static int CS_PING = 103001;
+    public static int CS_PONG = 103002;
   }
 }

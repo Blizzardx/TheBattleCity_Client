@@ -1,4 +1,4 @@
-namespace java com.momo.sanguo.core.server.msg.auto
+namespace java server.msg.auto
 namespace csharp NetWork.Auto
 
 struct ThriftVector3 {

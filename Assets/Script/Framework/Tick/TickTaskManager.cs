@@ -13,6 +13,7 @@ public class TickTaskManager : Singleton<TickTaskManager>
         m_TickTaskStore.Add(new TimeTickTask());
         m_TickTaskStore.Add(new MessageTickTask());
         m_TickTaskStore.Add(new UITickTask());
+        m_TickTaskStore.Add(new PingTickTask());
     }
     public void Update()
     {

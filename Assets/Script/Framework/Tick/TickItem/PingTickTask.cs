@@ -12,6 +12,10 @@ public class PingTickTask : AbstractTickTask
     static public long  m_iLastSendMsgTime;
 
     private static PingTickTask m_Instance;
+    public PingTickTask()
+    {
+        m_Instance = this;
+    }
     public static PingTickTask Instance
     {
         get
