@@ -18,6 +18,7 @@ namespace NetWork
         {
             REQ_ID_MSG.Add(MessageIdConstants.CS_PING, typeof(CSPingMsg));
             REQ_ID_MSG.Add(MessageIdConstants.CS_PONG, typeof(CSPongMsg));
+            REQ_ID_MSG.Add(MessageIdConstants.CS_HANDLER, typeof(CSHandler));
             //REQ_ID_MSG.Add(MessageIdConstants.LOGIN, typeof(LoginRequest));
             //REQ_ID_MSG.Add(MessageIdConstants.CREATE_NEW_CHAR, typeof(CreateNewCharRequest));
             //REQ_ID_MSG.Add(MessageIdConstants.ENTER_GAME, typeof(EnterGameRequest));

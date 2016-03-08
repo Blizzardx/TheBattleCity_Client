@@ -81,6 +81,17 @@ public class GameManager : Singleton<GameManager>
             float lastTimeScale = Time.timeScale;
             Time.timeScale = 0;
         }
+        if(Input.GetKeyDown(KeyCode.A))
+        {
+            CSHandler msg = new CSHandler();
+            msg.Position = new ThriftVector3();
+            msg.Position.fX = 200;
+
+            msg.Direction = new ThriftVector3();
+            msg.Direction.fY = 100;
+
+            NetWorkManager.Instance.SendMsgToServer(msg);
+        }
     }
     #endregion
 

@@ -38,4 +38,6 @@ public class MessageIdConstants {
 
   public static final int CS_PONG = 103002;
 
+  public static final int CS_HANDLER = 103003;
+
 }

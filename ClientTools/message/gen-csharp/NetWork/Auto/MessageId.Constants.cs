@@ -19,5 +19,6 @@ namespace NetWork.Auto
   {
     public static int CS_PING = 103001;
     public static int CS_PONG = 103002;
+    public static int CS_HANDLER = 103003;
   }
 }
