@@ -91,6 +91,7 @@ public class GameManager : Singleton<GameManager>
             msg.Direction.fY = 100;
 
             NetWorkManager.Instance.SendMsgToServer(msg);
+            NetWorkManager.Instance.SendMsgToServer(msg);
         }
     }
     #endregion
