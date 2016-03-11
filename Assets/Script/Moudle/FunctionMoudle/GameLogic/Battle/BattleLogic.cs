@@ -22,6 +22,8 @@ public class BattleLogic : LogicBase<BattleLogic>
             m_PlayerController.GetPlayer().transform);
 
         m_SceneCamera = MapManager.Instance.GetCurrentMapInfo().GetSceneCamera();
+
+        m_PlayerController.RegisterEvent();
     }
 
     public void OnStart()
@@ -32,12 +34,12 @@ public class BattleLogic : LogicBase<BattleLogic>
         m_BattleWindow.SetActive(true);
 
         //set call back
-        m_BattleWindow.SetInputCallBack(m_PlayerController.GetPlayer().Move);
+        m_BattleWindow.SetInputCallBack(m_PlayerController.OnInputMove);
         m_BattleWindow.SetFireCallBack(OnPlayerFire);
     }
     public override void EndLogic()
     {
-        
+        m_PlayerController.UnRegisterEvent();
     }
 
     private void OnPlayerFire(Vector3 touchPosition)
@@ -47,7 +49,7 @@ public class BattleLogic : LogicBase<BattleLogic>
         RaycastHit hitInfo;
         if (Physics.Raycast(ray, out hitInfo))
         {
-            m_PlayerController.GetPlayer().Fire(hitInfo.point);
+            m_PlayerController.OnInputFire(hitInfo.point);
         }
     }
 }

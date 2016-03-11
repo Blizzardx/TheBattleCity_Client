@@ -32,28 +32,31 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._Fields>, java.io.Serializable, Cloneable, Comparable<CSHandler> {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("CSHandler");
+public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, java.io.Serializable, Cloneable, Comparable<CSFire> {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("CSFire");
 
   private static final org.apache.thrift.protocol.TField PLAYER_UID_FIELD_DESC = new org.apache.thrift.protocol.TField("playerUid", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField CURRENT_POSITION_FIELD_DESC = new org.apache.thrift.protocol.TField("currentPosition", org.apache.thrift.protocol.TType.STRUCT, (short)10);
-  private static final org.apache.thrift.protocol.TField MOVE_DIRECTION_FIELD_DESC = new org.apache.thrift.protocol.TField("moveDirection", org.apache.thrift.protocol.TType.STRUCT, (short)20);
+  private static final org.apache.thrift.protocol.TField FIRE_DIRECTION_FIELD_DESC = new org.apache.thrift.protocol.TField("fireDirection", org.apache.thrift.protocol.TType.STRUCT, (short)20);
+  private static final org.apache.thrift.protocol.TField BULLET_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("bulletName", org.apache.thrift.protocol.TType.STRING, (short)30);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new CSHandlerStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new CSHandlerTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new CSFireStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new CSFireTupleSchemeFactory());
   }
 
   public int playerUid; // required
   public server.msg.auto.ThriftVector3 currentPosition; // required
-  public server.msg.auto.ThriftVector3 moveDirection; // required
+  public server.msg.auto.ThriftVector3 fireDirection; // required
+  public String bulletName; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     PLAYER_UID((short)1, "playerUid"),
     CURRENT_POSITION((short)10, "currentPosition"),
-    MOVE_DIRECTION((short)20, "moveDirection");
+    FIRE_DIRECTION((short)20, "fireDirection"),
+    BULLET_NAME((short)30, "bulletName");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -72,8 +75,10 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
           return PLAYER_UID;
         case 10: // CURRENT_POSITION
           return CURRENT_POSITION;
-        case 20: // MOVE_DIRECTION
-          return MOVE_DIRECTION;
+        case 20: // FIRE_DIRECTION
+          return FIRE_DIRECTION;
+        case 30: // BULLET_NAME
+          return BULLET_NAME;
         default:
           return null;
       }
@@ -123,43 +128,50 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.CURRENT_POSITION, new org.apache.thrift.meta_data.FieldMetaData("currentPosition", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, server.msg.auto.ThriftVector3.class)));
-    tmpMap.put(_Fields.MOVE_DIRECTION, new org.apache.thrift.meta_data.FieldMetaData("moveDirection", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.FIRE_DIRECTION, new org.apache.thrift.meta_data.FieldMetaData("fireDirection", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, server.msg.auto.ThriftVector3.class)));
+    tmpMap.put(_Fields.BULLET_NAME, new org.apache.thrift.meta_data.FieldMetaData("bulletName", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(CSHandler.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(CSFire.class, metaDataMap);
   }
 
-  public CSHandler() {
+  public CSFire() {
   }
 
-  public CSHandler(
+  public CSFire(
     int playerUid,
     server.msg.auto.ThriftVector3 currentPosition,
-    server.msg.auto.ThriftVector3 moveDirection)
+    server.msg.auto.ThriftVector3 fireDirection,
+    String bulletName)
   {
     this();
     this.playerUid = playerUid;
     setPlayerUidIsSet(true);
     this.currentPosition = currentPosition;
-    this.moveDirection = moveDirection;
+    this.fireDirection = fireDirection;
+    this.bulletName = bulletName;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public CSHandler(CSHandler other) {
+  public CSFire(CSFire other) {
     __isset_bitfield = other.__isset_bitfield;
     this.playerUid = other.playerUid;
     if (other.isSetCurrentPosition()) {
       this.currentPosition = new server.msg.auto.ThriftVector3(other.currentPosition);
     }
-    if (other.isSetMoveDirection()) {
-      this.moveDirection = new server.msg.auto.ThriftVector3(other.moveDirection);
+    if (other.isSetFireDirection()) {
+      this.fireDirection = new server.msg.auto.ThriftVector3(other.fireDirection);
+    }
+    if (other.isSetBulletName()) {
+      this.bulletName = other.bulletName;
     }
   }
 
-  public CSHandler deepCopy() {
-    return new CSHandler(this);
+  public CSFire deepCopy() {
+    return new CSFire(this);
   }
 
   @Override
@@ -167,14 +179,15 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
     setPlayerUidIsSet(false);
     this.playerUid = 0;
     this.currentPosition = null;
-    this.moveDirection = null;
+    this.fireDirection = null;
+    this.bulletName = null;
   }
 
   public int getPlayerUid() {
     return this.playerUid;
   }
 
-  public CSHandler setPlayerUid(int playerUid) {
+  public CSFire setPlayerUid(int playerUid) {
     this.playerUid = playerUid;
     setPlayerUidIsSet(true);
     return this;
@@ -197,7 +210,7 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
     return this.currentPosition;
   }
 
-  public CSHandler setCurrentPosition(server.msg.auto.ThriftVector3 currentPosition) {
+  public CSFire setCurrentPosition(server.msg.auto.ThriftVector3 currentPosition) {
     this.currentPosition = currentPosition;
     return this;
   }
@@ -217,27 +230,51 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
     }
   }
 
-  public server.msg.auto.ThriftVector3 getMoveDirection() {
-    return this.moveDirection;
+  public server.msg.auto.ThriftVector3 getFireDirection() {
+    return this.fireDirection;
   }
 
-  public CSHandler setMoveDirection(server.msg.auto.ThriftVector3 moveDirection) {
-    this.moveDirection = moveDirection;
+  public CSFire setFireDirection(server.msg.auto.ThriftVector3 fireDirection) {
+    this.fireDirection = fireDirection;
     return this;
   }
 
-  public void unsetMoveDirection() {
-    this.moveDirection = null;
+  public void unsetFireDirection() {
+    this.fireDirection = null;
   }
 
-  /** Returns true if field moveDirection is set (has been assigned a value) and false otherwise */
-  public boolean isSetMoveDirection() {
-    return this.moveDirection != null;
+  /** Returns true if field fireDirection is set (has been assigned a value) and false otherwise */
+  public boolean isSetFireDirection() {
+    return this.fireDirection != null;
   }
 
-  public void setMoveDirectionIsSet(boolean value) {
+  public void setFireDirectionIsSet(boolean value) {
     if (!value) {
-      this.moveDirection = null;
+      this.fireDirection = null;
+    }
+  }
+
+  public String getBulletName() {
+    return this.bulletName;
+  }
+
+  public CSFire setBulletName(String bulletName) {
+    this.bulletName = bulletName;
+    return this;
+  }
+
+  public void unsetBulletName() {
+    this.bulletName = null;
+  }
+
+  /** Returns true if field bulletName is set (has been assigned a value) and false otherwise */
+  public boolean isSetBulletName() {
+    return this.bulletName != null;
+  }
+
+  public void setBulletNameIsSet(boolean value) {
+    if (!value) {
+      this.bulletName = null;
     }
   }
 
@@ -259,11 +296,19 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
       }
       break;
 
-    case MOVE_DIRECTION:
+    case FIRE_DIRECTION:
       if (value == null) {
-        unsetMoveDirection();
+        unsetFireDirection();
       } else {
-        setMoveDirection((server.msg.auto.ThriftVector3)value);
+        setFireDirection((server.msg.auto.ThriftVector3)value);
+      }
+      break;
+
+    case BULLET_NAME:
+      if (value == null) {
+        unsetBulletName();
+      } else {
+        setBulletName((String)value);
       }
       break;
 
@@ -278,8 +323,11 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
     case CURRENT_POSITION:
       return getCurrentPosition();
 
-    case MOVE_DIRECTION:
-      return getMoveDirection();
+    case FIRE_DIRECTION:
+      return getFireDirection();
+
+    case BULLET_NAME:
+      return getBulletName();
 
     }
     throw new IllegalStateException();
@@ -296,8 +344,10 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
       return isSetPlayerUid();
     case CURRENT_POSITION:
       return isSetCurrentPosition();
-    case MOVE_DIRECTION:
-      return isSetMoveDirection();
+    case FIRE_DIRECTION:
+      return isSetFireDirection();
+    case BULLET_NAME:
+      return isSetBulletName();
     }
     throw new IllegalStateException();
   }
@@ -306,12 +356,12 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof CSHandler)
-      return this.equals((CSHandler)that);
+    if (that instanceof CSFire)
+      return this.equals((CSFire)that);
     return false;
   }
 
-  public boolean equals(CSHandler that) {
+  public boolean equals(CSFire that) {
     if (that == null)
       return false;
 
@@ -333,12 +383,21 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
         return false;
     }
 
-    boolean this_present_moveDirection = true && this.isSetMoveDirection();
-    boolean that_present_moveDirection = true && that.isSetMoveDirection();
-    if (this_present_moveDirection || that_present_moveDirection) {
-      if (!(this_present_moveDirection && that_present_moveDirection))
+    boolean this_present_fireDirection = true && this.isSetFireDirection();
+    boolean that_present_fireDirection = true && that.isSetFireDirection();
+    if (this_present_fireDirection || that_present_fireDirection) {
+      if (!(this_present_fireDirection && that_present_fireDirection))
         return false;
-      if (!this.moveDirection.equals(that.moveDirection))
+      if (!this.fireDirection.equals(that.fireDirection))
+        return false;
+    }
+
+    boolean this_present_bulletName = true && this.isSetBulletName();
+    boolean that_present_bulletName = true && that.isSetBulletName();
+    if (this_present_bulletName || that_present_bulletName) {
+      if (!(this_present_bulletName && that_present_bulletName))
+        return false;
+      if (!this.bulletName.equals(that.bulletName))
         return false;
     }
 
@@ -351,7 +410,7 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
   }
 
   @Override
-  public int compareTo(CSHandler other) {
+  public int compareTo(CSFire other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
@@ -378,12 +437,22 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetMoveDirection()).compareTo(other.isSetMoveDirection());
+    lastComparison = Boolean.valueOf(isSetFireDirection()).compareTo(other.isSetFireDirection());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetMoveDirection()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.moveDirection, other.moveDirection);
+    if (isSetFireDirection()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.fireDirection, other.fireDirection);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetBulletName()).compareTo(other.isSetBulletName());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetBulletName()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.bulletName, other.bulletName);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -405,7 +474,7 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("CSHandler(");
+    StringBuilder sb = new StringBuilder("CSFire(");
     boolean first = true;
 
     sb.append("playerUid:");
@@ -420,11 +489,19 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("moveDirection:");
-    if (this.moveDirection == null) {
+    sb.append("fireDirection:");
+    if (this.fireDirection == null) {
       sb.append("null");
     } else {
-      sb.append(this.moveDirection);
+      sb.append(this.fireDirection);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("bulletName:");
+    if (this.bulletName == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.bulletName);
     }
     first = false;
     sb.append(")");
@@ -437,8 +514,8 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
     if (currentPosition != null) {
       currentPosition.validate();
     }
-    if (moveDirection != null) {
-      moveDirection.validate();
+    if (fireDirection != null) {
+      fireDirection.validate();
     }
   }
 
@@ -460,15 +537,15 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
     }
   }
 
-  private static class CSHandlerStandardSchemeFactory implements SchemeFactory {
-    public CSHandlerStandardScheme getScheme() {
-      return new CSHandlerStandardScheme();
+  private static class CSFireStandardSchemeFactory implements SchemeFactory {
+    public CSFireStandardScheme getScheme() {
+      return new CSFireStandardScheme();
     }
   }
 
-  private static class CSHandlerStandardScheme extends StandardScheme<CSHandler> {
+  private static class CSFireStandardScheme extends StandardScheme<CSFire> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, CSHandler struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, CSFire struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -495,11 +572,19 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 20: // MOVE_DIRECTION
+          case 20: // FIRE_DIRECTION
             if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-              struct.moveDirection = new server.msg.auto.ThriftVector3();
-              struct.moveDirection.read(iprot);
-              struct.setMoveDirectionIsSet(true);
+              struct.fireDirection = new server.msg.auto.ThriftVector3();
+              struct.fireDirection.read(iprot);
+              struct.setFireDirectionIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 30: // BULLET_NAME
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.bulletName = iprot.readString();
+              struct.setBulletNameIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -515,7 +600,7 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, CSHandler struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, CSFire struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
@@ -527,9 +612,14 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
         struct.currentPosition.write(oprot);
         oprot.writeFieldEnd();
       }
-      if (struct.moveDirection != null) {
-        oprot.writeFieldBegin(MOVE_DIRECTION_FIELD_DESC);
-        struct.moveDirection.write(oprot);
+      if (struct.fireDirection != null) {
+        oprot.writeFieldBegin(FIRE_DIRECTION_FIELD_DESC);
+        struct.fireDirection.write(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (struct.bulletName != null) {
+        oprot.writeFieldBegin(BULLET_NAME_FIELD_DESC);
+        oprot.writeString(struct.bulletName);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -538,16 +628,16 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
 
   }
 
-  private static class CSHandlerTupleSchemeFactory implements SchemeFactory {
-    public CSHandlerTupleScheme getScheme() {
-      return new CSHandlerTupleScheme();
+  private static class CSFireTupleSchemeFactory implements SchemeFactory {
+    public CSFireTupleScheme getScheme() {
+      return new CSFireTupleScheme();
     }
   }
 
-  private static class CSHandlerTupleScheme extends TupleScheme<CSHandler> {
+  private static class CSFireTupleScheme extends TupleScheme<CSFire> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, CSHandler struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, CSFire struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
       if (struct.isSetPlayerUid()) {
@@ -556,25 +646,31 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
       if (struct.isSetCurrentPosition()) {
         optionals.set(1);
       }
-      if (struct.isSetMoveDirection()) {
+      if (struct.isSetFireDirection()) {
         optionals.set(2);
       }
-      oprot.writeBitSet(optionals, 3);
+      if (struct.isSetBulletName()) {
+        optionals.set(3);
+      }
+      oprot.writeBitSet(optionals, 4);
       if (struct.isSetPlayerUid()) {
         oprot.writeI32(struct.playerUid);
       }
       if (struct.isSetCurrentPosition()) {
         struct.currentPosition.write(oprot);
       }
-      if (struct.isSetMoveDirection()) {
-        struct.moveDirection.write(oprot);
+      if (struct.isSetFireDirection()) {
+        struct.fireDirection.write(oprot);
+      }
+      if (struct.isSetBulletName()) {
+        oprot.writeString(struct.bulletName);
       }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, CSHandler struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, CSFire struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(3);
+      BitSet incoming = iprot.readBitSet(4);
       if (incoming.get(0)) {
         struct.playerUid = iprot.readI32();
         struct.setPlayerUidIsSet(true);
@@ -585,9 +681,13 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
         struct.setCurrentPositionIsSet(true);
       }
       if (incoming.get(2)) {
-        struct.moveDirection = new server.msg.auto.ThriftVector3();
-        struct.moveDirection.read(iprot);
-        struct.setMoveDirectionIsSet(true);
+        struct.fireDirection = new server.msg.auto.ThriftVector3();
+        struct.fireDirection.read(iprot);
+        struct.setFireDirectionIsSet(true);
+      }
+      if (incoming.get(3)) {
+        struct.bulletName = iprot.readString();
+        struct.setBulletNameIsSet(true);
       }
     }
   }

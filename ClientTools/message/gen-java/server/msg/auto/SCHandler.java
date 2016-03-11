@@ -32,8 +32,8 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._Fields>, java.io.Serializable, Cloneable, Comparable<CSHandler> {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("CSHandler");
+public class SCHandler implements org.apache.thrift.TBase<SCHandler, SCHandler._Fields>, java.io.Serializable, Cloneable, Comparable<SCHandler> {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("SCHandler");
 
   private static final org.apache.thrift.protocol.TField PLAYER_UID_FIELD_DESC = new org.apache.thrift.protocol.TField("playerUid", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField CURRENT_POSITION_FIELD_DESC = new org.apache.thrift.protocol.TField("currentPosition", org.apache.thrift.protocol.TType.STRUCT, (short)10);
@@ -41,8 +41,8 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new CSHandlerStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new CSHandlerTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new SCHandlerStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new SCHandlerTupleSchemeFactory());
   }
 
   public int playerUid; // required
@@ -126,13 +126,13 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
     tmpMap.put(_Fields.MOVE_DIRECTION, new org.apache.thrift.meta_data.FieldMetaData("moveDirection", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, server.msg.auto.ThriftVector3.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(CSHandler.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(SCHandler.class, metaDataMap);
   }
 
-  public CSHandler() {
+  public SCHandler() {
   }
 
-  public CSHandler(
+  public SCHandler(
     int playerUid,
     server.msg.auto.ThriftVector3 currentPosition,
     server.msg.auto.ThriftVector3 moveDirection)
@@ -147,7 +147,7 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public CSHandler(CSHandler other) {
+  public SCHandler(SCHandler other) {
     __isset_bitfield = other.__isset_bitfield;
     this.playerUid = other.playerUid;
     if (other.isSetCurrentPosition()) {
@@ -158,8 +158,8 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
     }
   }
 
-  public CSHandler deepCopy() {
-    return new CSHandler(this);
+  public SCHandler deepCopy() {
+    return new SCHandler(this);
   }
 
   @Override
@@ -174,7 +174,7 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
     return this.playerUid;
   }
 
-  public CSHandler setPlayerUid(int playerUid) {
+  public SCHandler setPlayerUid(int playerUid) {
     this.playerUid = playerUid;
     setPlayerUidIsSet(true);
     return this;
@@ -197,7 +197,7 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
     return this.currentPosition;
   }
 
-  public CSHandler setCurrentPosition(server.msg.auto.ThriftVector3 currentPosition) {
+  public SCHandler setCurrentPosition(server.msg.auto.ThriftVector3 currentPosition) {
     this.currentPosition = currentPosition;
     return this;
   }
@@ -221,7 +221,7 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
     return this.moveDirection;
   }
 
-  public CSHandler setMoveDirection(server.msg.auto.ThriftVector3 moveDirection) {
+  public SCHandler setMoveDirection(server.msg.auto.ThriftVector3 moveDirection) {
     this.moveDirection = moveDirection;
     return this;
   }
@@ -306,12 +306,12 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof CSHandler)
-      return this.equals((CSHandler)that);
+    if (that instanceof SCHandler)
+      return this.equals((SCHandler)that);
     return false;
   }
 
-  public boolean equals(CSHandler that) {
+  public boolean equals(SCHandler that) {
     if (that == null)
       return false;
 
@@ -351,7 +351,7 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
   }
 
   @Override
-  public int compareTo(CSHandler other) {
+  public int compareTo(SCHandler other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
@@ -405,7 +405,7 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("CSHandler(");
+    StringBuilder sb = new StringBuilder("SCHandler(");
     boolean first = true;
 
     sb.append("playerUid:");
@@ -460,15 +460,15 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
     }
   }
 
-  private static class CSHandlerStandardSchemeFactory implements SchemeFactory {
-    public CSHandlerStandardScheme getScheme() {
-      return new CSHandlerStandardScheme();
+  private static class SCHandlerStandardSchemeFactory implements SchemeFactory {
+    public SCHandlerStandardScheme getScheme() {
+      return new SCHandlerStandardScheme();
     }
   }
 
-  private static class CSHandlerStandardScheme extends StandardScheme<CSHandler> {
+  private static class SCHandlerStandardScheme extends StandardScheme<SCHandler> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, CSHandler struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, SCHandler struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -515,7 +515,7 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, CSHandler struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, SCHandler struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
@@ -538,16 +538,16 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
 
   }
 
-  private static class CSHandlerTupleSchemeFactory implements SchemeFactory {
-    public CSHandlerTupleScheme getScheme() {
-      return new CSHandlerTupleScheme();
+  private static class SCHandlerTupleSchemeFactory implements SchemeFactory {
+    public SCHandlerTupleScheme getScheme() {
+      return new SCHandlerTupleScheme();
     }
   }
 
-  private static class CSHandlerTupleScheme extends TupleScheme<CSHandler> {
+  private static class SCHandlerTupleScheme extends TupleScheme<SCHandler> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, CSHandler struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, SCHandler struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
       if (struct.isSetPlayerUid()) {
@@ -572,7 +572,7 @@ public class CSHandler implements org.apache.thrift.TBase<CSHandler, CSHandler._
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, CSHandler struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, SCHandler struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(3);
       if (incoming.get(0)) {

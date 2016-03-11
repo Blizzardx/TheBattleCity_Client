@@ -32,14 +32,14 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CSPongMsg implements org.apache.thrift.TBase<CSPongMsg, CSPongMsg._Fields>, java.io.Serializable, Cloneable, Comparable<CSPongMsg> {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("CSPongMsg");
+public class SCPongMsg implements org.apache.thrift.TBase<SCPongMsg, SCPongMsg._Fields>, java.io.Serializable, Cloneable, Comparable<SCPongMsg> {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("SCPongMsg");
 
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new CSPongMsgStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new CSPongMsgTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new SCPongMsgStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new SCPongMsgTupleSchemeFactory());
   }
 
 
@@ -102,20 +102,20 @@ public class CSPongMsg implements org.apache.thrift.TBase<CSPongMsg, CSPongMsg._
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(CSPongMsg.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(SCPongMsg.class, metaDataMap);
   }
 
-  public CSPongMsg() {
+  public SCPongMsg() {
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public CSPongMsg(CSPongMsg other) {
+  public SCPongMsg(SCPongMsg other) {
   }
 
-  public CSPongMsg deepCopy() {
-    return new CSPongMsg(this);
+  public SCPongMsg deepCopy() {
+    return new SCPongMsg(this);
   }
 
   @Override
@@ -148,12 +148,12 @@ public class CSPongMsg implements org.apache.thrift.TBase<CSPongMsg, CSPongMsg._
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof CSPongMsg)
-      return this.equals((CSPongMsg)that);
+    if (that instanceof SCPongMsg)
+      return this.equals((SCPongMsg)that);
     return false;
   }
 
-  public boolean equals(CSPongMsg that) {
+  public boolean equals(SCPongMsg that) {
     if (that == null)
       return false;
 
@@ -166,7 +166,7 @@ public class CSPongMsg implements org.apache.thrift.TBase<CSPongMsg, CSPongMsg._
   }
 
   @Override
-  public int compareTo(CSPongMsg other) {
+  public int compareTo(SCPongMsg other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
@@ -190,7 +190,7 @@ public class CSPongMsg implements org.apache.thrift.TBase<CSPongMsg, CSPongMsg._
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("CSPongMsg(");
+    StringBuilder sb = new StringBuilder("SCPongMsg(");
     boolean first = true;
 
     sb.append(")");
@@ -218,15 +218,15 @@ public class CSPongMsg implements org.apache.thrift.TBase<CSPongMsg, CSPongMsg._
     }
   }
 
-  private static class CSPongMsgStandardSchemeFactory implements SchemeFactory {
-    public CSPongMsgStandardScheme getScheme() {
-      return new CSPongMsgStandardScheme();
+  private static class SCPongMsgStandardSchemeFactory implements SchemeFactory {
+    public SCPongMsgStandardScheme getScheme() {
+      return new SCPongMsgStandardScheme();
     }
   }
 
-  private static class CSPongMsgStandardScheme extends StandardScheme<CSPongMsg> {
+  private static class SCPongMsgStandardScheme extends StandardScheme<SCPongMsg> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, CSPongMsg struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, SCPongMsg struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -247,7 +247,7 @@ public class CSPongMsg implements org.apache.thrift.TBase<CSPongMsg, CSPongMsg._
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, CSPongMsg struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, SCPongMsg struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
@@ -257,21 +257,21 @@ public class CSPongMsg implements org.apache.thrift.TBase<CSPongMsg, CSPongMsg._
 
   }
 
-  private static class CSPongMsgTupleSchemeFactory implements SchemeFactory {
-    public CSPongMsgTupleScheme getScheme() {
-      return new CSPongMsgTupleScheme();
+  private static class SCPongMsgTupleSchemeFactory implements SchemeFactory {
+    public SCPongMsgTupleScheme getScheme() {
+      return new SCPongMsgTupleScheme();
     }
   }
 
-  private static class CSPongMsgTupleScheme extends TupleScheme<CSPongMsg> {
+  private static class SCPongMsgTupleScheme extends TupleScheme<SCPongMsg> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, CSPongMsg struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, SCPongMsg struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, CSPongMsg struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, SCPongMsg struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
     }
   }

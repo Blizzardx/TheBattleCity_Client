@@ -21,11 +21,12 @@ namespace NetWork.Auto
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public partial class CSHandler : TBase
+  public partial class CSFire : TBase
   {
     private int _playerUid;
     private NetWork.Auto.ThriftVector3 _currentPosition;
-    private NetWork.Auto.ThriftVector3 _moveDirection;
+    private NetWork.Auto.ThriftVector3 _fireDirection;
+    private string _bulletName;
 
     public int PlayerUid
     {
@@ -53,16 +54,29 @@ namespace NetWork.Auto
       }
     }
 
-    public NetWork.Auto.ThriftVector3 MoveDirection
+    public NetWork.Auto.ThriftVector3 FireDirection
     {
       get
       {
-        return _moveDirection;
+        return _fireDirection;
       }
       set
       {
-        __isset.moveDirection = true;
-        this._moveDirection = value;
+        __isset.fireDirection = true;
+        this._fireDirection = value;
+      }
+    }
+
+    public string BulletName
+    {
+      get
+      {
+        return _bulletName;
+      }
+      set
+      {
+        __isset.bulletName = true;
+        this._bulletName = value;
       }
     }
 
@@ -74,10 +88,11 @@ namespace NetWork.Auto
     public struct Isset {
       public bool playerUid;
       public bool currentPosition;
-      public bool moveDirection;
+      public bool fireDirection;
+      public bool bulletName;
     }
 
-    public CSHandler() {
+    public CSFire() {
     }
 
     public void Read (TProtocol iprot)
@@ -109,8 +124,15 @@ namespace NetWork.Auto
             break;
           case 20:
             if (field.Type == TType.Struct) {
-              MoveDirection = new NetWork.Auto.ThriftVector3();
-              MoveDirection.Read(iprot);
+              FireDirection = new NetWork.Auto.ThriftVector3();
+              FireDirection.Read(iprot);
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
+          case 30:
+            if (field.Type == TType.String) {
+              BulletName = iprot.ReadString();
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -125,7 +147,7 @@ namespace NetWork.Auto
     }
 
     public void Write(TProtocol oprot) {
-      TStruct struc = new TStruct("CSHandler");
+      TStruct struc = new TStruct("CSFire");
       oprot.WriteStructBegin(struc);
       TField field = new TField();
       if (__isset.playerUid) {
@@ -144,12 +166,20 @@ namespace NetWork.Auto
         CurrentPosition.Write(oprot);
         oprot.WriteFieldEnd();
       }
-      if (MoveDirection != null && __isset.moveDirection) {
-        field.Name = "moveDirection";
+      if (FireDirection != null && __isset.fireDirection) {
+        field.Name = "fireDirection";
         field.Type = TType.Struct;
         field.ID = 20;
         oprot.WriteFieldBegin(field);
-        MoveDirection.Write(oprot);
+        FireDirection.Write(oprot);
+        oprot.WriteFieldEnd();
+      }
+      if (BulletName != null && __isset.bulletName) {
+        field.Name = "bulletName";
+        field.Type = TType.String;
+        field.ID = 30;
+        oprot.WriteFieldBegin(field);
+        oprot.WriteString(BulletName);
         oprot.WriteFieldEnd();
       }
       oprot.WriteFieldStop();
@@ -157,13 +187,15 @@ namespace NetWork.Auto
     }
 
     public override string ToString() {
-      StringBuilder sb = new StringBuilder("CSHandler(");
+      StringBuilder sb = new StringBuilder("CSFire(");
       sb.Append("PlayerUid: ");
       sb.Append(PlayerUid);
       sb.Append(",CurrentPosition: ");
       sb.Append(CurrentPosition== null ? "<null>" : CurrentPosition.ToString());
-      sb.Append(",MoveDirection: ");
-      sb.Append(MoveDirection== null ? "<null>" : MoveDirection.ToString());
+      sb.Append(",FireDirection: ");
+      sb.Append(FireDirection== null ? "<null>" : FireDirection.ToString());
+      sb.Append(",BulletName: ");
+      sb.Append(BulletName);
       sb.Append(")");
       return sb.ToString();
     }

@@ -17,22 +17,11 @@ namespace NetWork
         static ThriftMessageHelper()
         {
             REQ_ID_MSG.Add(MessageIdConstants.CS_PING, typeof(CSPingMsg));
-            REQ_ID_MSG.Add(MessageIdConstants.CS_PONG, typeof(CSPongMsg));
+            REQ_ID_MSG.Add(MessageIdConstants.SC_PONG, typeof(SCPongMsg));
             REQ_ID_MSG.Add(MessageIdConstants.CS_HANDLER, typeof(CSHandler));
-            //REQ_ID_MSG.Add(MessageIdConstants.LOGIN, typeof(LoginRequest));
-            //REQ_ID_MSG.Add(MessageIdConstants.CREATE_NEW_CHAR, typeof(CreateNewCharRequest));
-            //REQ_ID_MSG.Add(MessageIdConstants.ENTER_GAME, typeof(EnterGameRequest));
-            //REQ_ID_MSG.Add(MessageIdConstants.SYNC_CHAR_DATA, typeof(SyncCharDataRequest));
-            //REQ_ID_MSG.Add(MessageIdConstants.SELL, typeof(SellRequest));
-            //REQ_ID_MSG.Add(MessageIdConstants.BUY, typeof(BuyRequest));
-            //REQ_ID_MSG.Add(MessageIdConstants.BID, typeof(BidRequest));
-            //REQ_ID_MSG.Add(MessageIdConstants.SEND_CHAT, typeof(SendChatRequest));
-            //REQ_ID_MSG.Add(MessageIdConstants.CLOSE_CHAT, typeof(CloseChatRequest));
-            //REQ_ID_MSG.Add(MessageIdConstants.MTPING, typeof(MTPingRequest));
-            //REQ_ID_MSG.Add(MessageIdConstants.ACCEPT_BID, typeof(AcceptBidRequest));
-            //REQ_ID_MSG.Add(MessageIdConstants.REFUSE_BID, typeof(RefuseBidRequest));
-            //REQ_ID_MSG.Add(MessageIdConstants.ClOSE_SALE, typeof(CloseSaleRequest));
-
+            REQ_ID_MSG.Add(MessageIdConstants.SC_HANDLER, typeof(SCHandler));
+            REQ_ID_MSG.Add(MessageIdConstants.CS_FIRE, typeof(CSFire));
+            REQ_ID_MSG.Add(MessageIdConstants.SC_FIRE, typeof(SCFire));
 
 
             foreach (KeyValuePair<int, System.Type> kv in REQ_ID_MSG)

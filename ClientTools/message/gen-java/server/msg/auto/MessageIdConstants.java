@@ -36,8 +36,14 @@ public class MessageIdConstants {
 
   public static final int CS_PING = 103001;
 
-  public static final int CS_PONG = 103002;
+  public static final int SC_PONG = 103002;
 
   public static final int CS_HANDLER = 103003;
+
+  public static final int SC_HANDLER = 103004;
+
+  public static final int CS_FIRE = 103005;
+
+  public static final int SC_FIRE = 103006;
 
 }

@@ -21,10 +21,10 @@ namespace NetWork.Auto
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public partial class CSPongMsg : TBase
+  public partial class SCPongMsg : TBase
   {
 
-    public CSPongMsg() {
+    public SCPongMsg() {
     }
 
     public void Read (TProtocol iprot)
@@ -49,14 +49,14 @@ namespace NetWork.Auto
     }
 
     public void Write(TProtocol oprot) {
-      TStruct struc = new TStruct("CSPongMsg");
+      TStruct struc = new TStruct("SCPongMsg");
       oprot.WriteStructBegin(struc);
       oprot.WriteFieldStop();
       oprot.WriteStructEnd();
     }
 
     public override string ToString() {
-      StringBuilder sb = new StringBuilder("CSPongMsg(");
+      StringBuilder sb = new StringBuilder("SCPongMsg(");
       sb.Append(")");
       return sb.ToString();
     }

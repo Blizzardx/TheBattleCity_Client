@@ -2,9 +2,10 @@ include "common.thrift"
 namespace java server.msg.auto
 namespace csharp NetWork.Auto
 
-struct CSHandler
+struct SCFire
 {
 	1: i32 playerUid
 	10:common.ThriftVector3 currentPosition
-	20:common.ThriftVector3 moveDirection
+	20:common.ThriftVector3 fireDirection
+	30:string bulletName
 }

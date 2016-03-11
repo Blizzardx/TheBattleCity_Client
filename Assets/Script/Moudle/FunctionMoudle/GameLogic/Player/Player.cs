@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        m_bIsStop = true;
         m_MoveHandler = new MoveBase();
         m_MoveHandler.ResetDir(Vector3.zero, Time.time, transform.position);
     }
@@ -40,34 +41,40 @@ public class Player : MonoBehaviour
     {
         transform.position = position;
     }
+    public void DoMove(Vector3 newDir,Vector3 position)
+    {
+        transform.position = position;
+        Debuger.Log("new dir " + newDir);
+        if (newDir == Vector3.zero)
+        {
+            m_bIsStop = true;
+            m_MoveHandler.ResetDir(Vector3.zero, Time.time, position);
+        }
+        else
+        {
+            m_bIsStop = false;
+            transform.forward = newDir;
+            m_MoveHandler.ResetDir(newDir, Time.time - Time.deltaTime, position);
 
-    public void Move(Vector2 dir)
+        }
+        OnMoveChangedEvent();
+    }
+    public bool TryMove(Vector2 dir,ref Vector3 newDir)
     {
         if (null == m_MoveHandler)
         {
-            return;
+            return false;
         }
 
         //set dir
-        Vector3 newDir = new Vector3(dir.x, transform.forward.y, dir.y);
+        newDir = new Vector3(dir.x, transform.forward.y, dir.y);
 
         if (CheckDir(newDir))
         {
             Debuger.Log("new dir " + newDir);
-            if (newDir == Vector3.zero)
-            {
-                m_bIsStop = true;
-                m_MoveHandler.ResetDir(Vector3.zero, Time.time, transform.position);
-            }
-            else
-            {
-                m_bIsStop = false;
-                transform.forward = newDir;
-                m_MoveHandler.ResetDir(newDir, Time.time - Time.deltaTime, transform.position);
-
-            }
-            OnMoveChangedEvent();
+            return true;
         }
+        return false;
     }
 
     public void Fire(Vector3 dir)

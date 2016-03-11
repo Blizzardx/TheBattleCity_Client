@@ -83,15 +83,7 @@ public class GameManager : Singleton<GameManager>
         }
         if(Input.GetKeyDown(KeyCode.A))
         {
-            CSHandler msg = new CSHandler();
-            msg.Position = new ThriftVector3();
-            msg.Position.fX = 200;
-
-            msg.Direction = new ThriftVector3();
-            msg.Direction.fY = 100;
-
-            NetWorkManager.Instance.SendMsgToServer(msg);
-            NetWorkManager.Instance.SendMsgToServer(msg);
+            
         }
     }
     #endregion

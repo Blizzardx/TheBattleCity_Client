@@ -21,7 +21,7 @@ namespace NetWork.Auto
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public partial class CSHandler : TBase
+  public partial class SCHandler : TBase
   {
     private int _playerUid;
     private NetWork.Auto.ThriftVector3 _currentPosition;
@@ -77,7 +77,7 @@ namespace NetWork.Auto
       public bool moveDirection;
     }
 
-    public CSHandler() {
+    public SCHandler() {
     }
 
     public void Read (TProtocol iprot)
@@ -125,7 +125,7 @@ namespace NetWork.Auto
     }
 
     public void Write(TProtocol oprot) {
-      TStruct struc = new TStruct("CSHandler");
+      TStruct struc = new TStruct("SCHandler");
       oprot.WriteStructBegin(struc);
       TField field = new TField();
       if (__isset.playerUid) {
@@ -157,7 +157,7 @@ namespace NetWork.Auto
     }
 
     public override string ToString() {
-      StringBuilder sb = new StringBuilder("CSHandler(");
+      StringBuilder sb = new StringBuilder("SCHandler(");
       sb.Append("PlayerUid: ");
       sb.Append(PlayerUid);
       sb.Append(",CurrentPosition: ");

@@ -23,32 +23,46 @@ namespace NetWork.Auto
   #endif
   public partial class CSHandler : TBase
   {
-    private NetWork.Auto.ThriftVector3 _position;
-    private NetWork.Auto.ThriftVector3 _direction;
+    private int _playerUid;
+    private NetWork.Auto.ThriftVector3 _currentPosition;
+    private NetWork.Auto.ThriftVector3 _moveDirection;
 
-    public NetWork.Auto.ThriftVector3 Position
+    public int PlayerUid
     {
       get
       {
-        return _position;
+        return _playerUid;
       }
       set
       {
-        __isset.position = true;
-        this._position = value;
+        __isset.playerUid = true;
+        this._playerUid = value;
       }
     }
 
-    public NetWork.Auto.ThriftVector3 Direction
+    public NetWork.Auto.ThriftVector3 CurrentPosition
     {
       get
       {
-        return _direction;
+        return _currentPosition;
       }
       set
       {
-        __isset.direction = true;
-        this._direction = value;
+        __isset.currentPosition = true;
+        this._currentPosition = value;
+      }
+    }
+
+    public NetWork.Auto.ThriftVector3 MoveDirection
+    {
+      get
+      {
+        return _moveDirection;
+      }
+      set
+      {
+        __isset.moveDirection = true;
+        this._moveDirection = value;
       }
     }
 
@@ -58,8 +72,9 @@ namespace NetWork.Auto
     [Serializable]
     #endif
     public struct Isset {
-      public bool position;
-      public bool direction;
+      public bool playerUid;
+      public bool currentPosition;
+      public bool moveDirection;
     }
 
     public CSHandler() {
@@ -77,18 +92,25 @@ namespace NetWork.Auto
         }
         switch (field.ID)
         {
+          case 1:
+            if (field.Type == TType.I32) {
+              PlayerUid = iprot.ReadI32();
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
           case 10:
             if (field.Type == TType.Struct) {
-              Position = new NetWork.Auto.ThriftVector3();
-              Position.Read(iprot);
+              CurrentPosition = new NetWork.Auto.ThriftVector3();
+              CurrentPosition.Read(iprot);
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
             break;
           case 20:
             if (field.Type == TType.Struct) {
-              Direction = new NetWork.Auto.ThriftVector3();
-              Direction.Read(iprot);
+              MoveDirection = new NetWork.Auto.ThriftVector3();
+              MoveDirection.Read(iprot);
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -106,20 +128,28 @@ namespace NetWork.Auto
       TStruct struc = new TStruct("CSHandler");
       oprot.WriteStructBegin(struc);
       TField field = new TField();
-      if (Position != null && __isset.position) {
-        field.Name = "position";
+      if (__isset.playerUid) {
+        field.Name = "playerUid";
+        field.Type = TType.I32;
+        field.ID = 1;
+        oprot.WriteFieldBegin(field);
+        oprot.WriteI32(PlayerUid);
+        oprot.WriteFieldEnd();
+      }
+      if (CurrentPosition != null && __isset.currentPosition) {
+        field.Name = "currentPosition";
         field.Type = TType.Struct;
         field.ID = 10;
         oprot.WriteFieldBegin(field);
-        Position.Write(oprot);
+        CurrentPosition.Write(oprot);
         oprot.WriteFieldEnd();
       }
-      if (Direction != null && __isset.direction) {
-        field.Name = "direction";
+      if (MoveDirection != null && __isset.moveDirection) {
+        field.Name = "moveDirection";
         field.Type = TType.Struct;
         field.ID = 20;
         oprot.WriteFieldBegin(field);
-        Direction.Write(oprot);
+        MoveDirection.Write(oprot);
         oprot.WriteFieldEnd();
       }
       oprot.WriteFieldStop();
@@ -128,10 +158,12 @@ namespace NetWork.Auto
 
     public override string ToString() {
       StringBuilder sb = new StringBuilder("CSHandler(");
-      sb.Append("Position: ");
-      sb.Append(Position== null ? "<null>" : Position.ToString());
-      sb.Append(",Direction: ");
-      sb.Append(Direction== null ? "<null>" : Direction.ToString());
+      sb.Append("PlayerUid: ");
+      sb.Append(PlayerUid);
+      sb.Append(",CurrentPosition: ");
+      sb.Append(CurrentPosition== null ? "<null>" : CurrentPosition.ToString());
+      sb.Append(",MoveDirection: ");
+      sb.Append(MoveDirection== null ? "<null>" : MoveDirection.ToString());
       sb.Append(")");
       return sb.ToString();
     }

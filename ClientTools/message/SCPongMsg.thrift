@@ -1,6 +1,6 @@
 namespace java server.msg.auto
 namespace csharp NetWork.Auto
 
-struct CSPongMsg
+struct SCPongMsg
 {
 }
