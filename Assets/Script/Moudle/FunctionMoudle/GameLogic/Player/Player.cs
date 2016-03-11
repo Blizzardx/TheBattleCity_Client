@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     private float m_fCurrentSpeed;
     private bool m_bIsStop;
     private float m_fCurrentCd;
+    private Vector3 m_FowordMoveDir;
 
     private void Start()
     {
@@ -43,8 +44,6 @@ public class Player : MonoBehaviour
     }
     public void DoMove(Vector3 newDir,Vector3 position)
     {
-        transform.position = position;
-        Debuger.Log("new dir " + newDir);
         if (newDir == Vector3.zero)
         {
             m_bIsStop = true;
@@ -52,6 +51,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            Debuger.Log("update dir");
             m_bIsStop = false;
             transform.forward = newDir;
             m_MoveHandler.ResetDir(newDir, Time.time - Time.deltaTime, position);
@@ -71,12 +71,11 @@ public class Player : MonoBehaviour
 
         if (CheckDir(newDir))
         {
-            Debuger.Log("new dir " + newDir);
+            m_FowordMoveDir = newDir.normalized;
             return true;
         }
         return false;
     }
-
     public void Fire(Vector3 dir)
     {
         if (m_fCurrentCd > 0.0f)
@@ -122,7 +121,7 @@ public class Player : MonoBehaviour
                 return true;
             }
         }
-        return dir != transform.forward;
+        return dir != m_FowordMoveDir;
     }
 
     private void OnTriggerEnter(Collider other)

@@ -15,7 +15,7 @@ public class MoveBase
     public virtual void Update(float time)
     {
         // move
-        m_vCurrentPos = (time - m_iInitTime)*m_vDir + m_vInitPos;
+        m_vCurrentPos = (time - m_iInitTime) * m_vDir + m_vInitPos;
     }
     /// <summary>
     /// call when Reset move direction

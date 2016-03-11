@@ -81,10 +81,6 @@ public class GameManager : Singleton<GameManager>
             float lastTimeScale = Time.timeScale;
             Time.timeScale = 0;
         }
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-            
-        }
     }
     #endregion
 

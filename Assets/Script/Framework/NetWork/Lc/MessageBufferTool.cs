@@ -105,11 +105,11 @@ public class MessageBufferTool
         }
 
         //push source byte stream
-        m_DecodingBuffer.InsertRange(m_DecodingBuffer.Count, m_RecieveBuffer);
-        /*for (int i = 0; i < size; ++i)
+        //m_DecodingBuffer.InsertRange(m_DecodingBuffer.Count, m_RecieveBuffer);
+        for (int i = 0; i < size; ++i)
         {
             m_DecodingBuffer.Add(m_RecieveBuffer[i]);
-        }*/
+        }
 
         do
         {
