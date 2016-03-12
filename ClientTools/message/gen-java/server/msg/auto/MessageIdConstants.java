@@ -46,4 +46,30 @@ public class MessageIdConstants {
 
   public static final int SC_FIRE = 103006;
 
+  public static final int CS_RoomList = 103007;
+
+  public static final int SC_RoomList = 103008;
+
+  public static final int CS_SearchRoom = 103009;
+
+  public static final int SC_SearchRoom = 103010;
+
+  public static final int CS_CreateRoom = 103011;
+
+  public static final int SC_CreateRoom = 103012;
+
+  public static final int CS_EnterRoom = 103013;
+
+  public static final int SC_EnterRoom = 103014;
+
+  public static final int SC_SyncPlayerInfo = 103015;
+
+  public static final int CS_Ready = 103016;
+
+  public static final int SC_Ready = 103017;
+
+  public static final int SC_BattleBegin = 103018;
+
+  public static final int SC_BattleEnd = 103019;
+
 }

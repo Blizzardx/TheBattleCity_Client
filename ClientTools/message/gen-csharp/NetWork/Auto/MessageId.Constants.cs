@@ -23,5 +23,18 @@ namespace NetWork.Auto
     public static int SC_HANDLER = 103004;
     public static int CS_FIRE = 103005;
     public static int SC_FIRE = 103006;
+    public static int CS_RoomList = 103007;
+    public static int SC_RoomList = 103008;
+    public static int CS_SearchRoom = 103009;
+    public static int SC_SearchRoom = 103010;
+    public static int CS_CreateRoom = 103011;
+    public static int SC_CreateRoom = 103012;
+    public static int CS_EnterRoom = 103013;
+    public static int SC_EnterRoom = 103014;
+    public static int SC_SyncPlayerInfo = 103015;
+    public static int CS_Ready = 103016;
+    public static int SC_Ready = 103017;
+    public static int SC_BattleBegin = 103018;
+    public static int SC_BattleEnd = 103019;
   }
 }

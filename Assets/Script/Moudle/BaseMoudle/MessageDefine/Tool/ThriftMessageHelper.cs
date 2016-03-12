@@ -22,6 +22,19 @@ namespace NetWork
             REQ_ID_MSG.Add(MessageIdConstants.SC_HANDLER, typeof(SCHandler));
             REQ_ID_MSG.Add(MessageIdConstants.CS_FIRE, typeof(CSFire));
             REQ_ID_MSG.Add(MessageIdConstants.SC_FIRE, typeof(SCFire));
+            REQ_ID_MSG.Add(MessageIdConstants.CS_RoomList, typeof(CSRoomList));
+            REQ_ID_MSG.Add(MessageIdConstants.SC_RoomList, typeof(SCRoomList));
+            REQ_ID_MSG.Add(MessageIdConstants.CS_SearchRoom, typeof(CSSearchRoom));
+            REQ_ID_MSG.Add(MessageIdConstants.SC_SearchRoom, typeof(SCSearchRoom));
+            REQ_ID_MSG.Add(MessageIdConstants.CS_CreateRoom, typeof(CSCreateRoom));
+            REQ_ID_MSG.Add(MessageIdConstants.SC_CreateRoom, typeof(SCCreateRoom));
+            REQ_ID_MSG.Add(MessageIdConstants.CS_EnterRoom, typeof(CSEnterRoom));
+            REQ_ID_MSG.Add(MessageIdConstants.SC_EnterRoom, typeof(SCEnterRoom));
+            REQ_ID_MSG.Add(MessageIdConstants.SC_SyncPlayerInfo, typeof(SCSyncPlayerInfo));
+            REQ_ID_MSG.Add(MessageIdConstants.CS_Ready, typeof(CSReady));
+            REQ_ID_MSG.Add(MessageIdConstants.SC_Ready, typeof(SCReady));
+            REQ_ID_MSG.Add(MessageIdConstants.SC_BattleBegin, typeof(SCBattleBegin));
+            REQ_ID_MSG.Add(MessageIdConstants.SC_BattleEnd, typeof(SCBattleEnd));
 
 
             foreach (KeyValuePair<int, System.Type> kv in REQ_ID_MSG)
