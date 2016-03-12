@@ -140,7 +140,6 @@ public class NetWorkManager : Singleton<NetWorkManager>
         {
             int size = m_Socket.EndReceive(ar);
             m_BufferTool.RecieveMsg(size);
-            Debuger.Log("size = " + size);
 
             if (CheckSocketStatus())
             {

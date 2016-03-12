@@ -51,7 +51,20 @@ public class PlayerController
     }
     public void OnInputFire(Vector3 pos)
     {
+        if (!m_Player.TryFire())
+        {
+            return;
+        }
+        //send message to fire
+        CSFire fire = new CSFire();
+        fire.BulletName = "Bullet_0";
+        fire.CurrentPosition = new ThriftVector3();
+        fire.CurrentPosition.SetVector3(m_Player.GetFirePos(pos));
+        fire.FireDirection = new ThriftVector3();
+        fire.FireDirection.SetVector3(pos);
+        fire.PlayerUid = m_iPlayerUid;
 
+        NetWorkManager.Instance.SendMsgToServer(fire);
     }
     private void OnDestroy()
     {
@@ -84,6 +97,20 @@ public class PlayerController
     }
     private void OnPlayerFire(MessageObject obj)
     {
+        if (!(obj.msgValue is SCFire))
+        {
+            return;
+        }
 
+        SCFire handler = obj.msgValue as SCFire;
+        if (m_iPlayerUid != handler.PlayerUid)
+        {
+            return;
+        }
+
+        m_Player.Fire(handler.FireDirection.GetVector3());
+        //create bullet
+        BulletManager.Instance.CreateBullet(handler.BulletName, handler.CurrentPosition.GetVector3(),
+           (handler.FireDirection.GetVector3() - handler.CurrentPosition.GetVector3()).normalized);
     }
 }

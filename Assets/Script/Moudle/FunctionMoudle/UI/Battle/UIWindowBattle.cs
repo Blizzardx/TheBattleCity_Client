@@ -37,7 +37,6 @@ public class UIWindowBattle:WindowBase
         base.OnClose();
         UITickTask.Instance.UnRegisterFromUpdateList(Update);
     }
-
     public void SetActive(bool status)
     {
         m_bIsActive = status;
@@ -94,7 +93,6 @@ public class UIWindowBattle:WindowBase
             HandlerFire(Input.mousePosition);
         }
     }
-
     private bool CheckFirstTouch(Vector3 touchposition)
     {
         if (m_ObjHandlerRoot.activeSelf)
