@@ -32,14 +32,14 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CSReady implements org.apache.thrift.TBase<CSReady, CSReady._Fields>, java.io.Serializable, Cloneable, Comparable<CSReady> {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("CSReady");
+public class SCBeginLoadBattle implements org.apache.thrift.TBase<SCBeginLoadBattle, SCBeginLoadBattle._Fields>, java.io.Serializable, Cloneable, Comparable<SCBeginLoadBattle> {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("SCBeginLoadBattle");
 
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new CSReadyStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new CSReadyTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new SCBeginLoadBattleStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new SCBeginLoadBattleTupleSchemeFactory());
   }
 
 
@@ -102,20 +102,20 @@ public class CSReady implements org.apache.thrift.TBase<CSReady, CSReady._Fields
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(CSReady.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(SCBeginLoadBattle.class, metaDataMap);
   }
 
-  public CSReady() {
+  public SCBeginLoadBattle() {
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public CSReady(CSReady other) {
+  public SCBeginLoadBattle(SCBeginLoadBattle other) {
   }
 
-  public CSReady deepCopy() {
-    return new CSReady(this);
+  public SCBeginLoadBattle deepCopy() {
+    return new SCBeginLoadBattle(this);
   }
 
   @Override
@@ -148,12 +148,12 @@ public class CSReady implements org.apache.thrift.TBase<CSReady, CSReady._Fields
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof CSReady)
-      return this.equals((CSReady)that);
+    if (that instanceof SCBeginLoadBattle)
+      return this.equals((SCBeginLoadBattle)that);
     return false;
   }
 
-  public boolean equals(CSReady that) {
+  public boolean equals(SCBeginLoadBattle that) {
     if (that == null)
       return false;
 
@@ -166,7 +166,7 @@ public class CSReady implements org.apache.thrift.TBase<CSReady, CSReady._Fields
   }
 
   @Override
-  public int compareTo(CSReady other) {
+  public int compareTo(SCBeginLoadBattle other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
@@ -190,7 +190,7 @@ public class CSReady implements org.apache.thrift.TBase<CSReady, CSReady._Fields
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("CSReady(");
+    StringBuilder sb = new StringBuilder("SCBeginLoadBattle(");
     boolean first = true;
 
     sb.append(")");
@@ -218,15 +218,15 @@ public class CSReady implements org.apache.thrift.TBase<CSReady, CSReady._Fields
     }
   }
 
-  private static class CSReadyStandardSchemeFactory implements SchemeFactory {
-    public CSReadyStandardScheme getScheme() {
-      return new CSReadyStandardScheme();
+  private static class SCBeginLoadBattleStandardSchemeFactory implements SchemeFactory {
+    public SCBeginLoadBattleStandardScheme getScheme() {
+      return new SCBeginLoadBattleStandardScheme();
     }
   }
 
-  private static class CSReadyStandardScheme extends StandardScheme<CSReady> {
+  private static class SCBeginLoadBattleStandardScheme extends StandardScheme<SCBeginLoadBattle> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, CSReady struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, SCBeginLoadBattle struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -247,7 +247,7 @@ public class CSReady implements org.apache.thrift.TBase<CSReady, CSReady._Fields
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, CSReady struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, SCBeginLoadBattle struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
@@ -257,21 +257,21 @@ public class CSReady implements org.apache.thrift.TBase<CSReady, CSReady._Fields
 
   }
 
-  private static class CSReadyTupleSchemeFactory implements SchemeFactory {
-    public CSReadyTupleScheme getScheme() {
-      return new CSReadyTupleScheme();
+  private static class SCBeginLoadBattleTupleSchemeFactory implements SchemeFactory {
+    public SCBeginLoadBattleTupleScheme getScheme() {
+      return new SCBeginLoadBattleTupleScheme();
     }
   }
 
-  private static class CSReadyTupleScheme extends TupleScheme<CSReady> {
+  private static class SCBeginLoadBattleTupleScheme extends TupleScheme<SCBeginLoadBattle> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, CSReady struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, SCBeginLoadBattle struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, CSReady struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, SCBeginLoadBattle struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
     }
   }

@@ -64,9 +64,9 @@ public class MessageIdConstants {
 
   public static final int SC_SyncPlayerInfo = 103015;
 
-  public static final int CS_Ready = 103016;
+  public static final int CS_BattleLoadEnd = 103016;
 
-  public static final int SC_Ready = 103017;
+  public static final int SC_BeginLoadBattle = 103017;
 
   public static final int SC_BattleBegin = 103018;
 

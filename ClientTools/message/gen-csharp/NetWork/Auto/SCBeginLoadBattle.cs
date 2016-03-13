@@ -21,10 +21,10 @@ namespace NetWork.Auto
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public partial class CSReady : TBase
+  public partial class SCBeginLoadBattle : TBase
   {
 
-    public CSReady() {
+    public SCBeginLoadBattle() {
     }
 
     public void Read (TProtocol iprot)
@@ -49,14 +49,14 @@ namespace NetWork.Auto
     }
 
     public void Write(TProtocol oprot) {
-      TStruct struc = new TStruct("CSReady");
+      TStruct struc = new TStruct("SCBeginLoadBattle");
       oprot.WriteStructBegin(struc);
       oprot.WriteFieldStop();
       oprot.WriteStructEnd();
     }
 
     public override string ToString() {
-      StringBuilder sb = new StringBuilder("CSReady(");
+      StringBuilder sb = new StringBuilder("SCBeginLoadBattle(");
       sb.Append(")");
       return sb.ToString();
     }

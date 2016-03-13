@@ -31,8 +31,8 @@ namespace NetWork
             REQ_ID_MSG.Add(MessageIdConstants.CS_EnterRoom, typeof(CSEnterRoom));
             REQ_ID_MSG.Add(MessageIdConstants.SC_EnterRoom, typeof(SCEnterRoom));
             REQ_ID_MSG.Add(MessageIdConstants.SC_SyncPlayerInfo, typeof(SCSyncPlayerInfo));
-            REQ_ID_MSG.Add(MessageIdConstants.CS_Ready, typeof(CSReady));
-            REQ_ID_MSG.Add(MessageIdConstants.SC_Ready, typeof(SCReady));
+            REQ_ID_MSG.Add(MessageIdConstants.CS_BattleLoadEnd, typeof(CSBattleLoadEnd));
+            REQ_ID_MSG.Add(MessageIdConstants.SC_BeginLoadBattle, typeof(SCBeginLoadBattle));
             REQ_ID_MSG.Add(MessageIdConstants.SC_BattleBegin, typeof(SCBattleBegin));
             REQ_ID_MSG.Add(MessageIdConstants.SC_BattleEnd, typeof(SCBattleEnd));
 

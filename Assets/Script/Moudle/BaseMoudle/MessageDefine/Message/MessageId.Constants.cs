@@ -32,8 +32,8 @@ namespace NetWork.Auto
     public static int CS_EnterRoom = 103013;
     public static int SC_EnterRoom = 103014;
     public static int SC_SyncPlayerInfo = 103015;
-    public static int CS_Ready = 103016;
-    public static int SC_Ready = 103017;
+    public static int CS_BattleLoadEnd = 103016;
+    public static int SC_BeginLoadBattle = 103017;
     public static int SC_BattleBegin = 103018;
     public static int SC_BattleEnd = 103019;
   }
