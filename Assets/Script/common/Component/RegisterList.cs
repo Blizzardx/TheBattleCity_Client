@@ -330,6 +330,10 @@ public class RegisterDictionaryTemplate<T>
                         tmpList.Add(tmpElem);
                     }
                 }
+                else
+                {
+                    m_CallbackStore.Add(elem.Key,elem.Value);
+                }
             }
         }
         m_RegisterList.Clear();

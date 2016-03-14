@@ -7,6 +7,7 @@ public enum GameStateType
     LoginState,
     BattleState,
     ReConnectState,
+    WorldState,
 }
 public class WindowID
 {
@@ -15,6 +16,11 @@ public class WindowID
     public const int Alert = 2;
     public const int AssetUpdate = 3;
     public const int Battle = 4;
+    public const int Wait = 5;
+    public const int RoomList = 6;
+    public const int CreateRoom = 7;
+    public const int EnterRoom = 8;
+    public const int WaitBattle = 9;
 }
 
 public enum WindowLayer
@@ -23,15 +29,6 @@ public enum WindowLayer
     Tip ,
     Max,
 }
-public enum GameLogicSceneType
-{
-    SceneEnd = 1,
-    TalkEnd = 2,
-    ActionEnd = 3,
-    Login = 4,
-    Register = 5,
-    CreateChar = 6,
-}
 public class Definer
 {
     public static void RegisterWindow()
@@ -39,6 +36,11 @@ public class Definer
         WindowManager.Instance.RegisterWindow(WindowID.Alert, "Tip/UIWindow_Alert", WindowLayer.Tip, typeof(UIWindowAlert));
         WindowManager.Instance.RegisterWindow(WindowID.Loading, "Loading/UIWindow_Loading", WindowLayer.Window, typeof(UIWindowLoading));
         WindowManager.Instance.RegisterWindow(WindowID.Battle, "Battle/UIWindow_Battle", WindowLayer.Window, typeof(UIWindowBattle));
+        WindowManager.Instance.RegisterWindow(WindowID.Wait, "Loading/UIWindow_Wait", WindowLayer.Window, typeof(WindowBase));
+        WindowManager.Instance.RegisterWindow(WindowID.RoomList, "Room/UIWindow_Room", WindowLayer.Window, typeof(UIWindowRoomList));
+        WindowManager.Instance.RegisterWindow(WindowID.CreateRoom, "Room/UIWindow_CreateRoom", WindowLayer.Window, typeof(UIWindowCreateRoom));
+        WindowManager.Instance.RegisterWindow(WindowID.EnterRoom, "Room/UIWindow_EnterRoom", WindowLayer.Window, typeof(UIWindowEnterRoom));
+        WindowManager.Instance.RegisterWindow(WindowID.WaitBattle, "Room/UIWindow_WaitBattle", WindowLayer.Window, typeof(UIWindowWaitBattle));
     }
     public static void RegisterStage()
     {
@@ -46,6 +48,7 @@ public class Definer
         StageManager.Instance.RegisterStage(GameStateType.LoginState, "Login", typeof(LoginStage));
         StageManager.Instance.RegisterStage(GameStateType.ReConnectState, "Login", typeof(ReconnectStage));
         StageManager.Instance.RegisterStage(GameStateType.BattleState, "Battle", typeof(BattleStage));
+        StageManager.Instance.RegisterStage(GameStateType.WorldState, "World", typeof(WorldStage));
 
         //node game scene
     }

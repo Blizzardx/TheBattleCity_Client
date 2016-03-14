@@ -11,6 +11,7 @@ struct RoomInfo
 {
 	10: string name
 	20: string mapName
+	30: i32 roomMemberCount
 }
 struct PlayerInfo
 {

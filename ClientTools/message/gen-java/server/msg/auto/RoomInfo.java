@@ -37,6 +37,7 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
 
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)10);
   private static final org.apache.thrift.protocol.TField MAP_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("mapName", org.apache.thrift.protocol.TType.STRING, (short)20);
+  private static final org.apache.thrift.protocol.TField ROOM_MEMBER_COUNT_FIELD_DESC = new org.apache.thrift.protocol.TField("roomMemberCount", org.apache.thrift.protocol.TType.I32, (short)30);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -46,11 +47,13 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
 
   public String name; // required
   public String mapName; // required
+  public int roomMemberCount; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     NAME((short)10, "name"),
-    MAP_NAME((short)20, "mapName");
+    MAP_NAME((short)20, "mapName"),
+    ROOM_MEMBER_COUNT((short)30, "roomMemberCount");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -69,6 +72,8 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
           return NAME;
         case 20: // MAP_NAME
           return MAP_NAME;
+        case 30: // ROOM_MEMBER_COUNT
+          return ROOM_MEMBER_COUNT;
         default:
           return null;
       }
@@ -109,6 +114,8 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
   }
 
   // isset id assignments
+  private static final int __ROOMMEMBERCOUNT_ISSET_ID = 0;
+  private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -116,6 +123,8 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.MAP_NAME, new org.apache.thrift.meta_data.FieldMetaData("mapName", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.ROOM_MEMBER_COUNT, new org.apache.thrift.meta_data.FieldMetaData("roomMemberCount", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(RoomInfo.class, metaDataMap);
   }
@@ -125,23 +134,28 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
 
   public RoomInfo(
     String name,
-    String mapName)
+    String mapName,
+    int roomMemberCount)
   {
     this();
     this.name = name;
     this.mapName = mapName;
+    this.roomMemberCount = roomMemberCount;
+    setRoomMemberCountIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
   public RoomInfo(RoomInfo other) {
+    __isset_bitfield = other.__isset_bitfield;
     if (other.isSetName()) {
       this.name = other.name;
     }
     if (other.isSetMapName()) {
       this.mapName = other.mapName;
     }
+    this.roomMemberCount = other.roomMemberCount;
   }
 
   public RoomInfo deepCopy() {
@@ -152,6 +166,8 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
   public void clear() {
     this.name = null;
     this.mapName = null;
+    setRoomMemberCountIsSet(false);
+    this.roomMemberCount = 0;
   }
 
   public String getName() {
@@ -202,6 +218,29 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
     }
   }
 
+  public int getRoomMemberCount() {
+    return this.roomMemberCount;
+  }
+
+  public RoomInfo setRoomMemberCount(int roomMemberCount) {
+    this.roomMemberCount = roomMemberCount;
+    setRoomMemberCountIsSet(true);
+    return this;
+  }
+
+  public void unsetRoomMemberCount() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __ROOMMEMBERCOUNT_ISSET_ID);
+  }
+
+  /** Returns true if field roomMemberCount is set (has been assigned a value) and false otherwise */
+  public boolean isSetRoomMemberCount() {
+    return EncodingUtils.testBit(__isset_bitfield, __ROOMMEMBERCOUNT_ISSET_ID);
+  }
+
+  public void setRoomMemberCountIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __ROOMMEMBERCOUNT_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case NAME:
@@ -220,6 +259,14 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
       }
       break;
 
+    case ROOM_MEMBER_COUNT:
+      if (value == null) {
+        unsetRoomMemberCount();
+      } else {
+        setRoomMemberCount((Integer)value);
+      }
+      break;
+
     }
   }
 
@@ -230,6 +277,9 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
 
     case MAP_NAME:
       return getMapName();
+
+    case ROOM_MEMBER_COUNT:
+      return Integer.valueOf(getRoomMemberCount());
 
     }
     throw new IllegalStateException();
@@ -246,6 +296,8 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
       return isSetName();
     case MAP_NAME:
       return isSetMapName();
+    case ROOM_MEMBER_COUNT:
+      return isSetRoomMemberCount();
     }
     throw new IllegalStateException();
   }
@@ -278,6 +330,15 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
       if (!(this_present_mapName && that_present_mapName))
         return false;
       if (!this.mapName.equals(that.mapName))
+        return false;
+    }
+
+    boolean this_present_roomMemberCount = true;
+    boolean that_present_roomMemberCount = true;
+    if (this_present_roomMemberCount || that_present_roomMemberCount) {
+      if (!(this_present_roomMemberCount && that_present_roomMemberCount))
+        return false;
+      if (this.roomMemberCount != that.roomMemberCount)
         return false;
     }
 
@@ -317,6 +378,16 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetRoomMemberCount()).compareTo(other.isSetRoomMemberCount());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetRoomMemberCount()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.roomMemberCount, other.roomMemberCount);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -352,6 +423,10 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
       sb.append(this.mapName);
     }
     first = false;
+    if (!first) sb.append(", ");
+    sb.append("roomMemberCount:");
+    sb.append(this.roomMemberCount);
+    first = false;
     sb.append(")");
     return sb.toString();
   }
@@ -371,6 +446,8 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bitfield = 0;
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);
@@ -411,6 +488,14 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 30: // ROOM_MEMBER_COUNT
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.roomMemberCount = iprot.readI32();
+              struct.setRoomMemberCountIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -436,6 +521,9 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
         oprot.writeString(struct.mapName);
         oprot.writeFieldEnd();
       }
+      oprot.writeFieldBegin(ROOM_MEMBER_COUNT_FIELD_DESC);
+      oprot.writeI32(struct.roomMemberCount);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -460,19 +548,25 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
       if (struct.isSetMapName()) {
         optionals.set(1);
       }
-      oprot.writeBitSet(optionals, 2);
+      if (struct.isSetRoomMemberCount()) {
+        optionals.set(2);
+      }
+      oprot.writeBitSet(optionals, 3);
       if (struct.isSetName()) {
         oprot.writeString(struct.name);
       }
       if (struct.isSetMapName()) {
         oprot.writeString(struct.mapName);
       }
+      if (struct.isSetRoomMemberCount()) {
+        oprot.writeI32(struct.roomMemberCount);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, RoomInfo struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(2);
+      BitSet incoming = iprot.readBitSet(3);
       if (incoming.get(0)) {
         struct.name = iprot.readString();
         struct.setNameIsSet(true);
@@ -480,6 +574,10 @@ public class RoomInfo implements org.apache.thrift.TBase<RoomInfo, RoomInfo._Fie
       if (incoming.get(1)) {
         struct.mapName = iprot.readString();
         struct.setMapNameIsSet(true);
+      }
+      if (incoming.get(2)) {
+        struct.roomMemberCount = iprot.readI32();
+        struct.setRoomMemberCountIsSet(true);
       }
     }
   }

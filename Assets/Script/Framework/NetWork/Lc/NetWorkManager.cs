@@ -126,10 +126,14 @@ public class NetWorkManager : Singleton<NetWorkManager>
         {
             Debug.Log("Connected");
             PingTickTask.Instance.SetPingStatus(true);
+            MessageManager.Instance.AddToMessageQueue(new MessageObject(ClientCustomMessageDefine.C_SOCKET_CONNECTED,
+                null));
         }
         else
         {
             Debug.Log("Connected error");
+            MessageManager.Instance.AddToMessageQueue(new MessageObject(ClientCustomMessageDefine.C_SOCKET_CONNECTEERROR,
+                null));
         }
         client.EndConnect(ar);
         Receive();

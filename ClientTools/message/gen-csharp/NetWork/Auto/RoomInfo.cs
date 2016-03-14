@@ -25,6 +25,7 @@ namespace NetWork.Auto
   {
     private string _name;
     private string _mapName;
+    private int _roomMemberCount;
 
     public string Name
     {
@@ -52,6 +53,19 @@ namespace NetWork.Auto
       }
     }
 
+    public int RoomMemberCount
+    {
+      get
+      {
+        return _roomMemberCount;
+      }
+      set
+      {
+        __isset.roomMemberCount = true;
+        this._roomMemberCount = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -60,6 +74,7 @@ namespace NetWork.Auto
     public struct Isset {
       public bool name;
       public bool mapName;
+      public bool roomMemberCount;
     }
 
     public RoomInfo() {
@@ -87,6 +102,13 @@ namespace NetWork.Auto
           case 20:
             if (field.Type == TType.String) {
               MapName = iprot.ReadString();
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
+          case 30:
+            if (field.Type == TType.I32) {
+              RoomMemberCount = iprot.ReadI32();
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -120,6 +142,14 @@ namespace NetWork.Auto
         oprot.WriteString(MapName);
         oprot.WriteFieldEnd();
       }
+      if (__isset.roomMemberCount) {
+        field.Name = "roomMemberCount";
+        field.Type = TType.I32;
+        field.ID = 30;
+        oprot.WriteFieldBegin(field);
+        oprot.WriteI32(RoomMemberCount);
+        oprot.WriteFieldEnd();
+      }
       oprot.WriteFieldStop();
       oprot.WriteStructEnd();
     }
@@ -130,6 +160,8 @@ namespace NetWork.Auto
       sb.Append(Name);
       sb.Append(",MapName: ");
       sb.Append(MapName);
+      sb.Append(",RoomMemberCount: ");
+      sb.Append(RoomMemberCount);
       sb.Append(")");
       return sb.ToString();
     }
