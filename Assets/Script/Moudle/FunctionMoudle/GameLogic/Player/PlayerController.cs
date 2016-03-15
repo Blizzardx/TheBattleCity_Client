@@ -1,12 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 using NetWork.Auto;
+using System;
 
 public class PlayerController
 {
     private int m_iPlayerUid;
     private Player m_Player;
-    
+    private Timer m_PlayerInputCheckTimer;
+
+    //
+    private Vector3 m_LastDir;
+    private bool m_bCanInput;
+    private Vector3 m_LastOption;
+    private bool m_bNeedSendLastOption;
+
     public void CreatePlayer(string name,int uid)
     {
         m_iPlayerUid = uid;
@@ -29,6 +37,8 @@ public class PlayerController
         }
 
         m_Player.SetOnDestroyCallBack(OnDestroy);
+        m_bCanInput = true;
+        m_PlayerInputCheckTimer = TimerCollection.GetInstance().Create(OnInputCheck, null);
     }
     public Player GetPlayer()
     {
@@ -39,15 +49,26 @@ public class PlayerController
         Vector3 newDir = Vector3.zero;
         if(m_Player.TryMove(dir,ref newDir))
         {
-            // send message to move
-            CSHandler handler = new CSHandler();
-            handler.PlayerUid = m_iPlayerUid;
-            handler.MoveDirection = new ThriftVector3();
-            handler.MoveDirection.SetVector3(newDir);
-            handler.CurrentPosition = new ThriftVector3();
-            handler.CurrentPosition.SetVector3(m_Player.transform.position);
+            if(m_bCanInput)
+            {
+                // send message to move
+                CSHandler handler = new CSHandler();
+                handler.PlayerUid = m_iPlayerUid;
+                handler.MoveDirection = new ThriftVector3();
+                handler.MoveDirection.SetVector3(newDir);
+                handler.CurrentPosition = new ThriftVector3();
+                handler.CurrentPosition.SetVector3(m_Player.transform.position);
 
-            NetWorkManager.Instance.SendMsgToServer(handler);
+                NetWorkManager.Instance.SendMsgToServer(handler);
+                m_LastDir = newDir;
+                DisableInput();
+            }
+            else
+            {
+                //record last option
+                m_LastOption = newDir;
+                m_bNeedSendLastOption = newDir == Vector3.zero;
+            }
         }
     }
     public void OnInputFire(Vector3 pos)
@@ -95,6 +116,14 @@ public class PlayerController
         }
 
         m_Player.DoMove(handler.MoveDirection.GetVector3(),handler.CurrentPosition.GetVector3());
+
+        if(handler.MoveDirection.GetVector3() == m_LastDir)
+        {
+
+        }
+        m_bCanInput = true;
+
+        SendLastMoveOption();
     }
     private void OnPlayerFire(MessageObject obj)
     {
@@ -113,5 +142,33 @@ public class PlayerController
         //create bullet
         BulletManager.Instance.CreateBullet(handler.BulletName, handler.CurrentPosition.GetVector3(),
            (handler.FireDirection.GetVector3() - handler.CurrentPosition.GetVector3()).normalized);
+    }
+    private void SendLastMoveOption()
+    {
+        if(m_bNeedSendLastOption)
+        {
+            // send message to move
+            CSHandler handler = new CSHandler();
+            handler.PlayerUid = m_iPlayerUid;
+            handler.MoveDirection = new ThriftVector3();
+            handler.MoveDirection.SetVector3(m_LastOption);
+            handler.CurrentPosition = new ThriftVector3();
+            handler.CurrentPosition.SetVector3(m_Player.transform.position);
+
+            NetWorkManager.Instance.SendMsgToServer(handler);
+            m_bNeedSendLastOption = false;
+            DisableInput();
+        }
+    }
+    private void DisableInput()
+    {
+        m_bCanInput = false;
+        m_PlayerInputCheckTimer.Start(3.0f);
+        
+    }
+
+    private void OnInputCheck()
+    {
+        m_bCanInput = true;
     }
 }
