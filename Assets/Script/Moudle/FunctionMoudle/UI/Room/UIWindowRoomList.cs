@@ -30,7 +30,6 @@ public class UIWindowRoomList : WindowBase
     public override void OnOpen(object param)
     {
         base.OnOpen(param);
-        RegisterMsg();
 
         RequestRoomList();
     }
@@ -38,7 +37,6 @@ public class UIWindowRoomList : WindowBase
     public override void OnClose()
     {
         base.OnClose();
-        UnRegisterMsg();
     }
 
     private void OnClickRefresh(GameObject go)
@@ -55,27 +53,12 @@ public class UIWindowRoomList : WindowBase
     }
     private void RequestRoomList()
     {
-        //send msg to request room list
-        CSRoomList client = new CSRoomList();
-        client.RequestCount = 100;
+        WorldLogic.Instance.GetRoomList();
+    }
 
-        NetWorkManager.Instance.SendMsgToServer(client);
-    }
-    private void RegisterMsg()
+    public void ResetRoomList(List<RoomInfo> roomList)
     {
-        MessageManager.Instance.RegistMessage(MessageIdConstants.SC_RoomList, OnRoomList);
-    }
-    private void UnRegisterMsg()
-    {
-        MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_RoomList, OnRoomList);
-    }
-    private void OnRoomList(MessageObject obj)
-    {
-        if (obj.msgValue is SCRoomList)
-        {
-            SCRoomList roomList = obj.msgValue as SCRoomList;
-            m_ListRoom.SetData(roomList.RoomList);
-        }
+        m_ListRoom.SetData(roomList);
     }
 }
 
@@ -88,6 +71,12 @@ public class RoomListItem : UIListItemBase
     {
         base.OnInit();
         m_LabelRoomName = FindChildComponent<UILabel>("Label");
+        UIEventListener.Get(m_ObjectRoot).onClick = OnClick;
+    }
+
+    private void OnClick(GameObject go)
+    {
+        WindowManager.Instance.OpenWindow(WindowID.EnterRoom, m_LabelRoomName.text);
     }
 
     public override void OnData()

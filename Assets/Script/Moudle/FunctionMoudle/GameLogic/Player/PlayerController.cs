@@ -7,8 +7,9 @@ public class PlayerController
     private int m_iPlayerUid;
     private Player m_Player;
     
-    public void CreatePlayer(string name)
+    public void CreatePlayer(string name,int uid)
     {
+        m_iPlayerUid = uid;
         // try load player
         var obj = ResourceManager.Instance.LoadBuildInResource<GameObject>(name, AssetType.Tank);
         if (null == obj)

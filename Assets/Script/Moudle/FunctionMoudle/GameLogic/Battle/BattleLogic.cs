@@ -1,29 +1,48 @@
 ﻿using UnityEngine;
 using System.Collections;
+using NetWork.Auto;
+using System.Collections.Generic;
 
 public class BattleLogic : LogicBase<BattleLogic>
 {
     public string m_strPreLoadMap = "Map_0";
-    public PlayerController m_PlayerController;
     private UIWindowBattle m_BattleWindow;
     private Camera m_SceneCamera;
+    private List<PlayerController> m_PlayerList;
+    private PlayerController m_thisPlayer;
+    private int m_iThisPlayerUid;
 
     public override void StartLogic()
     {
+        m_PlayerList = new List<PlayerController>();
+
         // load map
         MapManager.Instance.LoadMap(m_strPreLoadMap);
 
-        //load player
-        m_PlayerController = new PlayerController();
-        m_PlayerController.CreatePlayer("Tank_0");
+        //test code
+        List<PlayerInfo> tmpPlayerList = PlayerDataMode.Instance.m_PlayerList;
 
-        //set player postion
-        ComponentTool.Attach(MapManager.Instance.GetCurrentMapInfo().GetPlayerPosition()[0],
-            m_PlayerController.GetPlayer().transform);
+        for(int i=0;i<tmpPlayerList.Count;++i)
+        {
+            //load player
+            PlayerController PlayerController = new PlayerController();
+            PlayerController.CreatePlayer("Tank_0", tmpPlayerList[i].Uid);
+
+            //set player postion
+            ComponentTool.Attach(MapManager.Instance.GetCurrentMapInfo().GetPlayerPosition()[tmpPlayerList[i].PositionId],
+                PlayerController.GetPlayer().transform);
+
+            PlayerController.RegisterEvent();
+
+            if(PlayerDataMode.Instance.playerUid == tmpPlayerList[i].Uid)
+            {
+                m_thisPlayer = PlayerController;
+            }
+        }
+        
 
         m_SceneCamera = MapManager.Instance.GetCurrentMapInfo().GetSceneCamera();
 
-        m_PlayerController.RegisterEvent();
     }
 
     public void OnStart()
@@ -33,15 +52,17 @@ public class BattleLogic : LogicBase<BattleLogic>
         m_BattleWindow = WindowManager.Instance.GetWindow(WindowID.Battle) as UIWindowBattle;
         m_BattleWindow.SetActive(true);
 
-        //set call back
-        m_BattleWindow.SetInputCallBack(m_PlayerController.OnInputMove);
+        //set call back test code
+        m_BattleWindow.SetInputCallBack(m_thisPlayer.OnInputMove);
         m_BattleWindow.SetFireCallBack(OnPlayerFire);
     }
     public override void EndLogic()
     {
-        m_PlayerController.UnRegisterEvent();
+        for (int i = 0; i < m_PlayerList.Count; ++i)
+        {
+            m_PlayerList[i].UnRegisterEvent();
+        }
     }
-
     private void OnPlayerFire(Vector3 touchPosition)
     {
         //check
@@ -49,7 +70,12 @@ public class BattleLogic : LogicBase<BattleLogic>
         RaycastHit hitInfo;
         if (Physics.Raycast(ray, out hitInfo))
         {
-            m_PlayerController.OnInputFire(hitInfo.point);
+            m_thisPlayer.OnInputFire(hitInfo.point);
         }
+    }
+    private void SendLoadEnd()
+    {
+        CSBattleLoadEnd client = new CSBattleLoadEnd();
+        NetWorkManager.Instance.SendMsgToServer(client);
     }
 }

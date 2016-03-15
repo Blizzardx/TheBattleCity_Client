@@ -23,7 +23,7 @@ public class UIWindowLoading : WindowBase
     }
     private void Update()
     {
-        m_Slider.value = SceneManager.Instance.GetLoadingSceneProcess();        
+        //m_Slider.value = SceneManager.Instance.GetLoadingSceneProcess();        
     }
 }
 

@@ -26,47 +26,12 @@ public class UIWindowCreateRoom : WindowBase
         UIEventListener.Get(m_ButtonCancle).onClick = OnClickCancle;
     }
 
-    public override void OnOpen(object param)
-    {
-        base.OnOpen(param);
-        MessageManager.Instance.RegistMessage(MessageIdConstants.SC_CreateRoom,OnCreateRoom);
-    }
-
-    public override void OnClose()
-    {
-        base.OnClose();
-        MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_CreateRoom, OnCreateRoom);
-    }
-
     private void OnClickCancle(GameObject go)
     {
         Hide();
     }
     private void OnClickCreate(GameObject go)
     {
-        CSCreateRoom client = new CSCreateRoom();
-        client.PlayerName = m_InputPlayerName.value;
-        client.RoomInformation = new RoomInfo();
-        client.RoomInformation.MapName = "Scene_0";
-        client.RoomInformation.RoomMemberCount = 2;
-        client.RoomInformation.Name = m_InputRoomName.value;
-
-        NetWorkManager.Instance.SendMsgToServer(client);
-    }
-    private void OnCreateRoom(MessageObject msg)
-    {
-        if (msg.msgValue is SCCreateRoom)
-        {
-            SCCreateRoom server = msg.msgValue as SCCreateRoom;
-
-            if (server.IsSucceed)
-            {
-                
-            }
-            else
-            {
-                TipManager.Instance.Alert(server.ErrorInfo);
-            }
-        }
+        WorldLogic.Instance.CreateRoom(m_InputPlayerName.value, m_InputRoomName.value);
     }
 }
