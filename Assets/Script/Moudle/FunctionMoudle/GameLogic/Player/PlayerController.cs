@@ -64,8 +64,8 @@ public class PlayerController
         Vector3 newDir = Vector3.zero;
         if(m_Player.TryMove(dir,ref newDir))
         {
-            if(m_fCurrentMovecd <= 0.0f)
-            {
+            //if(m_fCurrentMovecd <= 0.0f)
+            //{
                 // send message to move
                 CSHandler handler = new CSHandler();
                 handler.PlayerUid = m_iPlayerUid;
@@ -76,13 +76,15 @@ public class PlayerController
 
                 NetWorkManager.Instance.SendMsgToServer(handler);
                 DisableInput();
-            }
-            else
-            {
-                //record last option
-                m_LastOption = newDir;
-                m_bNeedSendLastOption = newDir == Vector3.zero;
-            }
+
+                m_Player.DoMove(handler.MoveDirection.GetVector3(), m_Player.transform.position);
+            //}
+//             else
+//             {
+//                 //record last option
+//                 m_LastOption = newDir;
+//                 m_bNeedSendLastOption = newDir == Vector3.zero;
+//             }
         }
     }
     internal string GetName()
@@ -107,10 +109,12 @@ public class PlayerController
         fire.CurrentPosition = new ThriftVector3();
         fire.CurrentPosition.SetVector3(m_Player.GetFirePos(pos));
         fire.FireDirection = new ThriftVector3();
+        pos.y = 0.0f;
         fire.FireDirection.SetVector3(pos);
         fire.PlayerUid = m_iPlayerUid;
 
         NetWorkManager.Instance.SendMsgToServer(fire);
+
     }
     public void RegisterEvent()
     {
@@ -135,6 +139,10 @@ public class PlayerController
     }
     private void OnPlayerMove(MessageObject obj)
     {
+        if(PlayerDataMode.Instance.playerUid == m_iPlayerUid)
+        {
+            return;
+        }
         if(! (obj.msgValue is SCHandler))
         {
             return;
@@ -148,7 +156,7 @@ public class PlayerController
 
         m_Player.DoMove(handler.MoveDirection.GetVector3(),handler.CurrentPosition.GetVector3());
         
-        SendLastMoveOption();
+        //SendLastMoveOption();
     }
     private void OnPlayerFire(MessageObject obj)
     {

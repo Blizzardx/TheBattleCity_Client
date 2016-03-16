@@ -25,6 +25,11 @@ public class WorldLogic : LogicBase<WorldLogic>
             //connet to server 
             ConnectToServer();
         }
+        else
+        {
+            WindowManager.Instance.HideAllWindow();
+            WindowManager.Instance.OpenWindow(WindowID.RoomList);
+        }
     }
 
     public override void EndLogic()
