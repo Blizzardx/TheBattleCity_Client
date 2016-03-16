@@ -60,7 +60,8 @@ public class WorldLogic : LogicBase<WorldLogic>
     private void ConnectToServer()
     {
         //connect to test server
-        NetWorkManager.Instance.Connect("192.168.1.126", 8000);
+        NetWorkManager.Instance.Connect("120.25.176.42", 8000);
+        //NetWorkManager.Instance.Connect("192.168.1.4", 8000);
     }
 
     #region request
