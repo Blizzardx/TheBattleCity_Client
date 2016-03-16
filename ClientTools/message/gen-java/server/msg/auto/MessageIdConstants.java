@@ -72,4 +72,10 @@ public class MessageIdConstants {
 
   public static final int SC_BattleEnd = 103019;
 
+  public static final int CS_Hurt = 103020;
+
+  public static final int SC_Hurt = 103021;
+
+  public static final int CS_BattleEnd = 103022;
+
 }

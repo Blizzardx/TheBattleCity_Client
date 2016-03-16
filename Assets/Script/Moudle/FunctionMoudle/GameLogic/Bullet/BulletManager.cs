@@ -12,7 +12,7 @@ public class BulletManager :Singleton<BulletManager>
         m_BulletStack = new Dictionary<string, List<Bullet>>();
         m_BulletStore = new List<Bullet>();
     }
-    public void CreateBullet(string name,Vector3 pos,Vector3 dir)
+    public void CreateBullet(int playerUid,string name,Vector3 pos,Vector3 dir)
     {
         var obj = TryGetBulletFromStack(name);
 
@@ -42,6 +42,7 @@ public class BulletManager :Singleton<BulletManager>
         elem.gameObject.name = name;
         elem.SetOnDestroy(OnBulletDestroy);
         elem.SetOnCollection(OnBulletCollection);
+        elem.SetFirePlayerUId(playerUid);
         elem.gameObject.SetActive(true);
         elem.Reset();
     }

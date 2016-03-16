@@ -36,5 +36,8 @@ namespace NetWork.Auto
     public static int SC_BeginLoadBattle = 103017;
     public static int SC_BattleBegin = 103018;
     public static int SC_BattleEnd = 103019;
+    public static int CS_Hurt = 103020;
+    public static int SC_Hurt = 103021;
+    public static int CS_BattleEnd = 103022;
   }
 }

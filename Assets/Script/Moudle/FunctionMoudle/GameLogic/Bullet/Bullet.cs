@@ -7,15 +7,22 @@ public class Bullet : MonoBehaviour
     [SerializeField] 
     private float m_fSpeed;
 
+    [SerializeField]
+    private int m_fHurtValue;
+
     private Action<Bullet> m_OnDestroyCallBack;
     private Action<Bullet> m_OnCollectionCallBack;
     private MoveBase m_MoveHandler;
+    private int m_iFirePlayerId;
 
     public void SetOnDestroy(Action<Bullet> OnDestroyCallBack)
     {
         m_OnDestroyCallBack = OnDestroyCallBack;
     }
-
+    public void SetFirePlayerUId(int id)
+    {
+        m_iFirePlayerId = id;
+    }
     public void SetOnCollection(Action<Bullet> onCollectionCallBack)
     {
         m_OnCollectionCallBack = onCollectionCallBack;
@@ -45,12 +52,23 @@ public class Bullet : MonoBehaviour
         Wall wall = other.GetComponent<Wall>();
         if (null != wall)
         {
-            wall.HandlerBullet(this);
-            
+            wall.HandlerBullet(this);  
+        }
+        Player player = other.GetComponent<Player>();
+        if(null != player)
+        {
+            //trigger hit
+            PlayerController control = PlayerController.GetPlayerController(other.gameObject.GetInstanceID());
+            if(null != control && control.GetUid() != m_iFirePlayerId)
+            {
+                control.TriggerHurt(m_fHurtValue);
+                CollectionBullet();
+            }
         }
     }
     public void CollectionBullet()
     {
+        Explosion();
         if (null != m_OnCollectionCallBack)
         {
             m_OnCollectionCallBack(this);
@@ -60,4 +78,9 @@ public class Bullet : MonoBehaviour
             GameObject.Destroy(gameObject);
         }
     }
+    private void Explosion()
+    {
+
+    }
+    
 }

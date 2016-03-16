@@ -2,8 +2,8 @@ include "common.thrift"
 namespace java server.msg.auto
 namespace csharp NetWork.Auto
 
-struct SCBattleEnd
+struct SCHurt
 {
-	10:string errorInfo
-	20:bool isWin
+	1: i32 playerUid
+	10:i32 hurtValue
 }

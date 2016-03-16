@@ -14,6 +14,8 @@ public class TickTaskManager : Singleton<TickTaskManager>
         m_TickTaskStore.Add(new MessageTickTask());
         m_TickTaskStore.Add(new UITickTask());
         m_TickTaskStore.Add(new PingTickTask());
+        m_TickTaskStore.Add(new FrameTickTask());
+        m_TickTaskStore.Add(new SyncFrameTickTask());
     }
     public void Update()
     {

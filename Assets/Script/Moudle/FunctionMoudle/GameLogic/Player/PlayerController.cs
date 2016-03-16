@@ -1,22 +1,30 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using NetWork.Auto;
 using System;
 
 public class PlayerController
 {
+    //test code
+    private static Dictionary<int, PlayerController> m_playerControllerMap = new Dictionary<int, PlayerController>();
+
     private int m_iPlayerUid;
     private Player m_Player;
-    private Timer m_PlayerInputCheckTimer;
+    private PlayerInfo m_PlayerBaseInfo;
 
     //
-    private Vector3 m_LastDir;
-    private bool m_bCanInput;
+    private const float m_fMoveCd = 0.125f;
+    private float m_fCurrentMovecd;
     private Vector3 m_LastOption;
     private bool m_bNeedSendLastOption;
 
-    public void CreatePlayer(string name,int uid)
+    public void CreatePlayer(PlayerInfo baseInfo)
     {
+        m_PlayerBaseInfo = baseInfo;
+        int uid = baseInfo.Uid;
+        string name = baseInfo.MeshName;
+        name = "Tank_0";
+
         m_iPlayerUid = uid;
         // try load player
         var obj = ResourceManager.Instance.LoadBuildInResource<GameObject>(name, AssetType.Tank);
@@ -37,8 +45,15 @@ public class PlayerController
         }
 
         m_Player.SetOnDestroyCallBack(OnDestroy);
-        m_bCanInput = true;
-        m_PlayerInputCheckTimer = TimerCollection.GetInstance().Create(OnInputCheck, null);
+        m_Player.SetOnDeadCallBack(OnDead);
+
+        //set value
+        m_Player.SetHp(baseInfo.Hp);
+        m_Player.SetMaxHp(baseInfo.Hp);
+        //set move cd
+        m_fCurrentMovecd = 0.0f;
+
+        m_playerControllerMap.Add(obj.GetInstanceID(), this);
     }
     public Player GetPlayer()
     {
@@ -49,7 +64,7 @@ public class PlayerController
         Vector3 newDir = Vector3.zero;
         if(m_Player.TryMove(dir,ref newDir))
         {
-            if(m_bCanInput)
+            if(m_fCurrentMovecd <= 0.0f)
             {
                 // send message to move
                 CSHandler handler = new CSHandler();
@@ -60,7 +75,6 @@ public class PlayerController
                 handler.CurrentPosition.SetVector3(m_Player.transform.position);
 
                 NetWorkManager.Instance.SendMsgToServer(handler);
-                m_LastDir = newDir;
                 DisableInput();
             }
             else
@@ -71,12 +85,22 @@ public class PlayerController
             }
         }
     }
+    internal string GetName()
+    {
+        return m_PlayerBaseInfo.Name;
+    }
+    internal int GetUid()
+    {
+        return m_iPlayerUid;
+    }
     public void OnInputFire(Vector3 pos)
     {
         if (!m_Player.TryFire())
         {
             return;
         }
+        m_Player.BeginFireCd();
+
         //send message to fire
         CSFire fire = new CSFire();
         fire.BulletName = "Bullet_0";
@@ -88,19 +112,26 @@ public class PlayerController
 
         NetWorkManager.Instance.SendMsgToServer(fire);
     }
-    private void OnDestroy()
-    {
-        m_Player = null;
-    }
     public void RegisterEvent()
     {
         MessageManager.Instance.RegistMessage(MessageIdConstants.SC_HANDLER, OnPlayerMove);
         MessageManager.Instance.RegistMessage(MessageIdConstants.SC_FIRE, OnPlayerFire);
+        MessageManager.Instance.RegistMessage(MessageIdConstants.SC_Hurt, OnPlayerHurt);
     }
     public void UnRegisterEvent()
     {
         MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_HANDLER, OnPlayerMove);
         MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_FIRE, OnPlayerFire);
+        MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_Hurt, OnPlayerHurt);
+    }
+    private void OnDestroy(int instanceId)
+    {
+        m_playerControllerMap.Remove(instanceId);
+        m_Player = null;
+    }
+    private void OnDead()
+    {
+        BattleLogic.Instance.OnPlayerDead(m_iPlayerUid);
     }
     private void OnPlayerMove(MessageObject obj)
     {
@@ -116,13 +147,7 @@ public class PlayerController
         }
 
         m_Player.DoMove(handler.MoveDirection.GetVector3(),handler.CurrentPosition.GetVector3());
-
-        if(handler.MoveDirection.GetVector3() == m_LastDir)
-        {
-
-        }
-        m_bCanInput = true;
-
+        
         SendLastMoveOption();
     }
     private void OnPlayerFire(MessageObject obj)
@@ -140,8 +165,25 @@ public class PlayerController
 
         m_Player.Fire(handler.FireDirection.GetVector3());
         //create bullet
-        BulletManager.Instance.CreateBullet(handler.BulletName, handler.CurrentPosition.GetVector3(),
+        BulletManager.Instance.CreateBullet(m_iPlayerUid, handler.BulletName, handler.CurrentPosition.GetVector3(),
            (handler.FireDirection.GetVector3() - handler.CurrentPosition.GetVector3()).normalized);
+    }
+    private void OnPlayerHurt(MessageObject obj)
+    {
+        if (!(obj.msgValue is SCHurt))
+        {
+            return;
+        }
+
+        SCHurt server = obj.msgValue as SCHurt;
+        if (m_iPlayerUid != server.PlayerUid)
+        {
+            return;
+        }
+
+        m_Player.SubHp(server.HurtValue);
+        //refresh ui
+        BattleLogic.Instance.SetPlayerInfoHp(m_iPlayerUid, m_Player.GetHpValue());
     }
     private void SendLastMoveOption()
     {
@@ -162,13 +204,33 @@ public class PlayerController
     }
     private void DisableInput()
     {
-        m_bCanInput = false;
-        m_PlayerInputCheckTimer.Start(3.0f);
-        
+        m_fCurrentMovecd = m_fMoveCd;
     }
-
-    private void OnInputCheck()
+    public void TriggerHurt(int value)
     {
-        m_bCanInput = true;
+        // check
+        if(m_iPlayerUid != PlayerDataMode.Instance.playerUid)
+        {
+            return;
+        }
+        CSHurt client = new CSHurt();
+        client.PlayerUid = m_iPlayerUid;
+        client.HurtValue = value;
+
+        NetWorkManager.Instance.SendMsgToServer(client);
+    }
+    //test code
+    public static PlayerController GetPlayerController(int instanceId)
+    {
+        PlayerController res = null;
+        if(m_playerControllerMap.TryGetValue(instanceId,out res))
+        {
+            return res;
+        }
+        return null;
+    }
+    public void UpdateMoveCd()
+    {
+        m_fCurrentMovecd -= Time.deltaTime;
     }
 }

@@ -21,34 +21,34 @@ namespace NetWork.Auto
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public partial class SCBattleEnd : TBase
+  public partial class CSHurt : TBase
   {
-    private string _errorInfo;
-    private bool _isWin;
+    private int _playerUid;
+    private int _hurtValue;
 
-    public string ErrorInfo
+    public int PlayerUid
     {
       get
       {
-        return _errorInfo;
+        return _playerUid;
       }
       set
       {
-        __isset.errorInfo = true;
-        this._errorInfo = value;
+        __isset.playerUid = true;
+        this._playerUid = value;
       }
     }
 
-    public bool IsWin
+    public int HurtValue
     {
       get
       {
-        return _isWin;
+        return _hurtValue;
       }
       set
       {
-        __isset.isWin = true;
-        this._isWin = value;
+        __isset.hurtValue = true;
+        this._hurtValue = value;
       }
     }
 
@@ -58,11 +58,11 @@ namespace NetWork.Auto
     [Serializable]
     #endif
     public struct Isset {
-      public bool errorInfo;
-      public bool isWin;
+      public bool playerUid;
+      public bool hurtValue;
     }
 
-    public SCBattleEnd() {
+    public CSHurt() {
     }
 
     public void Read (TProtocol iprot)
@@ -77,16 +77,16 @@ namespace NetWork.Auto
         }
         switch (field.ID)
         {
-          case 10:
-            if (field.Type == TType.String) {
-              ErrorInfo = iprot.ReadString();
+          case 1:
+            if (field.Type == TType.I32) {
+              PlayerUid = iprot.ReadI32();
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
             break;
-          case 20:
-            if (field.Type == TType.Bool) {
-              IsWin = iprot.ReadBool();
+          case 10:
+            if (field.Type == TType.I32) {
+              HurtValue = iprot.ReadI32();
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -101,23 +101,23 @@ namespace NetWork.Auto
     }
 
     public void Write(TProtocol oprot) {
-      TStruct struc = new TStruct("SCBattleEnd");
+      TStruct struc = new TStruct("CSHurt");
       oprot.WriteStructBegin(struc);
       TField field = new TField();
-      if (ErrorInfo != null && __isset.errorInfo) {
-        field.Name = "errorInfo";
-        field.Type = TType.String;
-        field.ID = 10;
+      if (__isset.playerUid) {
+        field.Name = "playerUid";
+        field.Type = TType.I32;
+        field.ID = 1;
         oprot.WriteFieldBegin(field);
-        oprot.WriteString(ErrorInfo);
+        oprot.WriteI32(PlayerUid);
         oprot.WriteFieldEnd();
       }
-      if (__isset.isWin) {
-        field.Name = "isWin";
-        field.Type = TType.Bool;
-        field.ID = 20;
+      if (__isset.hurtValue) {
+        field.Name = "hurtValue";
+        field.Type = TType.I32;
+        field.ID = 10;
         oprot.WriteFieldBegin(field);
-        oprot.WriteBool(IsWin);
+        oprot.WriteI32(HurtValue);
         oprot.WriteFieldEnd();
       }
       oprot.WriteFieldStop();
@@ -125,11 +125,11 @@ namespace NetWork.Auto
     }
 
     public override string ToString() {
-      StringBuilder sb = new StringBuilder("SCBattleEnd(");
-      sb.Append("ErrorInfo: ");
-      sb.Append(ErrorInfo);
-      sb.Append(",IsWin: ");
-      sb.Append(IsWin);
+      StringBuilder sb = new StringBuilder("CSHurt(");
+      sb.Append("PlayerUid: ");
+      sb.Append(PlayerUid);
+      sb.Append(",HurtValue: ");
+      sb.Append(HurtValue);
       sb.Append(")");
       return sb.ToString();
     }

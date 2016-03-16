@@ -11,17 +11,20 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator   m_GunAnimator;
     [SerializeField] private float      m_FireCd;
     [SerializeField] private Transform  m_TransformRayRoot;
-    private List<Transform>     m_TransformRayPoingList;
-    private Action          m_OnDestroy;
+    private List<Transform>         m_TransformRayPoingList;
+    private Action<int>             m_OnDestroyCallBack;
+    private Action          m_OnDeadCallBack;
     private MoveBase        m_MoveHandler;
     private float           m_fCurrentSpeed;
     private bool            m_bIsStop;
     private float           m_fCurrentCd;
     private Vector3         m_FowordMoveDir;
-
+    private int             m_iHp;
+    private int m_iMaxHp;
     //move
     private float m_fMoveTime;
     private float m_fCurrentSpendTime;
+
     private void Start()
     {
         m_bIsStop = true;
@@ -33,15 +36,19 @@ public class Player : MonoBehaviour
             m_TransformRayPoingList.Add(m_TransformRayRoot.GetChild(i));
         }
     }
-    public void SetOnDestroyCallBack(Action ondestroy)
+    public void SetOnDestroyCallBack(Action<int> ondestroy)
     {
-        m_OnDestroy = ondestroy;
+        m_OnDestroyCallBack = ondestroy;
+    }
+    public void SetOnDeadCallBack(Action onDead)
+    {
+        m_OnDeadCallBack = onDead;
     }
     private void OnDestroy()
     {
-        if (null != m_OnDestroy)
+        if (null != m_OnDestroyCallBack)
         {
-            m_OnDestroy();
+            m_OnDestroyCallBack(this.GetInstanceID());
         }
     }
     public void SetPosition(Vector3 position)
@@ -98,13 +105,12 @@ public class Player : MonoBehaviour
     {
         return m_fCurrentCd <= 0.0f;
     }
+    public void BeginFireCd()
+    {
+        m_fCurrentCd = m_FireCd;
+    }
     public void Fire(Vector3 dir)
     {
-        if (m_fCurrentCd > 0.0f)
-        {
-            return;
-        }
-        m_fCurrentCd = m_FireCd;
         dir.y = 0;
         m_TransformGun.LookAt(dir);
         m_GunAnimator.SetTrigger("Fire");
@@ -190,5 +196,43 @@ public class Player : MonoBehaviour
     {
         m_fMoveTime = time;
         m_fCurrentSpendTime = 0.0f;
+    }
+
+    //HP
+    public void SetMaxHp(int hp)
+    {
+        m_iMaxHp = hp;
+    }
+    public void SetHp(int hp)
+    {
+        m_iHp = hp;
+    }
+    public void AddHp(int value)
+    {
+        m_iHp += value;
+    }
+    public void SubHp(int value)
+    {
+        m_iHp -= value;
+        CheckDead();
+    }
+    public int GetHp()
+    {
+        return m_iHp;
+    }
+    public float GetHpValue()
+    {
+        return (float)(m_iHp) / (float)(m_iMaxHp);
+    }
+    //
+    public void CheckDead()
+    {
+        if (m_iHp <= 0)
+        {
+            if (null != m_OnDeadCallBack)
+            {
+                m_OnDeadCallBack();
+            }
+        }
     }
 }

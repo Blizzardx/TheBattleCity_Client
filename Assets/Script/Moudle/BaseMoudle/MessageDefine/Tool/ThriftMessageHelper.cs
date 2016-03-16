@@ -35,6 +35,9 @@ namespace NetWork
             REQ_ID_MSG.Add(MessageIdConstants.SC_BeginLoadBattle, typeof(SCBeginLoadBattle));
             REQ_ID_MSG.Add(MessageIdConstants.SC_BattleBegin, typeof(SCBattleBegin));
             REQ_ID_MSG.Add(MessageIdConstants.SC_BattleEnd, typeof(SCBattleEnd));
+            REQ_ID_MSG.Add(MessageIdConstants.CS_Hurt, typeof(CSHurt));
+            REQ_ID_MSG.Add(MessageIdConstants.SC_Hurt, typeof(SCHurt));
+            REQ_ID_MSG.Add(MessageIdConstants.CS_BattleEnd, typeof(CSBattleEnd));
 
 
             foreach (KeyValuePair<int, System.Type> kv in REQ_ID_MSG)

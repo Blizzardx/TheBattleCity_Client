@@ -32,24 +32,24 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattleEnd._Fields>, java.io.Serializable, Cloneable, Comparable<SCBattleEnd> {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("SCBattleEnd");
+public class CSBattleEnd implements org.apache.thrift.TBase<CSBattleEnd, CSBattleEnd._Fields>, java.io.Serializable, Cloneable, Comparable<CSBattleEnd> {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("CSBattleEnd");
 
-  private static final org.apache.thrift.protocol.TField ERROR_INFO_FIELD_DESC = new org.apache.thrift.protocol.TField("errorInfo", org.apache.thrift.protocol.TType.STRING, (short)10);
+  private static final org.apache.thrift.protocol.TField PLAYER_UID_FIELD_DESC = new org.apache.thrift.protocol.TField("playerUid", org.apache.thrift.protocol.TType.I32, (short)10);
   private static final org.apache.thrift.protocol.TField IS_WIN_FIELD_DESC = new org.apache.thrift.protocol.TField("isWin", org.apache.thrift.protocol.TType.BOOL, (short)20);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new SCBattleEndStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new SCBattleEndTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new CSBattleEndStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new CSBattleEndTupleSchemeFactory());
   }
 
-  public String errorInfo; // required
+  public int playerUid; // required
   public boolean isWin; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    ERROR_INFO((short)10, "errorInfo"),
+    PLAYER_UID((short)10, "playerUid"),
     IS_WIN((short)20, "isWin");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -65,8 +65,8 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 10: // ERROR_INFO
-          return ERROR_INFO;
+        case 10: // PLAYER_UID
+          return PLAYER_UID;
         case 20: // IS_WIN
           return IS_WIN;
         default:
@@ -109,28 +109,30 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
   }
 
   // isset id assignments
-  private static final int __ISWIN_ISSET_ID = 0;
+  private static final int __PLAYERUID_ISSET_ID = 0;
+  private static final int __ISWIN_ISSET_ID = 1;
   private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.ERROR_INFO, new org.apache.thrift.meta_data.FieldMetaData("errorInfo", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.PLAYER_UID, new org.apache.thrift.meta_data.FieldMetaData("playerUid", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.IS_WIN, new org.apache.thrift.meta_data.FieldMetaData("isWin", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(SCBattleEnd.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(CSBattleEnd.class, metaDataMap);
   }
 
-  public SCBattleEnd() {
+  public CSBattleEnd() {
   }
 
-  public SCBattleEnd(
-    String errorInfo,
+  public CSBattleEnd(
+    int playerUid,
     boolean isWin)
   {
     this();
-    this.errorInfo = errorInfo;
+    this.playerUid = playerUid;
+    setPlayerUidIsSet(true);
     this.isWin = isWin;
     setIsWinIsSet(true);
   }
@@ -138,54 +140,52 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public SCBattleEnd(SCBattleEnd other) {
+  public CSBattleEnd(CSBattleEnd other) {
     __isset_bitfield = other.__isset_bitfield;
-    if (other.isSetErrorInfo()) {
-      this.errorInfo = other.errorInfo;
-    }
+    this.playerUid = other.playerUid;
     this.isWin = other.isWin;
   }
 
-  public SCBattleEnd deepCopy() {
-    return new SCBattleEnd(this);
+  public CSBattleEnd deepCopy() {
+    return new CSBattleEnd(this);
   }
 
   @Override
   public void clear() {
-    this.errorInfo = null;
+    setPlayerUidIsSet(false);
+    this.playerUid = 0;
     setIsWinIsSet(false);
     this.isWin = false;
   }
 
-  public String getErrorInfo() {
-    return this.errorInfo;
+  public int getPlayerUid() {
+    return this.playerUid;
   }
 
-  public SCBattleEnd setErrorInfo(String errorInfo) {
-    this.errorInfo = errorInfo;
+  public CSBattleEnd setPlayerUid(int playerUid) {
+    this.playerUid = playerUid;
+    setPlayerUidIsSet(true);
     return this;
   }
 
-  public void unsetErrorInfo() {
-    this.errorInfo = null;
+  public void unsetPlayerUid() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __PLAYERUID_ISSET_ID);
   }
 
-  /** Returns true if field errorInfo is set (has been assigned a value) and false otherwise */
-  public boolean isSetErrorInfo() {
-    return this.errorInfo != null;
+  /** Returns true if field playerUid is set (has been assigned a value) and false otherwise */
+  public boolean isSetPlayerUid() {
+    return EncodingUtils.testBit(__isset_bitfield, __PLAYERUID_ISSET_ID);
   }
 
-  public void setErrorInfoIsSet(boolean value) {
-    if (!value) {
-      this.errorInfo = null;
-    }
+  public void setPlayerUidIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __PLAYERUID_ISSET_ID, value);
   }
 
   public boolean isIsWin() {
     return this.isWin;
   }
 
-  public SCBattleEnd setIsWin(boolean isWin) {
+  public CSBattleEnd setIsWin(boolean isWin) {
     this.isWin = isWin;
     setIsWinIsSet(true);
     return this;
@@ -206,11 +206,11 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case ERROR_INFO:
+    case PLAYER_UID:
       if (value == null) {
-        unsetErrorInfo();
+        unsetPlayerUid();
       } else {
-        setErrorInfo((String)value);
+        setPlayerUid((Integer)value);
       }
       break;
 
@@ -227,8 +227,8 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case ERROR_INFO:
-      return getErrorInfo();
+    case PLAYER_UID:
+      return Integer.valueOf(getPlayerUid());
 
     case IS_WIN:
       return Boolean.valueOf(isIsWin());
@@ -244,8 +244,8 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
     }
 
     switch (field) {
-    case ERROR_INFO:
-      return isSetErrorInfo();
+    case PLAYER_UID:
+      return isSetPlayerUid();
     case IS_WIN:
       return isSetIsWin();
     }
@@ -256,21 +256,21 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof SCBattleEnd)
-      return this.equals((SCBattleEnd)that);
+    if (that instanceof CSBattleEnd)
+      return this.equals((CSBattleEnd)that);
     return false;
   }
 
-  public boolean equals(SCBattleEnd that) {
+  public boolean equals(CSBattleEnd that) {
     if (that == null)
       return false;
 
-    boolean this_present_errorInfo = true && this.isSetErrorInfo();
-    boolean that_present_errorInfo = true && that.isSetErrorInfo();
-    if (this_present_errorInfo || that_present_errorInfo) {
-      if (!(this_present_errorInfo && that_present_errorInfo))
+    boolean this_present_playerUid = true;
+    boolean that_present_playerUid = true;
+    if (this_present_playerUid || that_present_playerUid) {
+      if (!(this_present_playerUid && that_present_playerUid))
         return false;
-      if (!this.errorInfo.equals(that.errorInfo))
+      if (this.playerUid != that.playerUid)
         return false;
     }
 
@@ -292,19 +292,19 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
   }
 
   @Override
-  public int compareTo(SCBattleEnd other) {
+  public int compareTo(CSBattleEnd other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
 
-    lastComparison = Boolean.valueOf(isSetErrorInfo()).compareTo(other.isSetErrorInfo());
+    lastComparison = Boolean.valueOf(isSetPlayerUid()).compareTo(other.isSetPlayerUid());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetErrorInfo()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.errorInfo, other.errorInfo);
+    if (isSetPlayerUid()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.playerUid, other.playerUid);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -336,15 +336,11 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("SCBattleEnd(");
+    StringBuilder sb = new StringBuilder("CSBattleEnd(");
     boolean first = true;
 
-    sb.append("errorInfo:");
-    if (this.errorInfo == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.errorInfo);
-    }
+    sb.append("playerUid:");
+    sb.append(this.playerUid);
     first = false;
     if (!first) sb.append(", ");
     sb.append("isWin:");
@@ -377,15 +373,15 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
     }
   }
 
-  private static class SCBattleEndStandardSchemeFactory implements SchemeFactory {
-    public SCBattleEndStandardScheme getScheme() {
-      return new SCBattleEndStandardScheme();
+  private static class CSBattleEndStandardSchemeFactory implements SchemeFactory {
+    public CSBattleEndStandardScheme getScheme() {
+      return new CSBattleEndStandardScheme();
     }
   }
 
-  private static class SCBattleEndStandardScheme extends StandardScheme<SCBattleEnd> {
+  private static class CSBattleEndStandardScheme extends StandardScheme<CSBattleEnd> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, SCBattleEnd struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, CSBattleEnd struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -395,10 +391,10 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
           break;
         }
         switch (schemeField.id) {
-          case 10: // ERROR_INFO
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.errorInfo = iprot.readString();
-              struct.setErrorInfoIsSet(true);
+          case 10: // PLAYER_UID
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.playerUid = iprot.readI32();
+              struct.setPlayerUidIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -422,15 +418,13 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, SCBattleEnd struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, CSBattleEnd struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (struct.errorInfo != null) {
-        oprot.writeFieldBegin(ERROR_INFO_FIELD_DESC);
-        oprot.writeString(struct.errorInfo);
-        oprot.writeFieldEnd();
-      }
+      oprot.writeFieldBegin(PLAYER_UID_FIELD_DESC);
+      oprot.writeI32(struct.playerUid);
+      oprot.writeFieldEnd();
       oprot.writeFieldBegin(IS_WIN_FIELD_DESC);
       oprot.writeBool(struct.isWin);
       oprot.writeFieldEnd();
@@ -440,27 +434,27 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
 
   }
 
-  private static class SCBattleEndTupleSchemeFactory implements SchemeFactory {
-    public SCBattleEndTupleScheme getScheme() {
-      return new SCBattleEndTupleScheme();
+  private static class CSBattleEndTupleSchemeFactory implements SchemeFactory {
+    public CSBattleEndTupleScheme getScheme() {
+      return new CSBattleEndTupleScheme();
     }
   }
 
-  private static class SCBattleEndTupleScheme extends TupleScheme<SCBattleEnd> {
+  private static class CSBattleEndTupleScheme extends TupleScheme<CSBattleEnd> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, SCBattleEnd struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, CSBattleEnd struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
-      if (struct.isSetErrorInfo()) {
+      if (struct.isSetPlayerUid()) {
         optionals.set(0);
       }
       if (struct.isSetIsWin()) {
         optionals.set(1);
       }
       oprot.writeBitSet(optionals, 2);
-      if (struct.isSetErrorInfo()) {
-        oprot.writeString(struct.errorInfo);
+      if (struct.isSetPlayerUid()) {
+        oprot.writeI32(struct.playerUid);
       }
       if (struct.isSetIsWin()) {
         oprot.writeBool(struct.isWin);
@@ -468,12 +462,12 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, SCBattleEnd struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, CSBattleEnd struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(2);
       if (incoming.get(0)) {
-        struct.errorInfo = iprot.readString();
-        struct.setErrorInfoIsSet(true);
+        struct.playerUid = iprot.readI32();
+        struct.setPlayerUidIsSet(true);
       }
       if (incoming.get(1)) {
         struct.isWin = iprot.readBool();

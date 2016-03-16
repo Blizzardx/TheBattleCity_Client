@@ -21,21 +21,21 @@ namespace NetWork.Auto
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public partial class SCBattleEnd : TBase
+  public partial class CSBattleEnd : TBase
   {
-    private string _errorInfo;
+    private int _playerUid;
     private bool _isWin;
 
-    public string ErrorInfo
+    public int PlayerUid
     {
       get
       {
-        return _errorInfo;
+        return _playerUid;
       }
       set
       {
-        __isset.errorInfo = true;
-        this._errorInfo = value;
+        __isset.playerUid = true;
+        this._playerUid = value;
       }
     }
 
@@ -58,11 +58,11 @@ namespace NetWork.Auto
     [Serializable]
     #endif
     public struct Isset {
-      public bool errorInfo;
+      public bool playerUid;
       public bool isWin;
     }
 
-    public SCBattleEnd() {
+    public CSBattleEnd() {
     }
 
     public void Read (TProtocol iprot)
@@ -78,8 +78,8 @@ namespace NetWork.Auto
         switch (field.ID)
         {
           case 10:
-            if (field.Type == TType.String) {
-              ErrorInfo = iprot.ReadString();
+            if (field.Type == TType.I32) {
+              PlayerUid = iprot.ReadI32();
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -101,15 +101,15 @@ namespace NetWork.Auto
     }
 
     public void Write(TProtocol oprot) {
-      TStruct struc = new TStruct("SCBattleEnd");
+      TStruct struc = new TStruct("CSBattleEnd");
       oprot.WriteStructBegin(struc);
       TField field = new TField();
-      if (ErrorInfo != null && __isset.errorInfo) {
-        field.Name = "errorInfo";
-        field.Type = TType.String;
+      if (__isset.playerUid) {
+        field.Name = "playerUid";
+        field.Type = TType.I32;
         field.ID = 10;
         oprot.WriteFieldBegin(field);
-        oprot.WriteString(ErrorInfo);
+        oprot.WriteI32(PlayerUid);
         oprot.WriteFieldEnd();
       }
       if (__isset.isWin) {
@@ -125,9 +125,9 @@ namespace NetWork.Auto
     }
 
     public override string ToString() {
-      StringBuilder sb = new StringBuilder("SCBattleEnd(");
-      sb.Append("ErrorInfo: ");
-      sb.Append(ErrorInfo);
+      StringBuilder sb = new StringBuilder("CSBattleEnd(");
+      sb.Append("PlayerUid: ");
+      sb.Append(PlayerUid);
       sb.Append(",IsWin: ");
       sb.Append(IsWin);
       sb.Append(")");

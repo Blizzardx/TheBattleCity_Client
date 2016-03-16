@@ -21,4 +21,6 @@ public class TickTaskConstant
 
 	public const int TICK_PING = 2000;
     public const int TICK_SKILLCD = 500;
+    public const int TICK_FRAME = 30;
+    public const int TICK_SYNC_FRAME = 200;
 }

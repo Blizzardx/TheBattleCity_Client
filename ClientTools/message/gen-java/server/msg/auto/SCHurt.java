@@ -32,25 +32,25 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattleEnd._Fields>, java.io.Serializable, Cloneable, Comparable<SCBattleEnd> {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("SCBattleEnd");
+public class SCHurt implements org.apache.thrift.TBase<SCHurt, SCHurt._Fields>, java.io.Serializable, Cloneable, Comparable<SCHurt> {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("SCHurt");
 
-  private static final org.apache.thrift.protocol.TField ERROR_INFO_FIELD_DESC = new org.apache.thrift.protocol.TField("errorInfo", org.apache.thrift.protocol.TType.STRING, (short)10);
-  private static final org.apache.thrift.protocol.TField IS_WIN_FIELD_DESC = new org.apache.thrift.protocol.TField("isWin", org.apache.thrift.protocol.TType.BOOL, (short)20);
+  private static final org.apache.thrift.protocol.TField PLAYER_UID_FIELD_DESC = new org.apache.thrift.protocol.TField("playerUid", org.apache.thrift.protocol.TType.I32, (short)1);
+  private static final org.apache.thrift.protocol.TField HURT_VALUE_FIELD_DESC = new org.apache.thrift.protocol.TField("hurtValue", org.apache.thrift.protocol.TType.I32, (short)10);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new SCBattleEndStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new SCBattleEndTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new SCHurtStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new SCHurtTupleSchemeFactory());
   }
 
-  public String errorInfo; // required
-  public boolean isWin; // required
+  public int playerUid; // required
+  public int hurtValue; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    ERROR_INFO((short)10, "errorInfo"),
-    IS_WIN((short)20, "isWin");
+    PLAYER_UID((short)1, "playerUid"),
+    HURT_VALUE((short)10, "hurtValue");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -65,10 +65,10 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 10: // ERROR_INFO
-          return ERROR_INFO;
-        case 20: // IS_WIN
-          return IS_WIN;
+        case 1: // PLAYER_UID
+          return PLAYER_UID;
+        case 10: // HURT_VALUE
+          return HURT_VALUE;
         default:
           return null;
       }
@@ -109,116 +109,116 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
   }
 
   // isset id assignments
-  private static final int __ISWIN_ISSET_ID = 0;
+  private static final int __PLAYERUID_ISSET_ID = 0;
+  private static final int __HURTVALUE_ISSET_ID = 1;
   private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.ERROR_INFO, new org.apache.thrift.meta_data.FieldMetaData("errorInfo", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.IS_WIN, new org.apache.thrift.meta_data.FieldMetaData("isWin", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.PLAYER_UID, new org.apache.thrift.meta_data.FieldMetaData("playerUid", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.HURT_VALUE, new org.apache.thrift.meta_data.FieldMetaData("hurtValue", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(SCBattleEnd.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(SCHurt.class, metaDataMap);
   }
 
-  public SCBattleEnd() {
+  public SCHurt() {
   }
 
-  public SCBattleEnd(
-    String errorInfo,
-    boolean isWin)
+  public SCHurt(
+    int playerUid,
+    int hurtValue)
   {
     this();
-    this.errorInfo = errorInfo;
-    this.isWin = isWin;
-    setIsWinIsSet(true);
+    this.playerUid = playerUid;
+    setPlayerUidIsSet(true);
+    this.hurtValue = hurtValue;
+    setHurtValueIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public SCBattleEnd(SCBattleEnd other) {
+  public SCHurt(SCHurt other) {
     __isset_bitfield = other.__isset_bitfield;
-    if (other.isSetErrorInfo()) {
-      this.errorInfo = other.errorInfo;
-    }
-    this.isWin = other.isWin;
+    this.playerUid = other.playerUid;
+    this.hurtValue = other.hurtValue;
   }
 
-  public SCBattleEnd deepCopy() {
-    return new SCBattleEnd(this);
+  public SCHurt deepCopy() {
+    return new SCHurt(this);
   }
 
   @Override
   public void clear() {
-    this.errorInfo = null;
-    setIsWinIsSet(false);
-    this.isWin = false;
+    setPlayerUidIsSet(false);
+    this.playerUid = 0;
+    setHurtValueIsSet(false);
+    this.hurtValue = 0;
   }
 
-  public String getErrorInfo() {
-    return this.errorInfo;
+  public int getPlayerUid() {
+    return this.playerUid;
   }
 
-  public SCBattleEnd setErrorInfo(String errorInfo) {
-    this.errorInfo = errorInfo;
+  public SCHurt setPlayerUid(int playerUid) {
+    this.playerUid = playerUid;
+    setPlayerUidIsSet(true);
     return this;
   }
 
-  public void unsetErrorInfo() {
-    this.errorInfo = null;
+  public void unsetPlayerUid() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __PLAYERUID_ISSET_ID);
   }
 
-  /** Returns true if field errorInfo is set (has been assigned a value) and false otherwise */
-  public boolean isSetErrorInfo() {
-    return this.errorInfo != null;
+  /** Returns true if field playerUid is set (has been assigned a value) and false otherwise */
+  public boolean isSetPlayerUid() {
+    return EncodingUtils.testBit(__isset_bitfield, __PLAYERUID_ISSET_ID);
   }
 
-  public void setErrorInfoIsSet(boolean value) {
-    if (!value) {
-      this.errorInfo = null;
-    }
+  public void setPlayerUidIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __PLAYERUID_ISSET_ID, value);
   }
 
-  public boolean isIsWin() {
-    return this.isWin;
+  public int getHurtValue() {
+    return this.hurtValue;
   }
 
-  public SCBattleEnd setIsWin(boolean isWin) {
-    this.isWin = isWin;
-    setIsWinIsSet(true);
+  public SCHurt setHurtValue(int hurtValue) {
+    this.hurtValue = hurtValue;
+    setHurtValueIsSet(true);
     return this;
   }
 
-  public void unsetIsWin() {
-    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __ISWIN_ISSET_ID);
+  public void unsetHurtValue() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __HURTVALUE_ISSET_ID);
   }
 
-  /** Returns true if field isWin is set (has been assigned a value) and false otherwise */
-  public boolean isSetIsWin() {
-    return EncodingUtils.testBit(__isset_bitfield, __ISWIN_ISSET_ID);
+  /** Returns true if field hurtValue is set (has been assigned a value) and false otherwise */
+  public boolean isSetHurtValue() {
+    return EncodingUtils.testBit(__isset_bitfield, __HURTVALUE_ISSET_ID);
   }
 
-  public void setIsWinIsSet(boolean value) {
-    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __ISWIN_ISSET_ID, value);
+  public void setHurtValueIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __HURTVALUE_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case ERROR_INFO:
+    case PLAYER_UID:
       if (value == null) {
-        unsetErrorInfo();
+        unsetPlayerUid();
       } else {
-        setErrorInfo((String)value);
+        setPlayerUid((Integer)value);
       }
       break;
 
-    case IS_WIN:
+    case HURT_VALUE:
       if (value == null) {
-        unsetIsWin();
+        unsetHurtValue();
       } else {
-        setIsWin((Boolean)value);
+        setHurtValue((Integer)value);
       }
       break;
 
@@ -227,11 +227,11 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case ERROR_INFO:
-      return getErrorInfo();
+    case PLAYER_UID:
+      return Integer.valueOf(getPlayerUid());
 
-    case IS_WIN:
-      return Boolean.valueOf(isIsWin());
+    case HURT_VALUE:
+      return Integer.valueOf(getHurtValue());
 
     }
     throw new IllegalStateException();
@@ -244,10 +244,10 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
     }
 
     switch (field) {
-    case ERROR_INFO:
-      return isSetErrorInfo();
-    case IS_WIN:
-      return isSetIsWin();
+    case PLAYER_UID:
+      return isSetPlayerUid();
+    case HURT_VALUE:
+      return isSetHurtValue();
     }
     throw new IllegalStateException();
   }
@@ -256,30 +256,30 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof SCBattleEnd)
-      return this.equals((SCBattleEnd)that);
+    if (that instanceof SCHurt)
+      return this.equals((SCHurt)that);
     return false;
   }
 
-  public boolean equals(SCBattleEnd that) {
+  public boolean equals(SCHurt that) {
     if (that == null)
       return false;
 
-    boolean this_present_errorInfo = true && this.isSetErrorInfo();
-    boolean that_present_errorInfo = true && that.isSetErrorInfo();
-    if (this_present_errorInfo || that_present_errorInfo) {
-      if (!(this_present_errorInfo && that_present_errorInfo))
+    boolean this_present_playerUid = true;
+    boolean that_present_playerUid = true;
+    if (this_present_playerUid || that_present_playerUid) {
+      if (!(this_present_playerUid && that_present_playerUid))
         return false;
-      if (!this.errorInfo.equals(that.errorInfo))
+      if (this.playerUid != that.playerUid)
         return false;
     }
 
-    boolean this_present_isWin = true;
-    boolean that_present_isWin = true;
-    if (this_present_isWin || that_present_isWin) {
-      if (!(this_present_isWin && that_present_isWin))
+    boolean this_present_hurtValue = true;
+    boolean that_present_hurtValue = true;
+    if (this_present_hurtValue || that_present_hurtValue) {
+      if (!(this_present_hurtValue && that_present_hurtValue))
         return false;
-      if (this.isWin != that.isWin)
+      if (this.hurtValue != that.hurtValue)
         return false;
     }
 
@@ -292,29 +292,29 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
   }
 
   @Override
-  public int compareTo(SCBattleEnd other) {
+  public int compareTo(SCHurt other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
 
-    lastComparison = Boolean.valueOf(isSetErrorInfo()).compareTo(other.isSetErrorInfo());
+    lastComparison = Boolean.valueOf(isSetPlayerUid()).compareTo(other.isSetPlayerUid());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetErrorInfo()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.errorInfo, other.errorInfo);
+    if (isSetPlayerUid()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.playerUid, other.playerUid);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetIsWin()).compareTo(other.isSetIsWin());
+    lastComparison = Boolean.valueOf(isSetHurtValue()).compareTo(other.isSetHurtValue());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIsWin()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.isWin, other.isWin);
+    if (isSetHurtValue()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.hurtValue, other.hurtValue);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -336,19 +336,15 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("SCBattleEnd(");
+    StringBuilder sb = new StringBuilder("SCHurt(");
     boolean first = true;
 
-    sb.append("errorInfo:");
-    if (this.errorInfo == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.errorInfo);
-    }
+    sb.append("playerUid:");
+    sb.append(this.playerUid);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("isWin:");
-    sb.append(this.isWin);
+    sb.append("hurtValue:");
+    sb.append(this.hurtValue);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -377,15 +373,15 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
     }
   }
 
-  private static class SCBattleEndStandardSchemeFactory implements SchemeFactory {
-    public SCBattleEndStandardScheme getScheme() {
-      return new SCBattleEndStandardScheme();
+  private static class SCHurtStandardSchemeFactory implements SchemeFactory {
+    public SCHurtStandardScheme getScheme() {
+      return new SCHurtStandardScheme();
     }
   }
 
-  private static class SCBattleEndStandardScheme extends StandardScheme<SCBattleEnd> {
+  private static class SCHurtStandardScheme extends StandardScheme<SCHurt> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, SCBattleEnd struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, SCHurt struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -395,18 +391,18 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
           break;
         }
         switch (schemeField.id) {
-          case 10: // ERROR_INFO
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.errorInfo = iprot.readString();
-              struct.setErrorInfoIsSet(true);
+          case 1: // PLAYER_UID
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.playerUid = iprot.readI32();
+              struct.setPlayerUidIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 20: // IS_WIN
-            if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
-              struct.isWin = iprot.readBool();
-              struct.setIsWinIsSet(true);
+          case 10: // HURT_VALUE
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.hurtValue = iprot.readI32();
+              struct.setHurtValueIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -422,17 +418,15 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, SCBattleEnd struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, SCHurt struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (struct.errorInfo != null) {
-        oprot.writeFieldBegin(ERROR_INFO_FIELD_DESC);
-        oprot.writeString(struct.errorInfo);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldBegin(IS_WIN_FIELD_DESC);
-      oprot.writeBool(struct.isWin);
+      oprot.writeFieldBegin(PLAYER_UID_FIELD_DESC);
+      oprot.writeI32(struct.playerUid);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(HURT_VALUE_FIELD_DESC);
+      oprot.writeI32(struct.hurtValue);
       oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
@@ -440,44 +434,44 @@ public class SCBattleEnd implements org.apache.thrift.TBase<SCBattleEnd, SCBattl
 
   }
 
-  private static class SCBattleEndTupleSchemeFactory implements SchemeFactory {
-    public SCBattleEndTupleScheme getScheme() {
-      return new SCBattleEndTupleScheme();
+  private static class SCHurtTupleSchemeFactory implements SchemeFactory {
+    public SCHurtTupleScheme getScheme() {
+      return new SCHurtTupleScheme();
     }
   }
 
-  private static class SCBattleEndTupleScheme extends TupleScheme<SCBattleEnd> {
+  private static class SCHurtTupleScheme extends TupleScheme<SCHurt> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, SCBattleEnd struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, SCHurt struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
-      if (struct.isSetErrorInfo()) {
+      if (struct.isSetPlayerUid()) {
         optionals.set(0);
       }
-      if (struct.isSetIsWin()) {
+      if (struct.isSetHurtValue()) {
         optionals.set(1);
       }
       oprot.writeBitSet(optionals, 2);
-      if (struct.isSetErrorInfo()) {
-        oprot.writeString(struct.errorInfo);
+      if (struct.isSetPlayerUid()) {
+        oprot.writeI32(struct.playerUid);
       }
-      if (struct.isSetIsWin()) {
-        oprot.writeBool(struct.isWin);
+      if (struct.isSetHurtValue()) {
+        oprot.writeI32(struct.hurtValue);
       }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, SCBattleEnd struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, SCHurt struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(2);
       if (incoming.get(0)) {
-        struct.errorInfo = iprot.readString();
-        struct.setErrorInfoIsSet(true);
+        struct.playerUid = iprot.readI32();
+        struct.setPlayerUidIsSet(true);
       }
       if (incoming.get(1)) {
-        struct.isWin = iprot.readBool();
-        struct.setIsWinIsSet(true);
+        struct.hurtValue = iprot.readI32();
+        struct.setHurtValueIsSet(true);
       }
     }
   }

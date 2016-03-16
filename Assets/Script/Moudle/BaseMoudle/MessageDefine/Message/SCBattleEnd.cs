@@ -24,6 +24,7 @@ namespace NetWork.Auto
   public partial class SCBattleEnd : TBase
   {
     private string _errorInfo;
+    private bool _isWin;
 
     public string ErrorInfo
     {
@@ -38,6 +39,19 @@ namespace NetWork.Auto
       }
     }
 
+    public bool IsWin
+    {
+      get
+      {
+        return _isWin;
+      }
+      set
+      {
+        __isset.isWin = true;
+        this._isWin = value;
+      }
+    }
+
 
     public Isset __isset;
     #if !SILVERLIGHT
@@ -45,6 +59,7 @@ namespace NetWork.Auto
     #endif
     public struct Isset {
       public bool errorInfo;
+      public bool isWin;
     }
 
     public SCBattleEnd() {
@@ -65,6 +80,13 @@ namespace NetWork.Auto
           case 10:
             if (field.Type == TType.String) {
               ErrorInfo = iprot.ReadString();
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
+          case 20:
+            if (field.Type == TType.Bool) {
+              IsWin = iprot.ReadBool();
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -90,6 +112,14 @@ namespace NetWork.Auto
         oprot.WriteString(ErrorInfo);
         oprot.WriteFieldEnd();
       }
+      if (__isset.isWin) {
+        field.Name = "isWin";
+        field.Type = TType.Bool;
+        field.ID = 20;
+        oprot.WriteFieldBegin(field);
+        oprot.WriteBool(IsWin);
+        oprot.WriteFieldEnd();
+      }
       oprot.WriteFieldStop();
       oprot.WriteStructEnd();
     }
@@ -98,6 +128,8 @@ namespace NetWork.Auto
       StringBuilder sb = new StringBuilder("SCBattleEnd(");
       sb.Append("ErrorInfo: ");
       sb.Append(ErrorInfo);
+      sb.Append(",IsWin: ");
+      sb.Append(IsWin);
       sb.Append(")");
       return sb.ToString();
     }

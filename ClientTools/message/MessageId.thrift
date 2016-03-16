@@ -23,3 +23,6 @@ const i32 CS_BattleLoadEnd = 103016
 const i32 SC_BeginLoadBattle = 103017
 const i32 SC_BattleBegin = 103018
 const i32 SC_BattleEnd = 103019
+const i32 CS_Hurt = 103020
+const i32 SC_Hurt = 103021
+const i32 CS_BattleEnd = 103022
