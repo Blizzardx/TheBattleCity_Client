@@ -26,3 +26,8 @@ const i32 SC_BattleEnd = 103019
 const i32 CS_Hurt = 103020
 const i32 SC_Hurt = 103021
 const i32 CS_BattleEnd = 103022
+
+const i32 CS_UseItem = 103023
+const i32 SC_UsedItem = 103024
+const i32 SC_CreateItem = 103025
+const i32 CS_ItemGenFundamental = 103026

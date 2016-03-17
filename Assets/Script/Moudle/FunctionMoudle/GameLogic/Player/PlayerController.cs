@@ -13,10 +13,6 @@ public class PlayerController
     private PlayerInfo m_PlayerBaseInfo;
 
     //
-    private const float m_fMoveCd = 0.125f;
-    private float m_fCurrentMovecd;
-    private Vector3 m_LastOption;
-    private bool m_bNeedSendLastOption;
 
     public void CreatePlayer(PlayerInfo baseInfo)
     {
@@ -50,8 +46,6 @@ public class PlayerController
         //set value
         m_Player.SetHp(baseInfo.Hp);
         m_Player.SetMaxHp(baseInfo.Hp);
-        //set move cd
-        m_fCurrentMovecd = 0.0f;
 
         m_playerControllerMap.Add(obj.GetInstanceID(), this);
     }
@@ -64,27 +58,16 @@ public class PlayerController
         Vector3 newDir = Vector3.zero;
         if(m_Player.TryMove(dir,ref newDir))
         {
-            //if(m_fCurrentMovecd <= 0.0f)
-            //{
-                // send message to move
-                CSHandler handler = new CSHandler();
-                handler.PlayerUid = m_iPlayerUid;
-                handler.MoveDirection = new ThriftVector3();
-                handler.MoveDirection.SetVector3(newDir);
-                handler.CurrentPosition = new ThriftVector3();
-                handler.CurrentPosition.SetVector3(m_Player.transform.position);
+            CSHandler handler = new CSHandler();
+            handler.PlayerUid = m_iPlayerUid;
+            handler.MoveDirection = new ThriftVector3();
+            handler.MoveDirection.SetVector3(newDir);
+            handler.CurrentPosition = new ThriftVector3();
+            handler.CurrentPosition.SetVector3(m_Player.transform.position);
 
-                NetWorkManager.Instance.SendMsgToServer(handler);
-                DisableInput();
+            NetWorkManager.Instance.SendMsgToServer(handler);
 
-                m_Player.DoMove(handler.MoveDirection.GetVector3(), m_Player.transform.position);
-            //}
-//             else
-//             {
-//                 //record last option
-//                 m_LastOption = newDir;
-//                 m_bNeedSendLastOption = newDir == Vector3.zero;
-//             }
+            m_Player.DoMove(handler.MoveDirection.GetVector3(), m_Player.transform.position);            
         }
     }
     internal string GetName()
@@ -156,7 +139,6 @@ public class PlayerController
 
         m_Player.DoMove(handler.MoveDirection.GetVector3(),handler.CurrentPosition.GetVector3());
         
-        //SendLastMoveOption();
     }
     private void OnPlayerFire(MessageObject obj)
     {
@@ -193,27 +175,6 @@ public class PlayerController
         //refresh ui
         BattleLogic.Instance.SetPlayerInfoHp(m_iPlayerUid, m_Player.GetHpValue());
     }
-    private void SendLastMoveOption()
-    {
-        if(m_bNeedSendLastOption)
-        {
-            // send message to move
-            CSHandler handler = new CSHandler();
-            handler.PlayerUid = m_iPlayerUid;
-            handler.MoveDirection = new ThriftVector3();
-            handler.MoveDirection.SetVector3(m_LastOption);
-            handler.CurrentPosition = new ThriftVector3();
-            handler.CurrentPosition.SetVector3(m_Player.transform.position);
-
-            NetWorkManager.Instance.SendMsgToServer(handler);
-            m_bNeedSendLastOption = false;
-            DisableInput();
-        }
-    }
-    private void DisableInput()
-    {
-        m_fCurrentMovecd = m_fMoveCd;
-    }
     public void TriggerHurt(int value)
     {
         // check
@@ -236,9 +197,5 @@ public class PlayerController
             return res;
         }
         return null;
-    }
-    public void UpdateMoveCd()
-    {
-        m_fCurrentMovecd -= Time.deltaTime;
     }
 }

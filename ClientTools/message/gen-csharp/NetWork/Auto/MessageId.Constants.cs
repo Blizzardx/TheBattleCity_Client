@@ -39,5 +39,9 @@ namespace NetWork.Auto
     public static int CS_Hurt = 103020;
     public static int SC_Hurt = 103021;
     public static int CS_BattleEnd = 103022;
+    public static int CS_UseItem = 103023;
+    public static int SC_UsedItem = 103024;
+    public static int SC_CreateItem = 103025;
+    public static int CS_ItemGenFundamental = 103026;
   }
 }

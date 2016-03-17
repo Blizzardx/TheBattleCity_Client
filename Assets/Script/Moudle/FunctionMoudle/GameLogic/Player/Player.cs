@@ -114,8 +114,6 @@ public class Player : MonoBehaviour
         dir.y = 0;
         m_TransformGun.LookAt(dir);
         m_GunAnimator.SetTrigger("Fire");
-        //BulletManager.Instance.CreateBullet("Bullet_0", m_TransformFirePos.position,
-        //    (dir - m_TransformFirePos.position).normalized);
     }
     public void Update()
     {
@@ -166,11 +164,6 @@ public class Player : MonoBehaviour
             }
         }
         return res;
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        Debuger.Log("player " + other.name);
-        Wall wall = other.GetComponent<Wall>();
     }
     private float CheckMoveRaycast(Vector3 dir)
     {

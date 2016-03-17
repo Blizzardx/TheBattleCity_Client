@@ -78,4 +78,12 @@ public class MessageIdConstants {
 
   public static final int CS_BattleEnd = 103022;
 
+  public static final int CS_UseItem = 103023;
+
+  public static final int SC_UsedItem = 103024;
+
+  public static final int SC_CreateItem = 103025;
+
+  public static final int CS_ItemGenFundamental = 103026;
+
 }

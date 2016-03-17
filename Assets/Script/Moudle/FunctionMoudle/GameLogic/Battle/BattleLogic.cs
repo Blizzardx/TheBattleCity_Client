@@ -81,7 +81,6 @@ public class BattleLogic : LogicBase<BattleLogic>
         for (int i = 0; i < m_PlayerList.Count; ++i)
         {
             SetPlayerInfoPos(m_PlayerList[i].GetUid(), m_PlayerList[i].GetPlayer().transform.position);
-            m_PlayerList[i].UpdateMoveCd();
         }
     }
 
