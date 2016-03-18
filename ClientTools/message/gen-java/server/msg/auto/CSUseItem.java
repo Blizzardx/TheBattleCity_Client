@@ -35,8 +35,9 @@ import org.slf4j.LoggerFactory;
 public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._Fields>, java.io.Serializable, Cloneable, Comparable<CSUseItem> {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("CSUseItem");
 
-  private static final org.apache.thrift.protocol.TField POSITION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("positionId", org.apache.thrift.protocol.TType.I32, (short)10);
-  private static final org.apache.thrift.protocol.TField ITEM_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("itemId", org.apache.thrift.protocol.TType.I32, (short)20);
+  private static final org.apache.thrift.protocol.TField PLAYER_UID_FIELD_DESC = new org.apache.thrift.protocol.TField("playerUid", org.apache.thrift.protocol.TType.I32, (short)10);
+  private static final org.apache.thrift.protocol.TField POSITION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("positionId", org.apache.thrift.protocol.TType.I32, (short)20);
+  private static final org.apache.thrift.protocol.TField ITEM_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("itemId", org.apache.thrift.protocol.TType.I32, (short)30);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -44,13 +45,15 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
     schemes.put(TupleScheme.class, new CSUseItemTupleSchemeFactory());
   }
 
+  public int playerUid; // required
   public int positionId; // required
   public int itemId; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    POSITION_ID((short)10, "positionId"),
-    ITEM_ID((short)20, "itemId");
+    PLAYER_UID((short)10, "playerUid"),
+    POSITION_ID((short)20, "positionId"),
+    ITEM_ID((short)30, "itemId");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -65,9 +68,11 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 10: // POSITION_ID
+        case 10: // PLAYER_UID
+          return PLAYER_UID;
+        case 20: // POSITION_ID
           return POSITION_ID;
-        case 20: // ITEM_ID
+        case 30: // ITEM_ID
           return ITEM_ID;
         default:
           return null;
@@ -109,12 +114,15 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
   }
 
   // isset id assignments
-  private static final int __POSITIONID_ISSET_ID = 0;
-  private static final int __ITEMID_ISSET_ID = 1;
+  private static final int __PLAYERUID_ISSET_ID = 0;
+  private static final int __POSITIONID_ISSET_ID = 1;
+  private static final int __ITEMID_ISSET_ID = 2;
   private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+    tmpMap.put(_Fields.PLAYER_UID, new org.apache.thrift.meta_data.FieldMetaData("playerUid", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.POSITION_ID, new org.apache.thrift.meta_data.FieldMetaData("positionId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.ITEM_ID, new org.apache.thrift.meta_data.FieldMetaData("itemId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
@@ -127,10 +135,13 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
   }
 
   public CSUseItem(
+    int playerUid,
     int positionId,
     int itemId)
   {
     this();
+    this.playerUid = playerUid;
+    setPlayerUidIsSet(true);
     this.positionId = positionId;
     setPositionIdIsSet(true);
     this.itemId = itemId;
@@ -142,6 +153,7 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
    */
   public CSUseItem(CSUseItem other) {
     __isset_bitfield = other.__isset_bitfield;
+    this.playerUid = other.playerUid;
     this.positionId = other.positionId;
     this.itemId = other.itemId;
   }
@@ -152,10 +164,35 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
 
   @Override
   public void clear() {
+    setPlayerUidIsSet(false);
+    this.playerUid = 0;
     setPositionIdIsSet(false);
     this.positionId = 0;
     setItemIdIsSet(false);
     this.itemId = 0;
+  }
+
+  public int getPlayerUid() {
+    return this.playerUid;
+  }
+
+  public CSUseItem setPlayerUid(int playerUid) {
+    this.playerUid = playerUid;
+    setPlayerUidIsSet(true);
+    return this;
+  }
+
+  public void unsetPlayerUid() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __PLAYERUID_ISSET_ID);
+  }
+
+  /** Returns true if field playerUid is set (has been assigned a value) and false otherwise */
+  public boolean isSetPlayerUid() {
+    return EncodingUtils.testBit(__isset_bitfield, __PLAYERUID_ISSET_ID);
+  }
+
+  public void setPlayerUidIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __PLAYERUID_ISSET_ID, value);
   }
 
   public int getPositionId() {
@@ -206,6 +243,14 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
+    case PLAYER_UID:
+      if (value == null) {
+        unsetPlayerUid();
+      } else {
+        setPlayerUid((Integer)value);
+      }
+      break;
+
     case POSITION_ID:
       if (value == null) {
         unsetPositionId();
@@ -227,6 +272,9 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
+    case PLAYER_UID:
+      return Integer.valueOf(getPlayerUid());
+
     case POSITION_ID:
       return Integer.valueOf(getPositionId());
 
@@ -244,6 +292,8 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
     }
 
     switch (field) {
+    case PLAYER_UID:
+      return isSetPlayerUid();
     case POSITION_ID:
       return isSetPositionId();
     case ITEM_ID:
@@ -264,6 +314,15 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
   public boolean equals(CSUseItem that) {
     if (that == null)
       return false;
+
+    boolean this_present_playerUid = true;
+    boolean that_present_playerUid = true;
+    if (this_present_playerUid || that_present_playerUid) {
+      if (!(this_present_playerUid && that_present_playerUid))
+        return false;
+      if (this.playerUid != that.playerUid)
+        return false;
+    }
 
     boolean this_present_positionId = true;
     boolean that_present_positionId = true;
@@ -299,6 +358,16 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
 
     int lastComparison = 0;
 
+    lastComparison = Boolean.valueOf(isSetPlayerUid()).compareTo(other.isSetPlayerUid());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetPlayerUid()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.playerUid, other.playerUid);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetPositionId()).compareTo(other.isSetPositionId());
     if (lastComparison != 0) {
       return lastComparison;
@@ -339,6 +408,10 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
     StringBuilder sb = new StringBuilder("CSUseItem(");
     boolean first = true;
 
+    sb.append("playerUid:");
+    sb.append(this.playerUid);
+    first = false;
+    if (!first) sb.append(", ");
     sb.append("positionId:");
     sb.append(this.positionId);
     first = false;
@@ -391,7 +464,15 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
           break;
         }
         switch (schemeField.id) {
-          case 10: // POSITION_ID
+          case 10: // PLAYER_UID
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.playerUid = iprot.readI32();
+              struct.setPlayerUidIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 20: // POSITION_ID
             if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
               struct.positionId = iprot.readI32();
               struct.setPositionIdIsSet(true);
@@ -399,7 +480,7 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 20: // ITEM_ID
+          case 30: // ITEM_ID
             if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
               struct.itemId = iprot.readI32();
               struct.setItemIdIsSet(true);
@@ -422,6 +503,9 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldBegin(PLAYER_UID_FIELD_DESC);
+      oprot.writeI32(struct.playerUid);
+      oprot.writeFieldEnd();
       oprot.writeFieldBegin(POSITION_ID_FIELD_DESC);
       oprot.writeI32(struct.positionId);
       oprot.writeFieldEnd();
@@ -446,13 +530,19 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
     public void write(org.apache.thrift.protocol.TProtocol prot, CSUseItem struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
-      if (struct.isSetPositionId()) {
+      if (struct.isSetPlayerUid()) {
         optionals.set(0);
       }
-      if (struct.isSetItemId()) {
+      if (struct.isSetPositionId()) {
         optionals.set(1);
       }
-      oprot.writeBitSet(optionals, 2);
+      if (struct.isSetItemId()) {
+        optionals.set(2);
+      }
+      oprot.writeBitSet(optionals, 3);
+      if (struct.isSetPlayerUid()) {
+        oprot.writeI32(struct.playerUid);
+      }
       if (struct.isSetPositionId()) {
         oprot.writeI32(struct.positionId);
       }
@@ -464,12 +554,16 @@ public class CSUseItem implements org.apache.thrift.TBase<CSUseItem, CSUseItem._
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, CSUseItem struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(2);
+      BitSet incoming = iprot.readBitSet(3);
       if (incoming.get(0)) {
+        struct.playerUid = iprot.readI32();
+        struct.setPlayerUidIsSet(true);
+      }
+      if (incoming.get(1)) {
         struct.positionId = iprot.readI32();
         struct.setPositionIdIsSet(true);
       }
-      if (incoming.get(1)) {
+      if (incoming.get(2)) {
         struct.itemId = iprot.readI32();
         struct.setItemIdIsSet(true);
       }

@@ -38,6 +38,10 @@ namespace NetWork
             REQ_ID_MSG.Add(MessageIdConstants.CS_Hurt, typeof(CSHurt));
             REQ_ID_MSG.Add(MessageIdConstants.SC_Hurt, typeof(SCHurt));
             REQ_ID_MSG.Add(MessageIdConstants.CS_BattleEnd, typeof(CSBattleEnd));
+            REQ_ID_MSG.Add(MessageIdConstants.CS_ItemGenFundamental, typeof(CSItemGenFundamental));
+            REQ_ID_MSG.Add(MessageIdConstants.CS_UseItem, typeof(CSUseItem));
+            REQ_ID_MSG.Add(MessageIdConstants.SC_UsedItem, typeof(SCUsedItem));
+            REQ_ID_MSG.Add(MessageIdConstants.SC_CreateItem, typeof(SCCreateItem));
 
 
             foreach (KeyValuePair<int, System.Type> kv in REQ_ID_MSG)

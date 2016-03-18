@@ -4,6 +4,7 @@ namespace csharp NetWork.Auto
 
 struct CSUseItem
 {
-	10: i32 positionId
-	20: i32 itemId
+	10: i32 playerUid
+	20: i32 positionId
+	30: i32 itemId
 }

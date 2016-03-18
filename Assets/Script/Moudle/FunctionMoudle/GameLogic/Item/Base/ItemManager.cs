@@ -69,6 +69,7 @@ public class ItemManager :Singleton<ItemManager>
         {
             if(m_CurrentItemStore[i].m_iId == id && m_CurrentItemStore[i].m_iPosId == posId)
             {
+                GameObject.Destroy(m_CurrentItemStore[i].gameObject);
                 // do remove
                 m_CurrentItemStore.RemoveAt(i);
                 break;

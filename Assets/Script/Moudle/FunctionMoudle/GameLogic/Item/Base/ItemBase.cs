@@ -17,7 +17,7 @@ public class ItemBase : MonoBehaviour
             if (null != control )
             {
                 //trigger to use item
-                control.TriggerUseItem(m_iId,m_iPosId);
+                control.TriggerUseItem(control.GetUid(),m_iId, m_iPosId);
 
                 //remove item
                 ItemManager.Instance.RemoveItem(m_iId, m_iPosId);

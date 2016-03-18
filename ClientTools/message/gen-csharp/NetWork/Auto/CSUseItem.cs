@@ -23,8 +23,22 @@ namespace NetWork.Auto
   #endif
   public partial class CSUseItem : TBase
   {
+    private int _playerUid;
     private int _positionId;
     private int _itemId;
+
+    public int PlayerUid
+    {
+      get
+      {
+        return _playerUid;
+      }
+      set
+      {
+        __isset.playerUid = true;
+        this._playerUid = value;
+      }
+    }
 
     public int PositionId
     {
@@ -58,6 +72,7 @@ namespace NetWork.Auto
     [Serializable]
     #endif
     public struct Isset {
+      public bool playerUid;
       public bool positionId;
       public bool itemId;
     }
@@ -79,12 +94,19 @@ namespace NetWork.Auto
         {
           case 10:
             if (field.Type == TType.I32) {
-              PositionId = iprot.ReadI32();
+              PlayerUid = iprot.ReadI32();
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
             break;
           case 20:
+            if (field.Type == TType.I32) {
+              PositionId = iprot.ReadI32();
+            } else { 
+              TProtocolUtil.Skip(iprot, field.Type);
+            }
+            break;
+          case 30:
             if (field.Type == TType.I32) {
               ItemId = iprot.ReadI32();
             } else { 
@@ -104,10 +126,18 @@ namespace NetWork.Auto
       TStruct struc = new TStruct("CSUseItem");
       oprot.WriteStructBegin(struc);
       TField field = new TField();
+      if (__isset.playerUid) {
+        field.Name = "playerUid";
+        field.Type = TType.I32;
+        field.ID = 10;
+        oprot.WriteFieldBegin(field);
+        oprot.WriteI32(PlayerUid);
+        oprot.WriteFieldEnd();
+      }
       if (__isset.positionId) {
         field.Name = "positionId";
         field.Type = TType.I32;
-        field.ID = 10;
+        field.ID = 20;
         oprot.WriteFieldBegin(field);
         oprot.WriteI32(PositionId);
         oprot.WriteFieldEnd();
@@ -115,7 +145,7 @@ namespace NetWork.Auto
       if (__isset.itemId) {
         field.Name = "itemId";
         field.Type = TType.I32;
-        field.ID = 20;
+        field.ID = 30;
         oprot.WriteFieldBegin(field);
         oprot.WriteI32(ItemId);
         oprot.WriteFieldEnd();
@@ -126,7 +156,9 @@ namespace NetWork.Auto
 
     public override string ToString() {
       StringBuilder sb = new StringBuilder("CSUseItem(");
-      sb.Append("PositionId: ");
+      sb.Append("PlayerUid: ");
+      sb.Append(PlayerUid);
+      sb.Append(",PositionId: ");
       sb.Append(PositionId);
       sb.Append(",ItemId: ");
       sb.Append(ItemId);

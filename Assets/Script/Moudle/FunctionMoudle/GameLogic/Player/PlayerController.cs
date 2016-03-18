@@ -210,18 +210,12 @@ public class PlayerController
 
         NetWorkManager.Instance.SendMsgToServer(client);
     }
-    internal void TriggerUseItem(int itemId, int posId)
+    internal void TriggerUseItem(int playerUid,int itemId, int posId)
     {
-        // check
-        if (m_iPlayerUid != PlayerDataMode.Instance.playerUid)
-        {
-            return;
-        }
-
         CSUseItem client = new CSUseItem();
         client.ItemId = itemId;
         client.PositionId = posId;
-
+        client.PlayerUid = playerUid;
         NetWorkManager.Instance.SendMsgToServer(client);
     }
     //test code
