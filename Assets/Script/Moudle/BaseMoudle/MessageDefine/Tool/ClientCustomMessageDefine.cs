@@ -20,4 +20,6 @@ public class ClientCustomMessageDefine
     public const int C_ENABLE_BLOCK = 300007;
     public const int C_DISABLE_BLOCK = 300008;
 
+    public const int C_UPDATE_PLAYER_UI = 300009;
+
 }

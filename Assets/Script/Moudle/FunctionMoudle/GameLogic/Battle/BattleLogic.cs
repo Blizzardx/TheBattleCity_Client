@@ -75,6 +75,7 @@ public class BattleLogic : LogicBase<BattleLogic>
         }
         FrameTickTask.Instance.UnRegisterFromUpdateList(UpdatePlayerPos);
         UnRegisterEvent();
+        PlayerDataMode.Instance.isCreater = false;
     }
     private void UpdatePlayerPos()
     {
@@ -145,11 +146,13 @@ public class BattleLogic : LogicBase<BattleLogic>
     {
         MessageManager.Instance.RegistMessage(MessageIdConstants.SC_BattleBegin, OnBattleBegin);
         MessageManager.Instance.RegistMessage(MessageIdConstants.SC_BattleEnd, OnBattleEnd);
+        MessageManager.Instance.RegistMessage(MessageIdConstants.SC_CreateItem, OnCreateItem);
     }
     private void UnRegisterEvent()
     {
         MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_BattleBegin, OnBattleBegin);
         MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_BattleEnd, OnBattleEnd);
+        MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_CreateItem, OnCreateItem);
     }
     private void OnBattleBegin(MessageObject msg)
     {
@@ -158,6 +161,8 @@ public class BattleLogic : LogicBase<BattleLogic>
             SCBattleBegin server = msg.msgValue as SCBattleBegin;
             float cd = (float)(server.Cd) / 1000.0f;
             m_BattleWindow.SetActive(true);
+
+            SendItemGenInfo();
         }
     }
     private void OnBattleEnd(MessageObject msg)
@@ -168,5 +173,42 @@ public class BattleLogic : LogicBase<BattleLogic>
             SCBattleEnd server = msg.msgValue as SCBattleEnd;
             m_BattleWindow.ShowEndPanel(server.IsWin);
         }
+    }
+    private void OnCreateItem(MessageObject msg)
+    {
+        if(!(msg.msgValue is SCCreateItem))
+        {
+            return;
+        }
+
+        SCCreateItem server = msg.msgValue as SCCreateItem;
+        //try get item position by id
+        Vector3 pos = Vector3.zero;
+        if(MapManager.Instance.GetCurrentMapInfo().GetItemPositionById(server.PositionId,out pos))
+        {
+            //trigger to create item
+            ItemManager.Instance.AddItem(server.ItemId, pos, server.PositionId);
+        }
+    }
+    private void SendItemGenInfo()
+    {
+        if(!PlayerDataMode.Instance.isCreater)
+        {
+            return;
+        }
+
+        CSItemGenFundamental client = new CSItemGenFundamental();
+        GenItemInfo info = MapManager.Instance.GetCurrentMapInfo().GetGenItemInfo();
+
+        client.GenFundamental = new ItemGenFundamental();
+        client.GenFundamental.PositionId = info.m_PosList;
+        client.GenFundamental.ItemList = info.m_ItemList;
+        client.GenFundamental.MaxCount = info.itemMaxCount;
+        client.GenFundamental.GenPreTimeItemCountMin = info.pertimeGenItemCountMin;
+        client.GenFundamental.GenPreTimeItemCountMax = info.pertimeGenItemCountMax;
+        client.GenFundamental.TriggerDeltaTime = info.deltaTime;
+        client.GenFundamental.InitItemCount = info.initItemCount;
+
+        NetWorkManager.Instance.SendMsgToServer(client);
     }
 }

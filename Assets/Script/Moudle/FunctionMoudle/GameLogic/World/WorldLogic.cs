@@ -149,6 +149,7 @@ public class WorldLogic : LogicBase<WorldLogic>
                 WindowManager.Instance.HideAllWindow();
                 WindowManager.Instance.OpenWindow(WindowID.WaitBattle);
                 m_UIWindowWaitBattle = WindowManager.Instance.GetWindow(WindowID.WaitBattle) as UIWindowWaitBattle;
+                PlayerDataMode.Instance.isCreater = true;
             }
             else
             {

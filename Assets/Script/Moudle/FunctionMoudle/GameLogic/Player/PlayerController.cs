@@ -49,6 +49,7 @@ public class PlayerController
 
         m_playerControllerMap.Add(obj.GetInstanceID(), this);
     }
+
     public Player GetPlayer()
     {
         return m_Player;
@@ -104,12 +105,14 @@ public class PlayerController
         MessageManager.Instance.RegistMessage(MessageIdConstants.SC_HANDLER, OnPlayerMove);
         MessageManager.Instance.RegistMessage(MessageIdConstants.SC_FIRE, OnPlayerFire);
         MessageManager.Instance.RegistMessage(MessageIdConstants.SC_Hurt, OnPlayerHurt);
+        MessageManager.Instance.RegistMessage(MessageIdConstants.SC_UsedItem, OnPlayerUsedItem);
     }
     public void UnRegisterEvent()
     {
         MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_HANDLER, OnPlayerMove);
         MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_FIRE, OnPlayerFire);
         MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_Hurt, OnPlayerHurt);
+        MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_UsedItem, OnPlayerUsedItem);
     }
     private void OnDestroy(int instanceId)
     {
@@ -175,6 +178,25 @@ public class PlayerController
         //refresh ui
         BattleLogic.Instance.SetPlayerInfoHp(m_iPlayerUid, m_Player.GetHpValue());
     }
+    private void OnPlayerUsedItem(MessageObject obj)
+    {
+        if(!(obj.msgValue is SCUsedItem))
+        {
+            return;
+        }
+
+        SCUsedItem server = obj.msgValue as SCUsedItem;
+
+        //try remvoe item
+        ItemManager.Instance.RemoveItem(server.ItemId, server.PositionId);
+
+        //
+        if(m_iPlayerUid == server.PlayerUid)
+        {
+            //try use item
+            ItemManager.Instance.UseItem(server.ItemId, m_Player);
+        }
+    }
     public void TriggerHurt(int value)
     {
         // check
@@ -185,6 +207,20 @@ public class PlayerController
         CSHurt client = new CSHurt();
         client.PlayerUid = m_iPlayerUid;
         client.HurtValue = value;
+
+        NetWorkManager.Instance.SendMsgToServer(client);
+    }
+    internal void TriggerUseItem(int itemId, int posId)
+    {
+        // check
+        if (m_iPlayerUid != PlayerDataMode.Instance.playerUid)
+        {
+            return;
+        }
+
+        CSUseItem client = new CSUseItem();
+        client.ItemId = itemId;
+        client.PositionId = posId;
 
         NetWorkManager.Instance.SendMsgToServer(client);
     }
