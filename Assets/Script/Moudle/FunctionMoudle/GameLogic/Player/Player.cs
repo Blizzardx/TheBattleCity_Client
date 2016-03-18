@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator   m_GunAnimator;
     [SerializeField] private float      m_FireCd;
     [SerializeField] private Transform  m_TransformRayRoot;
+    [SerializeField] private float      m_fSpeed;
     private List<Transform>         m_TransformRayPoingList;
     private Action<int>             m_OnDestroyCallBack;
     private Action          m_OnDeadCallBack;
@@ -24,7 +25,6 @@ public class Player : MonoBehaviour
     //move
     private float m_fMoveTime;
     private float m_fCurrentSpendTime;
-
     private void Start()
     {
         m_bIsStop = true;
@@ -85,7 +85,7 @@ public class Player : MonoBehaviour
 
         if (CheckDir(newDir))
         {
-            m_FowordMoveDir = newDir.normalized;
+            m_FowordMoveDir = newDir.normalized * m_fSpeed;
             return true;
         }
         return false;
@@ -190,7 +190,21 @@ public class Player : MonoBehaviour
         m_fMoveTime = time;
         m_fCurrentSpendTime = 0.0f;
     }
+    //Speed
+    public void SetSpeed(float speed)
+    {
+        m_fSpeed = speed;
+    }
 
+    public void AddSpeed(float speed)
+    {
+        m_fSpeed += speed;
+    }
+
+    public void SubSpeed(float speed)
+    {
+        m_fSpeed -= speed;
+    }
     //HP
     public void SetMaxHp(int hp)
     {

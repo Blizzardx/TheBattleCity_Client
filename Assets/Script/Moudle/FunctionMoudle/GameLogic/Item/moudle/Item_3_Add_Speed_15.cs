@@ -10,10 +10,7 @@ public class Item_3_Add_Speed_15 : ItemBase
         if (param is Player)
         {
             Player player = param as Player;
-            player.AddHp(20);
-
-            //trigger to update ui
-            MessageManager.Instance.AddToMessageQueue(new MessageObject(ClientCustomMessageDefine.C_UPDATE_PLAYER_UI, null));
+            player.SetSpeed(1.5f);
         }
     }
 }

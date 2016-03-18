@@ -106,6 +106,7 @@ public class PlayerController
         MessageManager.Instance.RegistMessage(MessageIdConstants.SC_FIRE, OnPlayerFire);
         MessageManager.Instance.RegistMessage(MessageIdConstants.SC_Hurt, OnPlayerHurt);
         MessageManager.Instance.RegistMessage(MessageIdConstants.SC_UsedItem, OnPlayerUsedItem);
+        MessageManager.Instance.RegistMessage(ClientCustomMessageDefine.C_UPDATE_PLAYER_UI, OnUpdatePlaeyrUI);
     }
     public void UnRegisterEvent()
     {
@@ -113,6 +114,7 @@ public class PlayerController
         MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_FIRE, OnPlayerFire);
         MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_Hurt, OnPlayerHurt);
         MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_UsedItem, OnPlayerUsedItem);
+        MessageManager.Instance.UnregistMessage(ClientCustomMessageDefine.C_UPDATE_PLAYER_UI, OnUpdatePlaeyrUI);
     }
     private void OnDestroy(int instanceId)
     {
@@ -196,6 +198,12 @@ public class PlayerController
             //try use item
             ItemManager.Instance.UseItem(server.ItemId, m_Player);
         }
+    }
+
+    private void OnUpdatePlaeyrUI(MessageObject obj)
+    {
+        //refresh ui
+        BattleLogic.Instance.SetPlayerInfoHp(m_iPlayerUid, m_Player.GetHpValue());
     }
     public void TriggerHurt(int value)
     {
