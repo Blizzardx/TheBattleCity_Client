@@ -86,6 +86,7 @@ public class Player : MonoBehaviour
         if (CheckDir(newDir))
         {
             m_FowordMoveDir = newDir.normalized * m_fSpeed;
+            newDir = m_FowordMoveDir;
             return true;
         }
         return false;

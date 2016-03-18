@@ -10,7 +10,7 @@ public class Item_4_Add_Speed_20 : ItemBase
         if (param is Player)
         {
             Player player = param as Player;
-            player.SetSpeed(1.5f);
+            player.SetSpeed(2.0f);
         }
     }
 }
