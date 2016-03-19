@@ -2,13 +2,17 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-
+[Serializable]
+public class TankFireInfo
+{
+    public Animator m_GunAnimator;
+    public Transform m_TransformGun;
+    public List<Transform> m_TransformFirePos;
+    public List<Transform> m_TransformFireLightPos;
+}
 public class Player : MonoBehaviour
 {
-    [SerializeField] private Transform m_TransformGun;
-    [SerializeField] private Transform m_TransformFirePos;
-    [SerializeField] private Transform m_TransformFireLightPos;
-    [SerializeField] private Animator   m_GunAnimator;
+    [SerializeField] private List<TankFireInfo> m_FireInfo;
     [SerializeField] private float      m_FireCd;
     [SerializeField] private Transform  m_TransformRayRoot;
     [SerializeField] private float      m_fSpeed;
@@ -91,16 +95,24 @@ public class Player : MonoBehaviour
         }
         return false;
     }
-    public Vector3 GetFirePos(Vector3 dir)
+    public List<Vector3> GetFirePos(Vector3 dir)
     {
-        Vector3 res = Vector3.zero;
-        Vector3 currentGunForward = m_TransformGun.forward;
-        m_TransformGun.LookAt(dir);
-        res = m_TransformFirePos.position;
+        List<Vector3> resList = new List<Vector3>(m_FireInfo.Count);
 
-        //reset
-        m_TransformGun.forward = currentGunForward;
-        return res;
+        for (int i = 0; i < m_FireInfo.Count; ++i)
+        {
+            TankFireInfo elem = m_FireInfo[i];
+            Vector3 currentGunForward = elem.m_TransformGun.forward;
+            elem.m_TransformGun.LookAt(dir);
+            foreach (var elemFirePos in elem.m_TransformFirePos)
+            {
+                resList.Add(elemFirePos.position);
+            }
+            //reset
+            elem.m_TransformGun.forward = currentGunForward;
+        }
+
+        return resList;
     }
     public bool TryFire()
     {
@@ -112,9 +124,16 @@ public class Player : MonoBehaviour
     }
     public void Fire(Vector3 dir)
     {
+        //reset y
         dir.y = 0;
-        m_TransformGun.LookAt(dir);
-        m_GunAnimator.SetTrigger("Fire");
+
+        //set anim
+        for (int i = 0; i < m_FireInfo.Count; ++i)
+        {
+            TankFireInfo elem = m_FireInfo[i];
+            elem.m_TransformGun.LookAt(dir);
+            elem.m_GunAnimator.SetTrigger("Fire");
+        }
     }
     public void Update()
     {
@@ -206,6 +225,10 @@ public class Player : MonoBehaviour
     {
         m_fSpeed -= speed;
     }
+    public float GetSpeed()
+    {
+        return m_fSpeed;
+    }
     //HP
     public void SetMaxHp(int hp)
     {
@@ -242,5 +265,9 @@ public class Player : MonoBehaviour
                 m_OnDeadCallBack();
             }
         }
+    }
+    public MoveBase GetMoveInfo()
+    {
+        return m_MoveHandler;
     }
 }

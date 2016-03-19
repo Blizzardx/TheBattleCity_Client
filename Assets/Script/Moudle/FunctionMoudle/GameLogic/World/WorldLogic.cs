@@ -9,13 +9,11 @@ public class WorldLogic : LogicBase<WorldLogic>
     private int                 m_PlayerUid;
     private List<PlayerInfo>    m_PlayerList;
     private UIWindowWaitBattle  m_UIWindowWaitBattle;
-    private List<RoomInfo>      m_RoomList;
     
 
     public override void StartLogic()
     {
         m_PlayerList = new List<PlayerInfo>();
-        m_RoomList = new List<RoomInfo>();
 
         //register event
         RegisterEvent();
@@ -60,8 +58,8 @@ public class WorldLogic : LogicBase<WorldLogic>
     private void ConnectToServer()
     {
         //connect to test server
-        NetWorkManager.Instance.Connect("120.25.176.42", 8000);
-        //NetWorkManager.Instance.Connect("192.168.1.4", 8000);
+        //NetWorkManager.Instance.Connect("120.25.176.42", 8000);
+        NetWorkManager.Instance.Connect("192.168.1.4", 8000);
     }
 
     #region request

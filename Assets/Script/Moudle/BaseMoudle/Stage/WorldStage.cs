@@ -14,11 +14,11 @@ public class WorldStage : StageBase
     public override void InitStage()
     {
         base.InitStage();
-        WorldLogic.Instance.StartLogic();
     }
 
     public override void StartStage()
     {
+        WorldLogic.Instance.StartLogic();
     }
     public override void EndStage()
     {

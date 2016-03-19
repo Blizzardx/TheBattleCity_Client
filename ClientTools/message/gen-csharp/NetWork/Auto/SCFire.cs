@@ -24,9 +24,7 @@ namespace NetWork.Auto
   public partial class SCFire : TBase
   {
     private int _playerUid;
-    private NetWork.Auto.ThriftVector3 _currentPosition;
-    private NetWork.Auto.ThriftVector3 _fireDirection;
-    private string _bulletName;
+    private List<NetWork.Auto.FireInfo> _fireInfoList;
 
     public int PlayerUid
     {
@@ -41,42 +39,16 @@ namespace NetWork.Auto
       }
     }
 
-    public NetWork.Auto.ThriftVector3 CurrentPosition
+    public List<NetWork.Auto.FireInfo> FireInfoList
     {
       get
       {
-        return _currentPosition;
+        return _fireInfoList;
       }
       set
       {
-        __isset.currentPosition = true;
-        this._currentPosition = value;
-      }
-    }
-
-    public NetWork.Auto.ThriftVector3 FireDirection
-    {
-      get
-      {
-        return _fireDirection;
-      }
-      set
-      {
-        __isset.fireDirection = true;
-        this._fireDirection = value;
-      }
-    }
-
-    public string BulletName
-    {
-      get
-      {
-        return _bulletName;
-      }
-      set
-      {
-        __isset.bulletName = true;
-        this._bulletName = value;
+        __isset.fireInfoList = true;
+        this._fireInfoList = value;
       }
     }
 
@@ -87,9 +59,7 @@ namespace NetWork.Auto
     #endif
     public struct Isset {
       public bool playerUid;
-      public bool currentPosition;
-      public bool fireDirection;
-      public bool bulletName;
+      public bool fireInfoList;
     }
 
     public SCFire() {
@@ -115,24 +85,19 @@ namespace NetWork.Auto
             }
             break;
           case 10:
-            if (field.Type == TType.Struct) {
-              CurrentPosition = new NetWork.Auto.ThriftVector3();
-              CurrentPosition.Read(iprot);
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 20:
-            if (field.Type == TType.Struct) {
-              FireDirection = new NetWork.Auto.ThriftVector3();
-              FireDirection.Read(iprot);
-            } else { 
-              TProtocolUtil.Skip(iprot, field.Type);
-            }
-            break;
-          case 30:
-            if (field.Type == TType.String) {
-              BulletName = iprot.ReadString();
+            if (field.Type == TType.List) {
+              {
+                FireInfoList = new List<NetWork.Auto.FireInfo>();
+                TList _list0 = iprot.ReadListBegin();
+                for( int _i1 = 0; _i1 < _list0.Count; ++_i1)
+                {
+                  NetWork.Auto.FireInfo _elem2 = new NetWork.Auto.FireInfo();
+                  _elem2 = new NetWork.Auto.FireInfo();
+                  _elem2.Read(iprot);
+                  FireInfoList.Add(_elem2);
+                }
+                iprot.ReadListEnd();
+              }
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -158,28 +123,19 @@ namespace NetWork.Auto
         oprot.WriteI32(PlayerUid);
         oprot.WriteFieldEnd();
       }
-      if (CurrentPosition != null && __isset.currentPosition) {
-        field.Name = "currentPosition";
-        field.Type = TType.Struct;
+      if (FireInfoList != null && __isset.fireInfoList) {
+        field.Name = "fireInfoList";
+        field.Type = TType.List;
         field.ID = 10;
         oprot.WriteFieldBegin(field);
-        CurrentPosition.Write(oprot);
-        oprot.WriteFieldEnd();
-      }
-      if (FireDirection != null && __isset.fireDirection) {
-        field.Name = "fireDirection";
-        field.Type = TType.Struct;
-        field.ID = 20;
-        oprot.WriteFieldBegin(field);
-        FireDirection.Write(oprot);
-        oprot.WriteFieldEnd();
-      }
-      if (BulletName != null && __isset.bulletName) {
-        field.Name = "bulletName";
-        field.Type = TType.String;
-        field.ID = 30;
-        oprot.WriteFieldBegin(field);
-        oprot.WriteString(BulletName);
+        {
+          oprot.WriteListBegin(new TList(TType.Struct, FireInfoList.Count));
+          foreach (NetWork.Auto.FireInfo _iter3 in FireInfoList)
+          {
+            _iter3.Write(oprot);
+          }
+          oprot.WriteListEnd();
+        }
         oprot.WriteFieldEnd();
       }
       oprot.WriteFieldStop();
@@ -190,12 +146,8 @@ namespace NetWork.Auto
       StringBuilder sb = new StringBuilder("SCFire(");
       sb.Append("PlayerUid: ");
       sb.Append(PlayerUid);
-      sb.Append(",CurrentPosition: ");
-      sb.Append(CurrentPosition== null ? "<null>" : CurrentPosition.ToString());
-      sb.Append(",FireDirection: ");
-      sb.Append(FireDirection== null ? "<null>" : FireDirection.ToString());
-      sb.Append(",BulletName: ");
-      sb.Append(BulletName);
+      sb.Append(",FireInfoList: ");
+      sb.Append(FireInfoList);
       sb.Append(")");
       return sb.ToString();
     }

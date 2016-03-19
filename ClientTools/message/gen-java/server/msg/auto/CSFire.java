@@ -36,9 +36,7 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("CSFire");
 
   private static final org.apache.thrift.protocol.TField PLAYER_UID_FIELD_DESC = new org.apache.thrift.protocol.TField("playerUid", org.apache.thrift.protocol.TType.I32, (short)1);
-  private static final org.apache.thrift.protocol.TField CURRENT_POSITION_FIELD_DESC = new org.apache.thrift.protocol.TField("currentPosition", org.apache.thrift.protocol.TType.STRUCT, (short)10);
-  private static final org.apache.thrift.protocol.TField FIRE_DIRECTION_FIELD_DESC = new org.apache.thrift.protocol.TField("fireDirection", org.apache.thrift.protocol.TType.STRUCT, (short)20);
-  private static final org.apache.thrift.protocol.TField BULLET_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("bulletName", org.apache.thrift.protocol.TType.STRING, (short)30);
+  private static final org.apache.thrift.protocol.TField FIRE_INFO_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("fireInfoList", org.apache.thrift.protocol.TType.LIST, (short)10);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -47,16 +45,12 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
   }
 
   public int playerUid; // required
-  public server.msg.auto.ThriftVector3 currentPosition; // required
-  public server.msg.auto.ThriftVector3 fireDirection; // required
-  public String bulletName; // required
+  public List<server.msg.auto.FireInfo> fireInfoList; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     PLAYER_UID((short)1, "playerUid"),
-    CURRENT_POSITION((short)10, "currentPosition"),
-    FIRE_DIRECTION((short)20, "fireDirection"),
-    BULLET_NAME((short)30, "bulletName");
+    FIRE_INFO_LIST((short)10, "fireInfoList");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -73,12 +67,8 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
       switch(fieldId) {
         case 1: // PLAYER_UID
           return PLAYER_UID;
-        case 10: // CURRENT_POSITION
-          return CURRENT_POSITION;
-        case 20: // FIRE_DIRECTION
-          return FIRE_DIRECTION;
-        case 30: // BULLET_NAME
-          return BULLET_NAME;
+        case 10: // FIRE_INFO_LIST
+          return FIRE_INFO_LIST;
         default:
           return null;
       }
@@ -126,12 +116,9 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.PLAYER_UID, new org.apache.thrift.meta_data.FieldMetaData("playerUid", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.CURRENT_POSITION, new org.apache.thrift.meta_data.FieldMetaData("currentPosition", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, server.msg.auto.ThriftVector3.class)));
-    tmpMap.put(_Fields.FIRE_DIRECTION, new org.apache.thrift.meta_data.FieldMetaData("fireDirection", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, server.msg.auto.ThriftVector3.class)));
-    tmpMap.put(_Fields.BULLET_NAME, new org.apache.thrift.meta_data.FieldMetaData("bulletName", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.FIRE_INFO_LIST, new org.apache.thrift.meta_data.FieldMetaData("fireInfoList", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, server.msg.auto.FireInfo.class))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(CSFire.class, metaDataMap);
   }
@@ -141,16 +128,12 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
 
   public CSFire(
     int playerUid,
-    server.msg.auto.ThriftVector3 currentPosition,
-    server.msg.auto.ThriftVector3 fireDirection,
-    String bulletName)
+    List<server.msg.auto.FireInfo> fireInfoList)
   {
     this();
     this.playerUid = playerUid;
     setPlayerUidIsSet(true);
-    this.currentPosition = currentPosition;
-    this.fireDirection = fireDirection;
-    this.bulletName = bulletName;
+    this.fireInfoList = fireInfoList;
   }
 
   /**
@@ -159,14 +142,12 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
   public CSFire(CSFire other) {
     __isset_bitfield = other.__isset_bitfield;
     this.playerUid = other.playerUid;
-    if (other.isSetCurrentPosition()) {
-      this.currentPosition = new server.msg.auto.ThriftVector3(other.currentPosition);
-    }
-    if (other.isSetFireDirection()) {
-      this.fireDirection = new server.msg.auto.ThriftVector3(other.fireDirection);
-    }
-    if (other.isSetBulletName()) {
-      this.bulletName = other.bulletName;
+    if (other.isSetFireInfoList()) {
+      List<server.msg.auto.FireInfo> __this__fireInfoList = new ArrayList<server.msg.auto.FireInfo>(other.fireInfoList.size());
+      for (server.msg.auto.FireInfo other_element : other.fireInfoList) {
+        __this__fireInfoList.add(new server.msg.auto.FireInfo(other_element));
+      }
+      this.fireInfoList = __this__fireInfoList;
     }
   }
 
@@ -178,9 +159,7 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
   public void clear() {
     setPlayerUidIsSet(false);
     this.playerUid = 0;
-    this.currentPosition = null;
-    this.fireDirection = null;
-    this.bulletName = null;
+    this.fireInfoList = null;
   }
 
   public int getPlayerUid() {
@@ -206,75 +185,42 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
     __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __PLAYERUID_ISSET_ID, value);
   }
 
-  public server.msg.auto.ThriftVector3 getCurrentPosition() {
-    return this.currentPosition;
+  public int getFireInfoListSize() {
+    return (this.fireInfoList == null) ? 0 : this.fireInfoList.size();
   }
 
-  public CSFire setCurrentPosition(server.msg.auto.ThriftVector3 currentPosition) {
-    this.currentPosition = currentPosition;
-    return this;
+  public java.util.Iterator<server.msg.auto.FireInfo> getFireInfoListIterator() {
+    return (this.fireInfoList == null) ? null : this.fireInfoList.iterator();
   }
 
-  public void unsetCurrentPosition() {
-    this.currentPosition = null;
-  }
-
-  /** Returns true if field currentPosition is set (has been assigned a value) and false otherwise */
-  public boolean isSetCurrentPosition() {
-    return this.currentPosition != null;
-  }
-
-  public void setCurrentPositionIsSet(boolean value) {
-    if (!value) {
-      this.currentPosition = null;
+  public void addToFireInfoList(server.msg.auto.FireInfo elem) {
+    if (this.fireInfoList == null) {
+      this.fireInfoList = new ArrayList<server.msg.auto.FireInfo>();
     }
+    this.fireInfoList.add(elem);
   }
 
-  public server.msg.auto.ThriftVector3 getFireDirection() {
-    return this.fireDirection;
+  public List<server.msg.auto.FireInfo> getFireInfoList() {
+    return this.fireInfoList;
   }
 
-  public CSFire setFireDirection(server.msg.auto.ThriftVector3 fireDirection) {
-    this.fireDirection = fireDirection;
+  public CSFire setFireInfoList(List<server.msg.auto.FireInfo> fireInfoList) {
+    this.fireInfoList = fireInfoList;
     return this;
   }
 
-  public void unsetFireDirection() {
-    this.fireDirection = null;
+  public void unsetFireInfoList() {
+    this.fireInfoList = null;
   }
 
-  /** Returns true if field fireDirection is set (has been assigned a value) and false otherwise */
-  public boolean isSetFireDirection() {
-    return this.fireDirection != null;
+  /** Returns true if field fireInfoList is set (has been assigned a value) and false otherwise */
+  public boolean isSetFireInfoList() {
+    return this.fireInfoList != null;
   }
 
-  public void setFireDirectionIsSet(boolean value) {
+  public void setFireInfoListIsSet(boolean value) {
     if (!value) {
-      this.fireDirection = null;
-    }
-  }
-
-  public String getBulletName() {
-    return this.bulletName;
-  }
-
-  public CSFire setBulletName(String bulletName) {
-    this.bulletName = bulletName;
-    return this;
-  }
-
-  public void unsetBulletName() {
-    this.bulletName = null;
-  }
-
-  /** Returns true if field bulletName is set (has been assigned a value) and false otherwise */
-  public boolean isSetBulletName() {
-    return this.bulletName != null;
-  }
-
-  public void setBulletNameIsSet(boolean value) {
-    if (!value) {
-      this.bulletName = null;
+      this.fireInfoList = null;
     }
   }
 
@@ -288,27 +234,11 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
       }
       break;
 
-    case CURRENT_POSITION:
+    case FIRE_INFO_LIST:
       if (value == null) {
-        unsetCurrentPosition();
+        unsetFireInfoList();
       } else {
-        setCurrentPosition((server.msg.auto.ThriftVector3)value);
-      }
-      break;
-
-    case FIRE_DIRECTION:
-      if (value == null) {
-        unsetFireDirection();
-      } else {
-        setFireDirection((server.msg.auto.ThriftVector3)value);
-      }
-      break;
-
-    case BULLET_NAME:
-      if (value == null) {
-        unsetBulletName();
-      } else {
-        setBulletName((String)value);
+        setFireInfoList((List<server.msg.auto.FireInfo>)value);
       }
       break;
 
@@ -320,14 +250,8 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
     case PLAYER_UID:
       return Integer.valueOf(getPlayerUid());
 
-    case CURRENT_POSITION:
-      return getCurrentPosition();
-
-    case FIRE_DIRECTION:
-      return getFireDirection();
-
-    case BULLET_NAME:
-      return getBulletName();
+    case FIRE_INFO_LIST:
+      return getFireInfoList();
 
     }
     throw new IllegalStateException();
@@ -342,12 +266,8 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
     switch (field) {
     case PLAYER_UID:
       return isSetPlayerUid();
-    case CURRENT_POSITION:
-      return isSetCurrentPosition();
-    case FIRE_DIRECTION:
-      return isSetFireDirection();
-    case BULLET_NAME:
-      return isSetBulletName();
+    case FIRE_INFO_LIST:
+      return isSetFireInfoList();
     }
     throw new IllegalStateException();
   }
@@ -374,30 +294,12 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
         return false;
     }
 
-    boolean this_present_currentPosition = true && this.isSetCurrentPosition();
-    boolean that_present_currentPosition = true && that.isSetCurrentPosition();
-    if (this_present_currentPosition || that_present_currentPosition) {
-      if (!(this_present_currentPosition && that_present_currentPosition))
+    boolean this_present_fireInfoList = true && this.isSetFireInfoList();
+    boolean that_present_fireInfoList = true && that.isSetFireInfoList();
+    if (this_present_fireInfoList || that_present_fireInfoList) {
+      if (!(this_present_fireInfoList && that_present_fireInfoList))
         return false;
-      if (!this.currentPosition.equals(that.currentPosition))
-        return false;
-    }
-
-    boolean this_present_fireDirection = true && this.isSetFireDirection();
-    boolean that_present_fireDirection = true && that.isSetFireDirection();
-    if (this_present_fireDirection || that_present_fireDirection) {
-      if (!(this_present_fireDirection && that_present_fireDirection))
-        return false;
-      if (!this.fireDirection.equals(that.fireDirection))
-        return false;
-    }
-
-    boolean this_present_bulletName = true && this.isSetBulletName();
-    boolean that_present_bulletName = true && that.isSetBulletName();
-    if (this_present_bulletName || that_present_bulletName) {
-      if (!(this_present_bulletName && that_present_bulletName))
-        return false;
-      if (!this.bulletName.equals(that.bulletName))
+      if (!this.fireInfoList.equals(that.fireInfoList))
         return false;
     }
 
@@ -427,32 +329,12 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetCurrentPosition()).compareTo(other.isSetCurrentPosition());
+    lastComparison = Boolean.valueOf(isSetFireInfoList()).compareTo(other.isSetFireInfoList());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetCurrentPosition()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.currentPosition, other.currentPosition);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetFireDirection()).compareTo(other.isSetFireDirection());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetFireDirection()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.fireDirection, other.fireDirection);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetBulletName()).compareTo(other.isSetBulletName());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetBulletName()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.bulletName, other.bulletName);
+    if (isSetFireInfoList()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.fireInfoList, other.fireInfoList);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -481,27 +363,11 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
     sb.append(this.playerUid);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("currentPosition:");
-    if (this.currentPosition == null) {
+    sb.append("fireInfoList:");
+    if (this.fireInfoList == null) {
       sb.append("null");
     } else {
-      sb.append(this.currentPosition);
-    }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("fireDirection:");
-    if (this.fireDirection == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.fireDirection);
-    }
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("bulletName:");
-    if (this.bulletName == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.bulletName);
+      sb.append(this.fireInfoList);
     }
     first = false;
     sb.append(")");
@@ -511,12 +377,6 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
     // check for sub-struct validity
-    if (currentPosition != null) {
-      currentPosition.validate();
-    }
-    if (fireDirection != null) {
-      fireDirection.validate();
-    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -563,28 +423,21 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 10: // CURRENT_POSITION
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-              struct.currentPosition = new server.msg.auto.ThriftVector3();
-              struct.currentPosition.read(iprot);
-              struct.setCurrentPositionIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 20: // FIRE_DIRECTION
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-              struct.fireDirection = new server.msg.auto.ThriftVector3();
-              struct.fireDirection.read(iprot);
-              struct.setFireDirectionIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 30: // BULLET_NAME
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.bulletName = iprot.readString();
-              struct.setBulletNameIsSet(true);
+          case 10: // FIRE_INFO_LIST
+            if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+              {
+                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
+                struct.fireInfoList = new ArrayList<server.msg.auto.FireInfo>(_list0.size);
+                for (int _i1 = 0; _i1 < _list0.size; ++_i1)
+                {
+                  server.msg.auto.FireInfo _elem2;
+                  _elem2 = new server.msg.auto.FireInfo();
+                  _elem2.read(iprot);
+                  struct.fireInfoList.add(_elem2);
+                }
+                iprot.readListEnd();
+              }
+              struct.setFireInfoListIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -607,19 +460,16 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
       oprot.writeFieldBegin(PLAYER_UID_FIELD_DESC);
       oprot.writeI32(struct.playerUid);
       oprot.writeFieldEnd();
-      if (struct.currentPosition != null) {
-        oprot.writeFieldBegin(CURRENT_POSITION_FIELD_DESC);
-        struct.currentPosition.write(oprot);
-        oprot.writeFieldEnd();
-      }
-      if (struct.fireDirection != null) {
-        oprot.writeFieldBegin(FIRE_DIRECTION_FIELD_DESC);
-        struct.fireDirection.write(oprot);
-        oprot.writeFieldEnd();
-      }
-      if (struct.bulletName != null) {
-        oprot.writeFieldBegin(BULLET_NAME_FIELD_DESC);
-        oprot.writeString(struct.bulletName);
+      if (struct.fireInfoList != null) {
+        oprot.writeFieldBegin(FIRE_INFO_LIST_FIELD_DESC);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.fireInfoList.size()));
+          for (server.msg.auto.FireInfo _iter3 : struct.fireInfoList)
+          {
+            _iter3.write(oprot);
+          }
+          oprot.writeListEnd();
+        }
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -643,51 +493,45 @@ public class CSFire implements org.apache.thrift.TBase<CSFire, CSFire._Fields>, 
       if (struct.isSetPlayerUid()) {
         optionals.set(0);
       }
-      if (struct.isSetCurrentPosition()) {
+      if (struct.isSetFireInfoList()) {
         optionals.set(1);
       }
-      if (struct.isSetFireDirection()) {
-        optionals.set(2);
-      }
-      if (struct.isSetBulletName()) {
-        optionals.set(3);
-      }
-      oprot.writeBitSet(optionals, 4);
+      oprot.writeBitSet(optionals, 2);
       if (struct.isSetPlayerUid()) {
         oprot.writeI32(struct.playerUid);
       }
-      if (struct.isSetCurrentPosition()) {
-        struct.currentPosition.write(oprot);
-      }
-      if (struct.isSetFireDirection()) {
-        struct.fireDirection.write(oprot);
-      }
-      if (struct.isSetBulletName()) {
-        oprot.writeString(struct.bulletName);
+      if (struct.isSetFireInfoList()) {
+        {
+          oprot.writeI32(struct.fireInfoList.size());
+          for (server.msg.auto.FireInfo _iter4 : struct.fireInfoList)
+          {
+            _iter4.write(oprot);
+          }
+        }
       }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, CSFire struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(4);
+      BitSet incoming = iprot.readBitSet(2);
       if (incoming.get(0)) {
         struct.playerUid = iprot.readI32();
         struct.setPlayerUidIsSet(true);
       }
       if (incoming.get(1)) {
-        struct.currentPosition = new server.msg.auto.ThriftVector3();
-        struct.currentPosition.read(iprot);
-        struct.setCurrentPositionIsSet(true);
-      }
-      if (incoming.get(2)) {
-        struct.fireDirection = new server.msg.auto.ThriftVector3();
-        struct.fireDirection.read(iprot);
-        struct.setFireDirectionIsSet(true);
-      }
-      if (incoming.get(3)) {
-        struct.bulletName = iprot.readString();
-        struct.setBulletNameIsSet(true);
+        {
+          org.apache.thrift.protocol.TList _list5 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.fireInfoList = new ArrayList<server.msg.auto.FireInfo>(_list5.size);
+          for (int _i6 = 0; _i6 < _list5.size; ++_i6)
+          {
+            server.msg.auto.FireInfo _elem7;
+            _elem7 = new server.msg.auto.FireInfo();
+            _elem7.read(iprot);
+            struct.fireInfoList.add(_elem7);
+          }
+        }
+        struct.setFireInfoListIsSet(true);
       }
     }
   }

@@ -11,7 +11,7 @@ public class PlayerController
     private int m_iPlayerUid;
     private Player m_Player;
     private PlayerInfo m_PlayerBaseInfo;
-
+    private string m_strCurrentBullet = "Bullet_0";
     //
 
     public void CreatePlayer(PlayerInfo baseInfo)
@@ -19,7 +19,7 @@ public class PlayerController
         m_PlayerBaseInfo = baseInfo;
         int uid = baseInfo.Uid;
         string name = baseInfo.MeshName;
-        name = "Tank_0";
+        //name = "Tank_";
 
         m_iPlayerUid = uid;
         // try load player
@@ -39,7 +39,6 @@ public class PlayerController
             GameObject.Destroy(obj);
             return;
         }
-
         m_Player.SetOnDestroyCallBack(OnDestroy);
         m_Player.SetOnDeadCallBack(OnDead);
 
@@ -49,7 +48,32 @@ public class PlayerController
 
         m_playerControllerMap.Add(obj.GetInstanceID(), this);
     }
+    public void ChangePlayer(string meshName)
+    {
+        m_PlayerBaseInfo.MeshName = meshName;
 
+        //hp 
+        int hp = m_Player.GetHp();
+        float speed = m_Player.GetSpeed();
+
+        //stop first
+        OnInputMove(Vector2.zero);
+
+        Vector3 pos = m_Player.transform.position;
+        
+        //clear player old instance
+        GameObject.Destroy(m_Player.gameObject);
+
+        //create new instance
+        CreatePlayer(m_PlayerBaseInfo);
+
+        //reset hp
+        m_Player.SetHp(hp);
+        //reset speed
+        m_Player.SetSpeed(speed);
+        //reset move handler
+        m_Player.transform.position = pos;
+    }
     public Player GetPlayer()
     {
         return m_Player;
@@ -79,6 +103,16 @@ public class PlayerController
     {
         return m_iPlayerUid;
     }
+
+    internal void SetBullet(string name)
+    {
+        m_strCurrentBullet = name;
+    }
+
+    internal string GetCurrentBullet(string name)
+    {
+        return m_strCurrentBullet;
+    }
     public void OnInputFire(Vector3 pos)
     {
         if (!m_Player.TryFire())
@@ -86,19 +120,27 @@ public class PlayerController
             return;
         }
         m_Player.BeginFireCd();
+        List<Vector3> firePosList = m_Player.GetFirePos(pos);
 
         //send message to fire
         CSFire fire = new CSFire();
-        fire.BulletName = "Bullet_0";
-        fire.CurrentPosition = new ThriftVector3();
-        fire.CurrentPosition.SetVector3(m_Player.GetFirePos(pos));
-        fire.FireDirection = new ThriftVector3();
-        pos.y = 0.0f;
-        fire.FireDirection.SetVector3(pos);
         fire.PlayerUid = m_iPlayerUid;
+        fire.FireInfoList = new List<FireInfo>(firePosList.Count);
+        foreach (var elem in firePosList)
+        {
+            FireInfo fireInfo = new FireInfo();
+            fireInfo.BulletName = m_strCurrentBullet;
+            fireInfo.CurrentPosition = new ThriftVector3();
+            fireInfo.CurrentPosition.SetVector3(elem);
+            fireInfo.FireDirection = new ThriftVector3();
+            pos.y = 0.0f;
+            fireInfo.FireDirection.SetVector3(pos);
+            
+            //add to list
+            fire.FireInfoList.Add(fireInfo);
+        }
 
         NetWorkManager.Instance.SendMsgToServer(fire);
-
     }
     public void RegisterEvent()
     {
@@ -119,7 +161,7 @@ public class PlayerController
     private void OnDestroy(int instanceId)
     {
         m_playerControllerMap.Remove(instanceId);
-        m_Player = null;
+        //m_Player = null;
     }
     private void OnDead()
     {
@@ -157,11 +199,18 @@ public class PlayerController
         {
             return;
         }
-
-        m_Player.Fire(handler.FireDirection.GetVector3());
-        //create bullet
-        BulletManager.Instance.CreateBullet(m_iPlayerUid, handler.BulletName, handler.CurrentPosition.GetVector3(),
-           (handler.FireDirection.GetVector3() - handler.CurrentPosition.GetVector3()).normalized);
+        if (handler.FireInfoList.Count == 0)
+        {
+            return;
+        }
+        m_Player.Fire(handler.FireInfoList[0].FireDirection.GetVector3());        
+        
+        foreach (var elem in handler.FireInfoList)
+        {
+            //create bullet
+            BulletManager.Instance.CreateBullet(m_iPlayerUid, elem.BulletName, elem.CurrentPosition.GetVector3(),
+               (elem.FireDirection.GetVector3() - elem.CurrentPosition.GetVector3()).normalized);
+        }
     }
     private void OnPlayerHurt(MessageObject obj)
     {

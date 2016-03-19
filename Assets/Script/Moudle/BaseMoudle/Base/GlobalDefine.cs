@@ -46,7 +46,7 @@ public class Definer
     {
         //logic scene
         StageManager.Instance.RegisterStage(GameStateType.LoginState, "Login", typeof(LoginStage));
-        StageManager.Instance.RegisterStage(GameStateType.ReConnectState, "Login", typeof(ReconnectStage));
+        StageManager.Instance.RegisterStage(GameStateType.ReConnectState, "World", typeof(WorldStage));
         StageManager.Instance.RegisterStage(GameStateType.BattleState, "Battle", typeof(BattleStage));
         StageManager.Instance.RegisterStage(GameStateType.WorldState, "World", typeof(WorldStage));
 

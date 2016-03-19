@@ -5,7 +5,5 @@ namespace csharp NetWork.Auto
 struct SCFire
 {
 	1: i32 playerUid
-	10:common.ThriftVector3 currentPosition
-	20:common.ThriftVector3 fireDirection
-	30:string bulletName
+	10:list<common.FireInfo> fireInfoList
 }

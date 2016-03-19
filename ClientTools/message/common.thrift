@@ -31,3 +31,9 @@ struct ItemGenFundamental
 	60: i32 triggerDeltaTime
 	70: i32 initItemCount
 }
+struct FireInfo
+{
+	10:ThriftVector3 currentPosition
+	20:ThriftVector3 fireDirection
+	30:string bulletName
+}
