@@ -9,6 +9,7 @@ public class BattleLogic : LogicBase<BattleLogic>
     public string m_strPreLoadMap = "Map_0";
     private UIWindowBattle m_BattleWindow;
     private Camera m_SceneCamera;
+    private CameraFollow m_CameraFollow;
     private List<PlayerController> m_PlayerList;
     private PlayerController m_thisPlayer;
     private int m_iThisPlayerUid;
@@ -20,6 +21,9 @@ public class BattleLogic : LogicBase<BattleLogic>
         // load map
         MapManager.Instance.LoadMap(m_strPreLoadMap);
 
+        m_SceneCamera = MapManager.Instance.GetCurrentMapInfo().GetSceneCamera();
+        m_CameraFollow = m_SceneCamera.GetComponent<CameraFollow>();
+
         //test code
         List<PlayerInfo> tmpPlayerList = PlayerDataMode.Instance.m_PlayerList;
 
@@ -27,7 +31,7 @@ public class BattleLogic : LogicBase<BattleLogic>
         {
             //load player
             PlayerController PlayerController = new PlayerController();
-            PlayerController.CreatePlayer(tmpPlayerList[i]);
+            PlayerController.CreatePlayer(tmpPlayerList[i],m_CameraFollow);
 
             //set player postion
             ComponentTool.Attach(MapManager.Instance.GetCurrentMapInfo().GetPlayerPosition()[tmpPlayerList[i].PositionId],
@@ -41,9 +45,6 @@ public class BattleLogic : LogicBase<BattleLogic>
             }
             m_PlayerList.Add(PlayerController);
         }
-        
-
-        m_SceneCamera = MapManager.Instance.GetCurrentMapInfo().GetSceneCamera();
 
         RegisterEvent();
     }

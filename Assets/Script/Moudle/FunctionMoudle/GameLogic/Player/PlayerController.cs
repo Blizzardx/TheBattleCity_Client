@@ -13,9 +13,11 @@ public class PlayerController
     private PlayerInfo m_PlayerBaseInfo;
     private string m_strCurrentBullet = "Bullet_0";
     //
+    private CameraFollow m_CameraFollow;
 
-    public void CreatePlayer(PlayerInfo baseInfo)
+    public void CreatePlayer(PlayerInfo baseInfo,CameraFollow sceneCamera)
     {
+        m_CameraFollow = sceneCamera;
         m_PlayerBaseInfo = baseInfo;
         int uid = baseInfo.Uid;
         string name = baseInfo.MeshName;
@@ -47,6 +49,17 @@ public class PlayerController
         m_Player.SetMaxHp(baseInfo.Hp);
 
         m_playerControllerMap.Add(obj.GetInstanceID(), this);
+
+        //set camera follow
+        SetCameraFollow();
+    }
+
+    private void SetCameraFollow()
+    {
+        if (m_CameraFollow != null && m_iPlayerUid == PlayerDataMode.Instance.playerUid)
+        {
+            m_CameraFollow.SetTarget(m_Player.transform);
+        }
     }
     public void ChangePlayer(string meshName)
     {
@@ -65,7 +78,7 @@ public class PlayerController
         GameObject.Destroy(m_Player.gameObject);
 
         //create new instance
-        CreatePlayer(m_PlayerBaseInfo);
+        CreatePlayer(m_PlayerBaseInfo,m_CameraFollow);
 
         //reset hp
         m_Player.SetHp(hp);
