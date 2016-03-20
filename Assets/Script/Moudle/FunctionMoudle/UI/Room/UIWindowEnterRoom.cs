@@ -35,7 +35,7 @@ public class UIWindowEnterRoom : WindowBase
 
     private void OnClickCancle(GameObject go)
     {
-
+        Hide();
     }
     private void OnClickEnter(GameObject go)
     {

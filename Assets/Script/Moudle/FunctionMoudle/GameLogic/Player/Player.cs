@@ -97,6 +97,9 @@ public class Player : MonoBehaviour
     }
     public List<Vector3> GetFirePos(Vector3 dir)
     {
+        //reset y
+        dir.y = 0;
+
         List<Vector3> resList = new List<Vector3>(m_FireInfo.Count);
 
         for (int i = 0; i < m_FireInfo.Count; ++i)
