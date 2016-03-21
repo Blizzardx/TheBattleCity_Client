@@ -84,43 +84,6 @@ public class BattleLogic : LogicBase<BattleLogic>
         {
             SetPlayerInfoPos(m_PlayerList[i].GetUid(), m_PlayerList[i].GetPlayer().transform.position);
         }
-
-        //test code
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            for (int i = 0; i < m_PlayerList.Count; ++i)
-            {
-                m_PlayerList[i].ChangePlayer("Tank_1");
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            for (int i = 0; i < m_PlayerList.Count; ++i)
-            {
-                m_PlayerList[i].ChangePlayer("Tank_2");
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            for (int i = 0; i < m_PlayerList.Count; ++i)
-            {
-                m_PlayerList[i].ChangePlayer("Tank_3");
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            for (int i = 0; i < m_PlayerList.Count; ++i)
-            {
-                m_PlayerList[i].ChangePlayer("Tank_4");
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            for (int i = 0; i < m_PlayerList.Count; ++i)
-            {
-                m_PlayerList[i].ChangePlayer("Tank_5");
-            }
-        }
     }
 
     #region battle ui

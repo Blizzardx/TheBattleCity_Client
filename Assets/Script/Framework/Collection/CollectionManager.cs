@@ -10,7 +10,7 @@ public class CollectionManager : Singleton<CollectionManager>
         BasicCollection();
 
         //change to login panel
-        StageManager.Instance.ChangeState(GameStateType.LoginState);
+        StageManager.Instance.ChangeState(GameStateType.ReConnectState);
 
     }
 

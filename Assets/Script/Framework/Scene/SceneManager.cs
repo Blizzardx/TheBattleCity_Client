@@ -5,7 +5,7 @@ using System;
 
 public class SceneManager : SingletonTemplateMon<SceneManager>
 {
-    private string          m_strDefaultScene;
+    private GameStateType   m_DefaultStageType;
     private const int       m_TimeOut               = 30000;
     private const int       m_LoadingSceneMinTime   = 2000;
     private Action          m_LoadFinishedCallBack;
@@ -18,7 +18,7 @@ public class SceneManager : SingletonTemplateMon<SceneManager>
 
     public void Initialize()
     {
-        m_strDefaultScene = "MainCity";
+        m_DefaultStageType = GameStateType.WorldState;
         m_bIsBusy = false;
     }
     public void LoadScene(string sceneName,Action FinishedCallBack,Action PreExcution,Action InitCallBack)
@@ -113,7 +113,8 @@ public class SceneManager : SingletonTemplateMon<SceneManager>
             m_bIsBusy = false;
             Action defaultExcution = () => { WindowManager.Instance.OpenWindow(WindowID.Loading);};
             Action defaultInit = () => { };
-            LoadScene(m_strDefaultScene, m_LoadFinishedCallBack, defaultExcution, defaultInit);
+            StageManager.Instance.ChangeState(m_DefaultStageType);
+            //LoadScene(m_strDefaultScene, m_LoadFinishedCallBack, defaultExcution, defaultInit);
         }
     }
     private void Awake()

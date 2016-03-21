@@ -9,6 +9,8 @@ public class ReconnectStage : StageBase
     }
     public override void StartStage()
     {
+        PlayerDataMode.Instance.isConnected = false;
+        StageManager.Instance.ChangeState(GameStateType.WorldState);
     }
 
     public override void EndStage()
