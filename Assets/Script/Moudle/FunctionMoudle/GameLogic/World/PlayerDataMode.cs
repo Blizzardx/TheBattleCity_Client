@@ -10,4 +10,5 @@ class PlayerDataMode : Singleton<PlayerDataMode>
     public int playerUid;
     public List<PlayerInfo> m_PlayerList;
     public bool isCreater;
+    public bool isShowWelcom;
 }

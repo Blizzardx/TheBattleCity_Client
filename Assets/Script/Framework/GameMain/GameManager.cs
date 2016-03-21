@@ -78,8 +78,13 @@ public class GameManager : Singleton<GameManager>
     {
         if (Application.platform == RuntimePlatform.Android && (Input.GetKeyDown(KeyCode.Escape)))
         {
-            float lastTimeScale = Time.timeScale;
-            Time.timeScale = 0;
+            TipManager.Instance.Alert("Warning", "quit?", "OK", "Cancle", (res) => 
+            {
+                if(res)
+                {
+                    Application.Quit();
+                }
+            });
         }
     }
     #endregion

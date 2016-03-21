@@ -14,6 +14,10 @@ public class PlayerController
     private string m_strCurrentBullet = "Bullet_0";
     //
     private CameraFollow m_CameraFollow;
+    private Vector3 m_vLastMoveDir;
+    private Vector3 m_vLastPos;
+    private bool m_bNeedUpdate;
+
 
     public void CreatePlayer(PlayerInfo baseInfo,CameraFollow sceneCamera)
     {
@@ -96,16 +100,19 @@ public class PlayerController
         Vector3 newDir = Vector3.zero;
         if(m_Player.TryMove(dir,ref newDir))
         {
-            CSHandler handler = new CSHandler();
-            handler.PlayerUid = m_iPlayerUid;
-            handler.MoveDirection = new ThriftVector3();
-            handler.MoveDirection.SetVector3(newDir);
-            handler.CurrentPosition = new ThriftVector3();
-            handler.CurrentPosition.SetVector3(m_Player.transform.position);
+            m_vLastMoveDir = newDir;
+            m_vLastPos = m_Player.transform.position;
+            m_bNeedUpdate = true;
+//             CSHandler handler = new CSHandler();
+//             handler.PlayerUid = m_iPlayerUid;
+//             handler.MoveDirection = new ThriftVector3();
+//             handler.MoveDirection.SetVector3(newDir);
+//             handler.CurrentPosition = new ThriftVector3();
+//             handler.CurrentPosition.SetVector3(m_Player.transform.position);
+// 
+//             NetWorkManager.Instance.SendMsgToServer(handler);
 
-            NetWorkManager.Instance.SendMsgToServer(handler);
-
-            m_Player.DoMove(handler.MoveDirection.GetVector3(), m_Player.transform.position);            
+            m_Player.DoMove(newDir, m_Player.transform.position);            
         }
     }
     internal string GetName()
@@ -116,12 +123,10 @@ public class PlayerController
     {
         return m_iPlayerUid;
     }
-
     internal void SetBullet(string name)
     {
         m_strCurrentBullet = name;
     }
-
     internal string GetCurrentBullet(string name)
     {
         return m_strCurrentBullet;
@@ -162,6 +167,7 @@ public class PlayerController
         MessageManager.Instance.RegistMessage(MessageIdConstants.SC_Hurt, OnPlayerHurt);
         MessageManager.Instance.RegistMessage(MessageIdConstants.SC_UsedItem, OnPlayerUsedItem);
         MessageManager.Instance.RegistMessage(ClientCustomMessageDefine.C_UPDATE_PLAYER_UI, OnUpdatePlaeyrUI);
+        SyncFrameTickTask.Instance.RegisterToUpdateList(SyncPlayerMove);
     }
     public void UnRegisterEvent()
     {
@@ -170,6 +176,7 @@ public class PlayerController
         MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_Hurt, OnPlayerHurt);
         MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_UsedItem, OnPlayerUsedItem);
         MessageManager.Instance.UnregistMessage(ClientCustomMessageDefine.C_UPDATE_PLAYER_UI, OnUpdatePlaeyrUI);
+        SyncFrameTickTask.Instance.UnRegisterFromUpdateList(SyncPlayerMove);
     }
     private void OnDestroy(int instanceId)
     {
@@ -261,7 +268,6 @@ public class PlayerController
             ItemManager.Instance.UseItem(server.ItemId, m_Player);
         }
     }
-
     private void OnUpdatePlaeyrUI(MessageObject obj)
     {
         //refresh ui
@@ -287,6 +293,23 @@ public class PlayerController
         client.PositionId = posId;
         client.PlayerUid = playerUid;
         NetWorkManager.Instance.SendMsgToServer(client);
+    }
+    private void SyncPlayerMove()
+    {
+        if (!m_bNeedUpdate)
+        {
+            return;
+        }
+
+        m_bNeedUpdate = false;
+        CSHandler handler = new CSHandler();
+        handler.PlayerUid = m_iPlayerUid;
+        handler.MoveDirection = new ThriftVector3();
+        handler.MoveDirection.SetVector3(m_vLastMoveDir);
+        handler.CurrentPosition = new ThriftVector3();
+        handler.CurrentPosition.SetVector3(m_vLastPos);
+
+        NetWorkManager.Instance.SendMsgToServer(handler);        
     }
     //test code
     public static PlayerController GetPlayerController(int instanceId)

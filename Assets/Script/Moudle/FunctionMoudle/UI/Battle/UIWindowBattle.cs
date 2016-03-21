@@ -68,11 +68,39 @@ public class UIWindowBattle:WindowBase
         m_EndPanel = new UIBattleEndPanel(FindChild("PanelEnd"));
         AddChildElementClickEvent(OnClickBack, "Button_Back");
         m_ObjPlayerInfoTemplate.SetActive(false);
-        m_ObjHandlerRoot.SetActive(false);
+        //m_ObjHandlerRoot.SetActive(false);
         m_UICamera = WindowManager.Instance.GetUICamera();
         m_PlayerInfoList = new Dictionary<int, UIPlayerInfo>();
         m_EndPanel.HideEnd();
+        MyUIDragDropItem item = m_ObjHandlerFollowPoint.GetComponent<MyUIDragDropItem>();
+        if(null != item)
+        {
+            item.RegisterDragAction(OnDragHandler);
+            item.RegisterDragEndAction(OnDragHandlerEnd);
+        }
     }
+
+    private void OnDragHandlerEnd(MyUIDragDropItem obj)
+    {
+        m_ObjHandlerFollowPoint.transform.localPosition = Vector3.zero;
+        if (null != m_HandlerResCallBack)
+        {
+            m_HandlerResCallBack(Vector2.zero);
+        }
+    }
+    private void OnDragHandler(Vector3 obj)
+    {
+        if(null == m_HandlerResCallBack)
+        {
+            return;
+        }
+        //caculate dir
+        Vector3 dir = m_ObjHandlerFollowPoint.transform.position - m_ObjHandlerRoot.transform.position;
+        dir.Normalize();
+
+        m_HandlerResCallBack(dir);
+    }
+
     private void OnClickBack(GameObject go)
     {
         BattleLogic.Instance.OnExitBattle();
@@ -164,27 +192,27 @@ public class UIWindowBattle:WindowBase
             return;
         }
         //check input
-        if (Input.touchCount > 0)
-        {
-            for (int i = 0; i < Input.touchCount; ++i)
-            {
-                if (Input.touches[i].phase == TouchPhase.Moved)
-                {
-                    HandlerRes(Input.touches[i].position);
-                    break;
-                }
-            }
-        }
-        else if (Input.GetMouseButton(0))
-        {
-            HandlerRes(Input.mousePosition);
-        }
-        else
-        {
-            m_HandlerResCallBack(Vector2.zero);
-            //hide handler icon
-            m_ObjHandlerRoot.SetActive(false);
-        }
+//         if (Input.touchCount > 0)
+//         {
+//             for (int i = 0; i < Input.touchCount; ++i)
+//             {
+//                 if (Input.touches[i].phase == TouchPhase.Moved)
+//                 {
+//                     HandlerRes(Input.touches[i].position);
+//                     break;
+//                 }
+//             }
+//         }
+//         if (Input.GetMouseButton(0))
+//         {
+//             HandlerRes(Input.mousePosition);
+//         }
+//         else
+//         {
+//             m_HandlerResCallBack(Vector2.zero);
+//             //hide handler icon
+//             //m_ObjHandlerRoot.SetActive(false);
+//         }
 
         //fire
         for (int i = 0; i < Input.touchCount; ++i)

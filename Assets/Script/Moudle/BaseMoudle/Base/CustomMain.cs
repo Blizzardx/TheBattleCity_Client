@@ -8,7 +8,7 @@ public class CustomMain : Singleton<CustomMain>
         //register item
         ItemRegister.Register();
 
-        StageManager.Instance.ChangeState(GameStateType.WorldState);
+        StageManager.Instance.ChangeState(GameStateType.LoginState);
 
     }
     public void Quit()

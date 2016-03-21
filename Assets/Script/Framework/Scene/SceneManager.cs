@@ -7,7 +7,7 @@ public class SceneManager : SingletonTemplateMon<SceneManager>
 {
     private GameStateType   m_DefaultStageType;
     private const int       m_TimeOut               = 30000;
-    private const int       m_LoadingSceneMinTime   = 2000;
+    private const int       m_LoadingSceneMinTime   = 1000;
     private Action          m_LoadFinishedCallBack;
     private Action m_LoadInitCallBack;
     private AsyncOperation  m_SceneAsync;

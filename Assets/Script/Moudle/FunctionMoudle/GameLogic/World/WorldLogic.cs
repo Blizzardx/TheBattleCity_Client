@@ -18,7 +18,17 @@ public class WorldLogic : LogicBase<WorldLogic>
         //register event
         RegisterEvent();
 
-        if(!PlayerDataMode.Instance.isConnected)
+        //begin connect
+        BeginConnect();
+    }
+    public override void EndLogic()
+    {
+        UnRegisterEvent();
+    }
+    private void BeginConnect()
+    {
+
+        if (!PlayerDataMode.Instance.isConnected)
         {
             //connet to server 
             ConnectToServer();
@@ -30,10 +40,6 @@ public class WorldLogic : LogicBase<WorldLogic>
         }
     }
 
-    public override void EndLogic()
-    {
-        UnRegisterEvent();
-    }
     private void RegisterEvent()
     {
         MessageManager.Instance.RegistMessage(ClientCustomMessageDefine.C_SOCKET_CONNECTED, OnConnected);
@@ -43,6 +49,7 @@ public class WorldLogic : LogicBase<WorldLogic>
         MessageManager.Instance.RegistMessage(MessageIdConstants.SC_SyncPlayerInfo, OnSyncPlayerInfo);
         MessageManager.Instance.RegistMessage(MessageIdConstants.SC_BeginLoadBattle, OnBeginLoadBattle);
         MessageManager.Instance.RegistMessage(MessageIdConstants.SC_RoomList, OnRoomList);
+        MessageManager.Instance.RegistMessage(MessageIdConstants.SC_SearchRoom, OnSearchRoomList);
 
     }
     private void UnRegisterEvent()
@@ -54,15 +61,26 @@ public class WorldLogic : LogicBase<WorldLogic>
         MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_SyncPlayerInfo, OnSyncPlayerInfo);
         MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_BeginLoadBattle, OnBeginLoadBattle);
         MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_RoomList, OnRoomList);
+        MessageManager.Instance.UnregistMessage(MessageIdConstants.SC_SearchRoom, OnSearchRoomList);
     }
     private void ConnectToServer()
     {
         //connect to test server
         NetWorkManager.Instance.Connect("120.25.176.42", 8000);
         //NetWorkManager.Instance.Connect("192.168.1.4", 8000);
+        //NetWorkManager.Instance.Connect("192.168.1.126", 8000);
     }
 
     #region request
+
+    internal void SearchRoom(string value)
+    {
+        CSSearchRoom client = new CSSearchRoom();
+        client.Name = value;
+        NetWorkManager.Instance.SendMsgToServer(client);
+        // show wait window
+        WindowManager.Instance.OpenWindow(WindowID.Wait);
+    }
     public void EnterRoom(string playerName,string roomName)
     {
         // send msg
@@ -109,10 +127,17 @@ public class WorldLogic : LogicBase<WorldLogic>
     }
     private void OnConnectError(MessageObject msg)
     {
-        TipManager.Instance.Alert("Waring", "Can't connect to server", "Retry", (res) =>
+        TipManager.Instance.Alert("警告", "服务器连接失败", "重试", "返回",(res) =>
         {
-            WindowManager.Instance.OpenWindow(WindowID.Wait);
-            ConnectToServer();
+            if(res)
+            {
+                WindowManager.Instance.OpenWindow(WindowID.Wait);
+                ConnectToServer();
+            }
+            else
+            {
+                StageManager.Instance.ChangeState(GameStateType.LoginState);
+            }
         });
     }
     private void OnEnterRoom(MessageObject msg)
@@ -193,6 +218,24 @@ public class WorldLogic : LogicBase<WorldLogic>
             UIWindowRoomList window = WindowManager.Instance.GetWindow(WindowID.RoomList) as UIWindowRoomList;
             window.ResetRoomList(roomList.RoomList);
             
+        }
+    }
+    private void OnSearchRoomList(MessageObject msg)
+    {
+        WindowManager.Instance.HideWindow(WindowID.SearchRoom);
+        WindowManager.Instance.HideWindow(WindowID.Wait);
+        if (msg.msgValue is SCSearchRoom)
+        {
+            SCSearchRoom roomList = msg.msgValue as SCSearchRoom;
+            UIWindowRoomList window = WindowManager.Instance.GetWindow(WindowID.RoomList) as UIWindowRoomList;
+            if(roomList.RoomInformation == null)
+            {
+                TipManager.Instance.Alert("没找到搜索结果");
+            }
+            else
+            {
+                window.ResetRoomList(new List<RoomInfo>() { roomList.RoomInformation });
+            }
         }
     }
     #endregion

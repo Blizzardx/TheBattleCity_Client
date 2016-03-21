@@ -9,6 +9,17 @@ public class LoginStage : StageBase
     public override void StartStage()
     {
         Debuger.Log("StartStage LoginStage");
+
+        WindowManager.Instance.HideAllWindow();
+        if(!PlayerDataMode.Instance.isShowWelcom)
+        {
+            PlayerDataMode.Instance.isShowWelcom = true;
+            WindowManager.Instance.OpenWindow(WindowID.Welcome);
+        }
+        else
+        {
+            WindowManager.Instance.OpenWindow(WindowID.SelectMode);
+        }
     }
     public override void EndStage()
     {

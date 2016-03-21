@@ -8,6 +8,7 @@ public enum GameStateType
     BattleState,
     ReConnectState,
     WorldState,
+    
 }
 public class WindowID
 {
@@ -21,6 +22,9 @@ public class WindowID
     public const int CreateRoom = 7;
     public const int EnterRoom = 8;
     public const int WaitBattle = 9;
+    public const int SelectMode = 10;
+    public const int Welcome = 11;
+    public const int SearchRoom = 12;
 }
 
 public enum WindowLayer
@@ -41,6 +45,9 @@ public class Definer
         WindowManager.Instance.RegisterWindow(WindowID.CreateRoom, "Room/UIWindow_CreateRoom", WindowLayer.Window, typeof(UIWindowCreateRoom));
         WindowManager.Instance.RegisterWindow(WindowID.EnterRoom, "Room/UIWindow_EnterRoom", WindowLayer.Window, typeof(UIWindowEnterRoom));
         WindowManager.Instance.RegisterWindow(WindowID.WaitBattle, "Room/UIWindow_WaitBattle", WindowLayer.Window, typeof(UIWindowWaitBattle));
+        WindowManager.Instance.RegisterWindow(WindowID.Welcome, "MainMenu/Window_Welcom", WindowLayer.Window, typeof(UIWindowWelcome));
+        WindowManager.Instance.RegisterWindow(WindowID.SelectMode, "MainMenu/Window_SelectMode", WindowLayer.Window, typeof(UIWindowSelectMode));
+        WindowManager.Instance.RegisterWindow(WindowID.SearchRoom, "Room/UIWindow_SearchRoom", WindowLayer.Window, typeof(UIWindowSearchRoom));
     }
     public static void RegisterStage()
     {

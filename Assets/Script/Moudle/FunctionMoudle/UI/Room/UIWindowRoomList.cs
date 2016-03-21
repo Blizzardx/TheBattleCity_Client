@@ -24,7 +24,12 @@ public class UIWindowRoomList : WindowBase
         UIEventListener.Get(m_ButtonCreate).onClick = OnClickCreate;
         UIEventListener.Get(m_ButtonSearch).onClick = OnClickSearch;
         UIEventListener.Get(m_ButtonRefresh).onClick = OnClickRefresh;
+        AddChildElementClickEvent(OnClickBack, "Button_Back");
+    }
 
+    private void OnClickBack(GameObject go)
+    {
+        StageManager.Instance.ChangeState(GameStateType.LoginState);
     }
 
     public override void OnOpen(object param)
@@ -45,7 +50,7 @@ public class UIWindowRoomList : WindowBase
     }
     private void OnClickSearch(GameObject go)
     {
-        
+        WindowManager.Instance.OpenWindow(WindowID.SearchRoom);
     }
     private void OnClickCreate(GameObject go)
     {
