@@ -45,6 +45,8 @@ public class Bullet : MonoBehaviour
         {
             m_OnDestroyCallBack(this);
         }
+        // create explosion
+        ExplosionManager.Instance.CreateExplosion("Explosion_0", transform.position);
     }
     void OnTriggerEnter(Collider other)
     {

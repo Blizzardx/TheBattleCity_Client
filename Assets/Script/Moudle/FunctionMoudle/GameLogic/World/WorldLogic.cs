@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 public class WorldLogic : LogicBase<WorldLogic>
 {
@@ -35,6 +36,7 @@ public class WorldLogic : LogicBase<WorldLogic>
         }
         else
         {
+            AudioPlayer.Instance.PlayAudio("music_defeat", Vector3.zero, true);
             WindowManager.Instance.HideAllWindow();
             WindowManager.Instance.OpenWindow(WindowID.RoomList);
         }
@@ -121,6 +123,7 @@ public class WorldLogic : LogicBase<WorldLogic>
     #region message
     private void OnConnected(MessageObject msg)
     {
+        AudioPlayer.Instance.PlayAudio("music_defeat", Vector3.zero, true);
         PlayerDataMode.Instance.isConnected = true;
         WindowManager.Instance.HideAllWindow();
         WindowManager.Instance.OpenWindow(WindowID.RoomList);

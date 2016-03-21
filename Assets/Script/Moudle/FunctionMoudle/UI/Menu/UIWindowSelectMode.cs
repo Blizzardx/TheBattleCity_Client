@@ -14,7 +14,12 @@ public class UIWindowSelectMode : WindowBase
         AddChildElementClickEvent(OnClickLANMode, "Button_LAN");
         AddChildElementClickEvent(OnClickLocaleMode, "Button_Console");
     }
+    public override void OnOpen(object param)
+    {
+        base.OnOpen(param);
 
+        AudioPlayer.Instance.PlayAudio("music_menu", Vector3.zero, true);
+    }
     private void OnClickLocaleMode(GameObject go)
     {
         TipManager.Instance.Alert("", "功能暂未开放，敬请期待", "OK", (res) => { });

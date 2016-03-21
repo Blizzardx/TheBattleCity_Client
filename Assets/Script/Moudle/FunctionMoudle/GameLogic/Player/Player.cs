@@ -137,6 +137,8 @@ public class Player : MonoBehaviour
             elem.m_TransformGun.LookAt(dir);
             elem.m_GunAnimator.SetTrigger("Fire");
         }
+        //play audio
+        AudioPlayer.Instance.PlayAudio("sfx_ray", transform.position, false);
     }
     public void Update()
     {

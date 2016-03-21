@@ -14,8 +14,22 @@ public class BattleLogic : LogicBase<BattleLogic>
     private PlayerController m_thisPlayer;
     private int m_iThisPlayerUid;
 
+    //audio
+    private List<string> m_BgmList;
+    private int m_iCurrentBgmIndex;
+    private bool m_bIsEnd = false;
+
     public override void StartLogic()
     {
+        m_BgmList = new List<string>()
+        {
+            "music_level_a",
+            "music_level_b",
+            "music_level_c",
+            "music_level_d",
+            "music_level_e",
+        };
+        
         m_PlayerList = new List<PlayerController>();
 
         // load map
@@ -164,6 +178,9 @@ public class BattleLogic : LogicBase<BattleLogic>
             m_BattleWindow.SetActive(true);
 
             SendItemGenInfo();
+
+            m_bIsEnd = false;
+            PlayBackground();
         }
     }
     private void OnBattleEnd(MessageObject msg)
@@ -173,6 +190,12 @@ public class BattleLogic : LogicBase<BattleLogic>
             m_BattleWindow.SetActive(false);
             SCBattleEnd server = msg.msgValue as SCBattleEnd;
             m_BattleWindow.ShowEndPanel(server.IsWin);
+            m_bIsEnd = true;
+            AudioPlayer.Instance.StopAudio(m_BgmList[m_iCurrentBgmIndex]);
+            if (server.IsWin)
+            {
+                PlayAudio("music_victory", Vector3.zero);
+            }
         }
     }
     private void OnCreateItem(MessageObject msg)
@@ -211,5 +234,24 @@ public class BattleLogic : LogicBase<BattleLogic>
         client.GenFundamental.InitItemCount = info.initItemCount;
 
         NetWorkManager.Instance.SendMsgToServer(client);
+    }
+    private void PlayBackground()
+    {
+        if(m_bIsEnd)
+        {
+            return;
+        }
+        m_iCurrentBgmIndex = UnityEngine.Random.RandomRange(0, m_BgmList.Count);
+        PlayAudio(m_BgmList[m_iCurrentBgmIndex], Vector3.zero, PlayBackground);
+    }
+    public void PlayAudio(string name,Vector3 pos,Action callBack = null)
+    {
+        AudioPlayer.Instance.PlayAudio(name, pos, false, (res) => 
+        {
+            if (null != callBack)
+            {
+                callBack();
+            }
+        });
     }
 }
