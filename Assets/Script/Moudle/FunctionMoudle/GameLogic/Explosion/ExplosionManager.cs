@@ -16,8 +16,9 @@ public class ExplosionManager : Singleton<ExplosionManager>
             }
             //load res
             GameObject instance = GameObject.Instantiate(obj) as GameObject;
+            instance.transform.position = pos;
             //play audio
-
+            AudioPlayer.Instance.PlayAudio("sfx_explosion", pos, false);
         });
 
     }
