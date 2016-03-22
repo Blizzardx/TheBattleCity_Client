@@ -36,6 +36,9 @@ public class NetWorkManager : Singleton<NetWorkManager>
             Close();
         }
         m_Socket                    = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        //test code
+        m_Socket.Blocking = true;
+        //
         m_Socket.Blocking           = false;
         m_Socket.ReceiveBufferSize  = DEFAULT_RECEIVE_SIZE;
         m_Socket.SendBufferSize     = DEFAULT_SEND_SIZE;
@@ -104,8 +107,10 @@ public class NetWorkManager : Singleton<NetWorkManager>
             m_Status = SocketStatus.Reciving;
             m_Socket.BeginReceive(m_BufferTool.GetRecieveBuffer(), 0, MessageBufferTool.MAXLength, SocketFlags.None, ReceiveEventHandle, m_Socket);
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Debug.LogError("Exception on Receive");
+            Debug.LogException(e);
             MessageManager.Instance.AddToMessageQueue(new MessageObject(ClientCustomMessageDefine.C_SOCKET_CLOSE, null));
         }
        
@@ -142,17 +147,21 @@ public class NetWorkManager : Singleton<NetWorkManager>
     {
         try
         {
-            int size = m_Socket.EndReceive(ar);
-            m_BufferTool.RecieveMsg(size);
-
             if (CheckSocketStatus())
             {
-                m_Socket.BeginReceive(m_BufferTool.GetRecieveBuffer(), 0, MessageBufferTool.MAXLength, SocketFlags.None, ReceiveEventHandle, m_Socket);
+                int size = m_Socket.EndReceive(ar);
+                m_BufferTool.RecieveMsg(size);
+
+
+                m_Socket.BeginReceive(m_BufferTool.GetRecieveBuffer(), 0, MessageBufferTool.MAXLength, SocketFlags.None,
+                    ReceiveEventHandle, m_Socket);
             }
         }
-        catch (Exception)
+        catch (Exception e)
         {
             // 
+            Debug.LogError("Exception on ReceiveEventHandle");
+            Debug.LogException(e);
             MessageManager.Instance.AddToMessageQueue(new MessageObject(ClientCustomMessageDefine.C_SOCKET_CLOSE, null));
         }
         
@@ -170,6 +179,7 @@ public class NetWorkManager : Singleton<NetWorkManager>
         if (!res)
         {
             // 
+            Debug.LogError("socket is null || disconnected");
             MessageManager.Instance.AddToMessageQueue(new MessageObject(ClientCustomMessageDefine.C_SOCKET_CLOSE, null));
         }
         return res;
