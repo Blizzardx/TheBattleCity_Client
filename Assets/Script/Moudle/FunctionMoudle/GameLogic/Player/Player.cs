@@ -25,10 +25,12 @@ public class Player : MonoBehaviour
     private float           m_fCurrentCd;
     private Vector3         m_FowordMoveDir;
     private int             m_iHp;
-    private int m_iMaxHp;
+    private int             m_iMaxHp;
     //move
     private float m_fMoveTime;
     private float m_fCurrentSpendTime;
+    private Action<Vector3> m_OnDirChangedAction;
+
     private void Start()
     {
         m_bIsStop = true;
@@ -40,8 +42,9 @@ public class Player : MonoBehaviour
             m_TransformRayPoingList.Add(m_TransformRayRoot.GetChild(i));
         }
     }
-    public void SetOnDestroyCallBack(Action<int> ondestroy)
+    public void SetCallBack(Action<int> ondestroy, Action<Vector3> onMoveDirChange)
     {
+        m_OnDirChangedAction = onMoveDirChange;
         m_OnDestroyCallBack = ondestroy;
     }
     public void SetOnDeadCallBack(Action onDead)
@@ -148,8 +151,14 @@ public class Player : MonoBehaviour
             m_fCurrentSpendTime += Time.deltaTime;
             if (!m_bIsStop && m_fCurrentSpendTime > m_fMoveTime)
             {
+                //auto change direction  and check
+                var newDir = AutoChangeDir();
+                //  trigger to change dir
+                DoMove(newDir, transform.position);
+                //
+                TriggerToChangeMovedir(newDir);
                 //  trigger to stop
-                DoMove(Vector3.zero, transform.position);
+                //DoMove(Vector3.zero, transform.position);
             }
             else
             {
@@ -185,10 +194,49 @@ public class Player : MonoBehaviour
             float distance = CheckMoveRaycast(dir);
             if (distance <= 0.1f)
             {
-                return false;
+                //auto change direction  and check
+                dir = AutoChangeDir();
+                //check dir again
+                res = dir != m_FowordMoveDir;
+                return res;
             }
         }
         return res;
+    }
+    private Vector3 AutoChangeDir()
+    {
+        Vector3 x = new Vector3(1.0f,0.0f,0.0f);
+
+        Vector3 dir = m_TransformRayRoot.forward;
+        for (int i = 0; i < m_TransformRayPoingList.Count; ++i)
+        {
+            Vector3 or = m_TransformRayPoingList[i].position;
+            Ray ray = new Ray(or, dir);
+            RaycastHit hitInfo;
+            if (Physics.Raycast(ray, out hitInfo, 100, 1 << (LayerMask.NameToLayer("Wall"))))
+            {
+                float tmpdistance = Vector3.Distance(or, hitInfo.point);
+                if (tmpdistance <= 0.1f)
+                {
+                    //trigger to change 
+                    float angle = Vector3.Dot(x, hitInfo.normal);
+                    Vector3 nextDir = new Vector3(Mathf.Sqrt(1.0f - angle * angle), dir.y,angle);
+                   float angle2 = Vector3.Dot(dir, nextDir);
+                    if(angle2 < 0.7f)
+                    {
+                        nextDir *= -1;
+                    }
+                    nextDir.Normalize();
+                    float distance = CheckMoveRaycast(nextDir);
+                    if (distance <= 0.1f)
+                    {
+                        return Vector3.zero;
+                    }
+                    return nextDir;
+                }
+            }
+        }
+        return Vector3.zero;
     }
     private float CheckMoveRaycast(Vector3 dir)
     {
@@ -214,6 +262,13 @@ public class Player : MonoBehaviour
     {
         m_fMoveTime = time;
         m_fCurrentSpendTime = 0.0f;
+    }
+    private void TriggerToChangeMovedir(Vector3 dir)
+    {
+        if (null != m_OnDirChangedAction)
+        {
+            m_OnDirChangedAction(dir);
+        }
     }
     //Speed
     public void SetSpeed(float speed)

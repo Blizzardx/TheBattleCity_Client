@@ -45,7 +45,7 @@ public class PlayerController
             GameObject.Destroy(obj);
             return;
         }
-        m_Player.SetOnDestroyCallBack(OnDestroy);
+        m_Player.SetCallBack(OnDestroy,OnMoveDirChange);
         m_Player.SetOnDeadCallBack(OnDead);
 
         //set value
@@ -103,15 +103,6 @@ public class PlayerController
             m_vLastMoveDir = newDir;
             m_vLastPos = m_Player.transform.position;
             m_bNeedUpdate = true;
-//             CSHandler handler = new CSHandler();
-//             handler.PlayerUid = m_iPlayerUid;
-//             handler.MoveDirection = new ThriftVector3();
-//             handler.MoveDirection.SetVector3(newDir);
-//             handler.CurrentPosition = new ThriftVector3();
-//             handler.CurrentPosition.SetVector3(m_Player.transform.position);
-// 
-//             NetWorkManager.Instance.SendMsgToServer(handler);
-
             m_Player.DoMove(newDir, m_Player.transform.position);            
         }
     }
@@ -182,6 +173,12 @@ public class PlayerController
     {
         m_playerControllerMap.Remove(instanceId);
         //m_Player = null;
+    }
+    private void OnMoveDirChange(Vector3 newDir)
+    {
+        m_vLastMoveDir = newDir;
+        m_vLastPos = m_Player.transform.position;
+        m_bNeedUpdate = true;
     }
     private void OnDead()
     {
