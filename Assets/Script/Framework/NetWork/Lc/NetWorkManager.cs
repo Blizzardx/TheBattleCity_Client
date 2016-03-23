@@ -39,7 +39,6 @@ public class NetWorkManager : Singleton<NetWorkManager>
         //test code
         m_Socket.Blocking = true;
         //
-        m_Socket.Blocking           = false;
         m_Socket.ReceiveBufferSize  = DEFAULT_RECEIVE_SIZE;
         m_Socket.SendBufferSize     = DEFAULT_SEND_SIZE;
         m_Socket.ReceiveTimeout     = 30000;
