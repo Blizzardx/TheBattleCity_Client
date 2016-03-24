@@ -224,9 +224,11 @@ public class PlayerController
         
         foreach (var elem in handler.FireInfoList)
         {
+            Vector3 dir = (elem.FireDirection.GetVector3() - elem.CurrentPosition.GetVector3());
+            dir.y = 0.0f;
+            dir.Normalize();
             //create bullet
-            BulletManager.Instance.CreateBullet(m_iPlayerUid, elem.BulletName, elem.CurrentPosition.GetVector3(),
-               (elem.FireDirection.GetVector3() - elem.CurrentPosition.GetVector3()).normalized);
+            BulletManager.Instance.CreateBullet(m_iPlayerUid, elem.BulletName, elem.CurrentPosition.GetVector3(),dir);
         }
     }
     private void OnPlayerHurt(MessageObject obj)

@@ -120,6 +120,7 @@ public class Player : MonoBehaviour
             TankFireInfo elem = m_FireInfo[i];
             Vector3 currentGunForward = elem.m_TransformGun.forward;
             elem.m_TransformGun.LookAt(dir);
+            elem.m_TransformGun.localEulerAngles = new Vector3(0.0f, elem.m_TransformGun.localEulerAngles.y, 0.0f);
             foreach (var elemFirePos in elem.m_TransformFirePos)
             {
                 resList.Add(elemFirePos.position);
@@ -148,6 +149,7 @@ public class Player : MonoBehaviour
         {
             TankFireInfo elem = m_FireInfo[i];
             elem.m_TransformGun.LookAt(dir);
+            elem.m_TransformGun.localEulerAngles = new Vector3(0.0f, elem.m_TransformGun.localEulerAngles.y, 0.0f);
             elem.m_GunAnimator.SetTrigger("Fire");
         }
         //play audio
