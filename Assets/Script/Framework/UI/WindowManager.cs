@@ -100,10 +100,11 @@ public class WindowManager : Singleton<WindowManager>
             currentWindow.ResetDeepth(GetCurrentWindowDeepth(currentWindowIndexStruct.m_Layer));
             //reset current layer deepth
             m_LayerIndexStore[currentWindowIndexStruct.m_Layer].m_iCurrent = currentWindow.GetMaxDeepthValue();
-            // on open
-            currentWindow.OnOpen(param);
+            
             //add to actived window queue
             AddToActivedWindowQueue(currentWindowIndexStruct.m_Layer, currentWindow);
+            // on open
+            currentWindow.OnOpen(param);
         }
         else
         {
@@ -126,18 +127,18 @@ public class WindowManager : Singleton<WindowManager>
 
                     // initialize (include set position,set root ,set deepth ...)
                     res.Initialize(windowId, root);
-                    // on init
-                    res.OnInit();
                     // set deepth ,do it befor add to actived window queue
                     res.ResetDeepth(GetCurrentWindowDeepth(currentWindowIndexStruct.m_Layer));
                     //reset current layer deepth
                     m_LayerIndexStore[currentWindowIndexStruct.m_Layer].m_iCurrent = res.GetMaxDeepthValue();
-                    // on open
-                    res.OnOpen(param);
                     //add to actived window queue
                     AddToActivedWindowQueue(currentWindowIndexStruct.m_Layer, res);
                     // save to window store
                     m_WindowStore.Add(windowId, res);
+                    // on init
+                    res.OnInit();
+                    // on open
+                    res.OnOpen(param);
                 }
                 else
                 {
