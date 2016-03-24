@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float      m_FireCd;
     [SerializeField] private Transform  m_TransformRayRoot;
     [SerializeField] private float      m_fSpeed;
+    [SerializeField] private float      m_fTankSize;
     private List<Transform>         m_TransformRayPoingList;
     private Action<int>             m_OnDestroyCallBack;
     private Action          m_OnDeadCallBack;
@@ -71,12 +72,21 @@ public class Player : MonoBehaviour
         }
         else
         {
-            m_bIsStop = false;
-            transform.forward = newDir;
-            m_MoveHandler.ResetDir(newDir, Time.time - Time.deltaTime, position);
             //caculate time
             float distance = CheckMoveRaycast(newDir);
-            ResetTime(distance / newDir.magnitude - Time.deltaTime);
+            if(distance <= m_fTankSize)
+            {
+                m_bIsStop = true;
+                m_MoveHandler.ResetDir(Vector3.zero, Time.time, position);
+            }
+            else
+            {
+                distance -= m_fTankSize;
+                m_bIsStop = false;
+                transform.forward = newDir;
+                m_MoveHandler.ResetDir(newDir, Time.time - Time.deltaTime, position);
+                ResetTime(distance / newDir.magnitude);
+            }
         }
         OnMoveChangedEvent();
     }
@@ -192,7 +202,7 @@ public class Player : MonoBehaviour
         if (res)
         {
             float distance = CheckMoveRaycast(dir);
-            if (distance <= 0.1f)
+            if (distance <= m_fTankSize)
             {
                 //auto change direction  and check
                 dir = AutoChangeDir();
@@ -216,7 +226,7 @@ public class Player : MonoBehaviour
             if (Physics.Raycast(ray, out hitInfo, 100, 1 << (LayerMask.NameToLayer("Wall"))))
             {
                 float tmpdistance = Vector3.Distance(or, hitInfo.point);
-                if (tmpdistance <= 0.1f)
+                if (tmpdistance <= m_fTankSize+0.1f)
                 {
                     //trigger to change 
                     float angle = Vector3.Dot(x, hitInfo.normal);
@@ -228,7 +238,7 @@ public class Player : MonoBehaviour
                     }
                     nextDir.Normalize();
                     float distance = CheckMoveRaycast(nextDir);
-                    if (distance <= 0.1f)
+                    if (distance <= m_fTankSize)
                     {
                         return Vector3.zero;
                     }
