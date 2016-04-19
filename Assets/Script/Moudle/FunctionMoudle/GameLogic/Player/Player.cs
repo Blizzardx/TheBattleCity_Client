@@ -32,6 +32,14 @@ public class Player : MonoBehaviour
     private float m_fCurrentSpendTime;
     private Action<Vector3> m_OnDirChangedAction;
 
+    //new move solution
+    private bool m_bIsFollowing;
+    private Vector3 m_vTargetPos;
+    private Vector3 m_vTargetDir;
+    private Vector3 m_vFollowTargetDir;
+    private float m_fFollowSpeed;
+    private float m_fFollowTime;
+
     private void Start()
     {
         m_bIsStop = true;
@@ -63,8 +71,28 @@ public class Player : MonoBehaviour
     {
         transform.position = position;
     }
-    public void DoMove(Vector3 newDir,Vector3 position)
+    public void ReadyToFollow(Vector3 newDir, Vector3 position)
     {
+        float distance = Vector3.Distance(position, transform.position);
+        if(distance > 2)
+        {
+            DoMove(newDir, position);
+        }
+        else
+        {
+            m_bIsFollowing = true;
+            m_vTargetDir = newDir;
+            m_vTargetPos = position;
+            m_vFollowTargetDir = position - transform.position;
+            m_vFollowTargetDir.Normalize();
+            m_fFollowSpeed = distance / 1.0f;
+            m_fFollowSpeed = m_fFollowSpeed < m_fSpeed ? m_fSpeed : m_fFollowSpeed;
+            m_fFollowTime = distance / m_fFollowSpeed;
+            DoMove(m_vFollowTargetDir * m_fFollowSpeed, transform.position);
+        }
+    }
+    public void DoMove(Vector3 newDir,Vector3 position)
+    {       
         if (newDir == Vector3.zero)
         {
             m_bIsStop = true;
@@ -161,7 +189,12 @@ public class Player : MonoBehaviour
         {
             //check move time
             m_fCurrentSpendTime += Time.deltaTime;
-            if (!m_bIsStop && m_fCurrentSpendTime > m_fMoveTime)
+            if(m_bIsFollowing && m_fCurrentSpendTime > m_fFollowTime)
+            {
+                m_bIsFollowing = false;
+                DoMove(m_vTargetDir, m_vTargetPos);
+            }
+            else if (!m_bIsStop && m_fCurrentSpendTime > m_fMoveTime)
             {
                 //auto change direction  and check
                 var newDir = AutoChangeDir();
@@ -287,12 +320,10 @@ public class Player : MonoBehaviour
     {
         m_fSpeed = speed;
     }
-
     public void AddSpeed(float speed)
     {
         m_fSpeed += speed;
     }
-
     public void SubSpeed(float speed)
     {
         m_fSpeed -= speed;

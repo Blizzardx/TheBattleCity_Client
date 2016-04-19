@@ -48,7 +48,18 @@ public class BulletManager :Singleton<BulletManager>
     }
     private void OnBulletDestroy(Bullet elem)
     {
-        
+        List<Bullet> list = null;
+        if (m_BulletStack.TryGetValue(elem.name, out list))
+        {
+            for(int i=0;i<list.Count;++i)
+            {
+                if(list[i] == elem)
+                {
+                    list.RemoveAt(i);
+                    break;
+                }
+            }
+        }
     }
     private void OnBulletCollection(Bullet elem)
     {

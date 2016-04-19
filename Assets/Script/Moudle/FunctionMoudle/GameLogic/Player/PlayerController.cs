@@ -201,8 +201,9 @@ public class PlayerController
             return;
         }
 
-        m_Player.DoMove(handler.MoveDirection.GetVector3(),handler.CurrentPosition.GetVector3());
-        
+        m_Player.ReadyToFollow(handler.MoveDirection.GetVector3(),handler.CurrentPosition.GetVector3());
+        //m_Player.DoMove(handler.MoveDirection.GetVector3(), handler.CurrentPosition.GetVector3());
+
     }
     private void OnPlayerFire(MessageObject obj)
     {
