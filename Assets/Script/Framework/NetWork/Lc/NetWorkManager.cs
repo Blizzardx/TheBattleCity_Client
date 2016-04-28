@@ -146,14 +146,14 @@ public class NetWorkManager : Singleton<NetWorkManager>
     {
         try
         {
+            int size = m_Socket.EndReceive(ar);
+            m_BufferTool.RecieveMsg(size);
+            //Debug.Log("size = " + size);
+
             if (CheckSocketStatus())
             {
-                int size = m_Socket.EndReceive(ar);
-                m_BufferTool.RecieveMsg(size);
-
-
-                m_Socket.BeginReceive(m_BufferTool.GetRecieveBuffer(), 0, MessageBufferTool.MAXLength, SocketFlags.None,
-                    ReceiveEventHandle, m_Socket);
+                m_Status = SocketStatus.Reciving;
+                m_Socket.BeginReceive(m_BufferTool.GetRecieveBuffer(), 0, MessageBufferTool.MAXLength, SocketFlags.None, ReceiveEventHandle, m_Socket);
             }
         }
         catch (Exception e)
