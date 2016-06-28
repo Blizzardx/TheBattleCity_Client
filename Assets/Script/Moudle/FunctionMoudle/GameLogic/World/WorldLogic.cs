@@ -69,6 +69,7 @@ public class WorldLogic : LogicBase<WorldLogic>
     {
         //connect to test server
         NetWorkManager.Instance.Connect("120.25.176.42", 8000);
+        //NetWorkManager.Instance.Connect("127.0.0.1", 1234);
         //NetWorkManager.Instance.Connect("192.168.1.4", 8000);
         //NetWorkManager.Instance.Connect("192.168.1.126", 8000);
     }

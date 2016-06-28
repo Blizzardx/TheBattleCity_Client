@@ -118,7 +118,7 @@ public class MessageBufferTool
         {
             m_nCurrentDecodeIndex = DecodeGamePackage(m_nCurrentDecodeIndex, size);
 
-        } while (!m_bIsWaitingPkgComplete && m_nCurrentDecodeIndex < size && m_nCurrentDecodeIndex != -1);
+        } while (!m_bIsWaitingPkgComplete && m_nCurrentDecodeIndex < m_DecodingBuffer.Count && m_nCurrentDecodeIndex != -1);
         
         if (m_nCurrentDecodeIndex != -1)
         {

@@ -274,7 +274,7 @@ public class ResourceManager : SingletonTemplateMon<ResourceManager>
             if (isAssetBundle)
             {
                 byte[] data = FileUtils.ReadByteFile(realPath);
-                AssetBundleCreateRequest a = AssetBundle.CreateFromMemory(data);
+                AssetBundleCreateRequest a = AssetBundle.LoadFromMemoryAsync(data);
                 request = a;
             }
             else
