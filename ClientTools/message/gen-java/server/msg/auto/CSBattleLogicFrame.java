@@ -32,22 +32,22 @@ import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CSBattleLogicFrameMsg implements org.apache.thrift.TBase<CSBattleLogicFrameMsg, CSBattleLogicFrameMsg._Fields>, java.io.Serializable, Cloneable, Comparable<CSBattleLogicFrameMsg> {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("CSBattleLogicFrameMsg");
+public class CSBattleLogicFrame implements org.apache.thrift.TBase<CSBattleLogicFrame, CSBattleLogicFrame._Fields>, java.io.Serializable, Cloneable, Comparable<CSBattleLogicFrame> {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("CSBattleLogicFrame");
 
-  private static final org.apache.thrift.protocol.TField COMMAND_DATA_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("commandDataList", org.apache.thrift.protocol.TType.STRUCT, (short)10);
+  private static final org.apache.thrift.protocol.TField COMMAND_DATA_FIELD_DESC = new org.apache.thrift.protocol.TField("commandData", org.apache.thrift.protocol.TType.STRUCT, (short)10);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new CSBattleLogicFrameMsgStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new CSBattleLogicFrameMsgTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new CSBattleLogicFrameStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new CSBattleLogicFrameTupleSchemeFactory());
   }
 
-  public BattleCommandData commandDataList; // required
+  public BattleCommandData commandData; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    COMMAND_DATA_LIST((short)10, "commandDataList");
+    COMMAND_DATA((short)10, "commandData");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -62,8 +62,8 @@ public class CSBattleLogicFrameMsg implements org.apache.thrift.TBase<CSBattleLo
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 10: // COMMAND_DATA_LIST
-          return COMMAND_DATA_LIST;
+        case 10: // COMMAND_DATA
+          return COMMAND_DATA;
         default:
           return null;
       }
@@ -107,71 +107,71 @@ public class CSBattleLogicFrameMsg implements org.apache.thrift.TBase<CSBattleLo
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.COMMAND_DATA_LIST, new org.apache.thrift.meta_data.FieldMetaData("commandDataList", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+    tmpMap.put(_Fields.COMMAND_DATA, new org.apache.thrift.meta_data.FieldMetaData("commandData", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, BattleCommandData.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(CSBattleLogicFrameMsg.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(CSBattleLogicFrame.class, metaDataMap);
   }
 
-  public CSBattleLogicFrameMsg() {
+  public CSBattleLogicFrame() {
   }
 
-  public CSBattleLogicFrameMsg(
-    BattleCommandData commandDataList)
+  public CSBattleLogicFrame(
+    BattleCommandData commandData)
   {
     this();
-    this.commandDataList = commandDataList;
+    this.commandData = commandData;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public CSBattleLogicFrameMsg(CSBattleLogicFrameMsg other) {
-    if (other.isSetCommandDataList()) {
-      this.commandDataList = new BattleCommandData(other.commandDataList);
+  public CSBattleLogicFrame(CSBattleLogicFrame other) {
+    if (other.isSetCommandData()) {
+      this.commandData = new BattleCommandData(other.commandData);
     }
   }
 
-  public CSBattleLogicFrameMsg deepCopy() {
-    return new CSBattleLogicFrameMsg(this);
+  public CSBattleLogicFrame deepCopy() {
+    return new CSBattleLogicFrame(this);
   }
 
   @Override
   public void clear() {
-    this.commandDataList = null;
+    this.commandData = null;
   }
 
-  public BattleCommandData getCommandDataList() {
-    return this.commandDataList;
+  public BattleCommandData getCommandData() {
+    return this.commandData;
   }
 
-  public CSBattleLogicFrameMsg setCommandDataList(BattleCommandData commandDataList) {
-    this.commandDataList = commandDataList;
+  public CSBattleLogicFrame setCommandData(BattleCommandData commandData) {
+    this.commandData = commandData;
     return this;
   }
 
-  public void unsetCommandDataList() {
-    this.commandDataList = null;
+  public void unsetCommandData() {
+    this.commandData = null;
   }
 
-  /** Returns true if field commandDataList is set (has been assigned a value) and false otherwise */
-  public boolean isSetCommandDataList() {
-    return this.commandDataList != null;
+  /** Returns true if field commandData is set (has been assigned a value) and false otherwise */
+  public boolean isSetCommandData() {
+    return this.commandData != null;
   }
 
-  public void setCommandDataListIsSet(boolean value) {
+  public void setCommandDataIsSet(boolean value) {
     if (!value) {
-      this.commandDataList = null;
+      this.commandData = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case COMMAND_DATA_LIST:
+    case COMMAND_DATA:
       if (value == null) {
-        unsetCommandDataList();
+        unsetCommandData();
       } else {
-        setCommandDataList((BattleCommandData)value);
+        setCommandData((BattleCommandData)value);
       }
       break;
 
@@ -180,8 +180,8 @@ public class CSBattleLogicFrameMsg implements org.apache.thrift.TBase<CSBattleLo
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case COMMAND_DATA_LIST:
-      return getCommandDataList();
+    case COMMAND_DATA:
+      return getCommandData();
 
     }
     throw new IllegalStateException();
@@ -194,8 +194,8 @@ public class CSBattleLogicFrameMsg implements org.apache.thrift.TBase<CSBattleLo
     }
 
     switch (field) {
-    case COMMAND_DATA_LIST:
-      return isSetCommandDataList();
+    case COMMAND_DATA:
+      return isSetCommandData();
     }
     throw new IllegalStateException();
   }
@@ -204,21 +204,21 @@ public class CSBattleLogicFrameMsg implements org.apache.thrift.TBase<CSBattleLo
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof CSBattleLogicFrameMsg)
-      return this.equals((CSBattleLogicFrameMsg)that);
+    if (that instanceof CSBattleLogicFrame)
+      return this.equals((CSBattleLogicFrame)that);
     return false;
   }
 
-  public boolean equals(CSBattleLogicFrameMsg that) {
+  public boolean equals(CSBattleLogicFrame that) {
     if (that == null)
       return false;
 
-    boolean this_present_commandDataList = true && this.isSetCommandDataList();
-    boolean that_present_commandDataList = true && that.isSetCommandDataList();
-    if (this_present_commandDataList || that_present_commandDataList) {
-      if (!(this_present_commandDataList && that_present_commandDataList))
+    boolean this_present_commandData = true && this.isSetCommandData();
+    boolean that_present_commandData = true && that.isSetCommandData();
+    if (this_present_commandData || that_present_commandData) {
+      if (!(this_present_commandData && that_present_commandData))
         return false;
-      if (!this.commandDataList.equals(that.commandDataList))
+      if (!this.commandData.equals(that.commandData))
         return false;
     }
 
@@ -231,19 +231,19 @@ public class CSBattleLogicFrameMsg implements org.apache.thrift.TBase<CSBattleLo
   }
 
   @Override
-  public int compareTo(CSBattleLogicFrameMsg other) {
+  public int compareTo(CSBattleLogicFrame other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
 
-    lastComparison = Boolean.valueOf(isSetCommandDataList()).compareTo(other.isSetCommandDataList());
+    lastComparison = Boolean.valueOf(isSetCommandData()).compareTo(other.isSetCommandData());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetCommandDataList()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.commandDataList, other.commandDataList);
+    if (isSetCommandData()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.commandData, other.commandData);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -265,14 +265,14 @@ public class CSBattleLogicFrameMsg implements org.apache.thrift.TBase<CSBattleLo
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("CSBattleLogicFrameMsg(");
+    StringBuilder sb = new StringBuilder("CSBattleLogicFrame(");
     boolean first = true;
 
-    sb.append("commandDataList:");
-    if (this.commandDataList == null) {
+    sb.append("commandData:");
+    if (this.commandData == null) {
       sb.append("null");
     } else {
-      sb.append(this.commandDataList);
+      sb.append(this.commandData);
     }
     first = false;
     sb.append(")");
@@ -282,8 +282,8 @@ public class CSBattleLogicFrameMsg implements org.apache.thrift.TBase<CSBattleLo
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
     // check for sub-struct validity
-    if (commandDataList != null) {
-      commandDataList.validate();
+    if (commandData != null) {
+      commandData.validate();
     }
   }
 
@@ -303,15 +303,15 @@ public class CSBattleLogicFrameMsg implements org.apache.thrift.TBase<CSBattleLo
     }
   }
 
-  private static class CSBattleLogicFrameMsgStandardSchemeFactory implements SchemeFactory {
-    public CSBattleLogicFrameMsgStandardScheme getScheme() {
-      return new CSBattleLogicFrameMsgStandardScheme();
+  private static class CSBattleLogicFrameStandardSchemeFactory implements SchemeFactory {
+    public CSBattleLogicFrameStandardScheme getScheme() {
+      return new CSBattleLogicFrameStandardScheme();
     }
   }
 
-  private static class CSBattleLogicFrameMsgStandardScheme extends StandardScheme<CSBattleLogicFrameMsg> {
+  private static class CSBattleLogicFrameStandardScheme extends StandardScheme<CSBattleLogicFrame> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, CSBattleLogicFrameMsg struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, CSBattleLogicFrame struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -321,11 +321,11 @@ public class CSBattleLogicFrameMsg implements org.apache.thrift.TBase<CSBattleLo
           break;
         }
         switch (schemeField.id) {
-          case 10: // COMMAND_DATA_LIST
+          case 10: // COMMAND_DATA
             if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-              struct.commandDataList = new BattleCommandData();
-              struct.commandDataList.read(iprot);
-              struct.setCommandDataListIsSet(true);
+              struct.commandData = new BattleCommandData();
+              struct.commandData.read(iprot);
+              struct.setCommandDataIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -341,13 +341,13 @@ public class CSBattleLogicFrameMsg implements org.apache.thrift.TBase<CSBattleLo
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, CSBattleLogicFrameMsg struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, CSBattleLogicFrame struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (struct.commandDataList != null) {
-        oprot.writeFieldBegin(COMMAND_DATA_LIST_FIELD_DESC);
-        struct.commandDataList.write(oprot);
+      if (struct.commandData != null) {
+        oprot.writeFieldBegin(COMMAND_DATA_FIELD_DESC);
+        struct.commandData.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -356,35 +356,35 @@ public class CSBattleLogicFrameMsg implements org.apache.thrift.TBase<CSBattleLo
 
   }
 
-  private static class CSBattleLogicFrameMsgTupleSchemeFactory implements SchemeFactory {
-    public CSBattleLogicFrameMsgTupleScheme getScheme() {
-      return new CSBattleLogicFrameMsgTupleScheme();
+  private static class CSBattleLogicFrameTupleSchemeFactory implements SchemeFactory {
+    public CSBattleLogicFrameTupleScheme getScheme() {
+      return new CSBattleLogicFrameTupleScheme();
     }
   }
 
-  private static class CSBattleLogicFrameMsgTupleScheme extends TupleScheme<CSBattleLogicFrameMsg> {
+  private static class CSBattleLogicFrameTupleScheme extends TupleScheme<CSBattleLogicFrame> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, CSBattleLogicFrameMsg struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, CSBattleLogicFrame struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
-      if (struct.isSetCommandDataList()) {
+      if (struct.isSetCommandData()) {
         optionals.set(0);
       }
       oprot.writeBitSet(optionals, 1);
-      if (struct.isSetCommandDataList()) {
-        struct.commandDataList.write(oprot);
+      if (struct.isSetCommandData()) {
+        struct.commandData.write(oprot);
       }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, CSBattleLogicFrameMsg struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, CSBattleLogicFrame struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(1);
       if (incoming.get(0)) {
-        struct.commandDataList = new BattleCommandData();
-        struct.commandDataList.read(iprot);
-        struct.setCommandDataListIsSet(true);
+        struct.commandData = new BattleCommandData();
+        struct.commandData.read(iprot);
+        struct.setCommandDataIsSet(true);
       }
     }
   }

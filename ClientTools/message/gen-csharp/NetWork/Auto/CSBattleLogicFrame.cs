@@ -21,20 +21,20 @@ namespace NetWork.Auto
   #if !SILVERLIGHT
   [Serializable]
   #endif
-  public partial class CSBattleLogicFrameMsg : TBase
+  public partial class CSBattleLogicFrame : TBase
   {
-    private BattleCommandData _commandDataList;
+    private BattleCommandData _commandData;
 
-    public BattleCommandData CommandDataList
+    public BattleCommandData CommandData
     {
       get
       {
-        return _commandDataList;
+        return _commandData;
       }
       set
       {
-        __isset.commandDataList = true;
-        this._commandDataList = value;
+        __isset.commandData = true;
+        this._commandData = value;
       }
     }
 
@@ -44,10 +44,10 @@ namespace NetWork.Auto
     [Serializable]
     #endif
     public struct Isset {
-      public bool commandDataList;
+      public bool commandData;
     }
 
-    public CSBattleLogicFrameMsg() {
+    public CSBattleLogicFrame() {
     }
 
     public void Read (TProtocol iprot)
@@ -64,8 +64,8 @@ namespace NetWork.Auto
         {
           case 10:
             if (field.Type == TType.Struct) {
-              CommandDataList = new BattleCommandData();
-              CommandDataList.Read(iprot);
+              CommandData = new BattleCommandData();
+              CommandData.Read(iprot);
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -80,15 +80,15 @@ namespace NetWork.Auto
     }
 
     public void Write(TProtocol oprot) {
-      TStruct struc = new TStruct("CSBattleLogicFrameMsg");
+      TStruct struc = new TStruct("CSBattleLogicFrame");
       oprot.WriteStructBegin(struc);
       TField field = new TField();
-      if (CommandDataList != null && __isset.commandDataList) {
-        field.Name = "commandDataList";
+      if (CommandData != null && __isset.commandData) {
+        field.Name = "commandData";
         field.Type = TType.Struct;
         field.ID = 10;
         oprot.WriteFieldBegin(field);
-        CommandDataList.Write(oprot);
+        CommandData.Write(oprot);
         oprot.WriteFieldEnd();
       }
       oprot.WriteFieldStop();
@@ -96,9 +96,9 @@ namespace NetWork.Auto
     }
 
     public override string ToString() {
-      StringBuilder sb = new StringBuilder("CSBattleLogicFrameMsg(");
-      sb.Append("CommandDataList: ");
-      sb.Append(CommandDataList== null ? "<null>" : CommandDataList.ToString());
+      StringBuilder sb = new StringBuilder("CSBattleLogicFrame(");
+      sb.Append("CommandData: ");
+      sb.Append(CommandData== null ? "<null>" : CommandData.ToString());
       sb.Append(")");
       return sb.ToString();
     }

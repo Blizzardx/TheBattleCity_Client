@@ -42,6 +42,8 @@ namespace NetWork
             REQ_ID_MSG.Add(MessageIdConstants.CS_UseItem, typeof(CSUseItem));
             REQ_ID_MSG.Add(MessageIdConstants.SC_UsedItem, typeof(SCUsedItem));
             REQ_ID_MSG.Add(MessageIdConstants.SC_CreateItem, typeof(SCCreateItem));
+            REQ_ID_MSG.Add(MessageIdConstants.CS_BattleLogicFrame, typeof(CSBattleLogicFrame));
+            REQ_ID_MSG.Add(MessageIdConstants.SC_BattleLogicFrame, typeof(SCBattleLogicFrame));
 
 
             foreach (KeyValuePair<int, System.Type> kv in REQ_ID_MSG)

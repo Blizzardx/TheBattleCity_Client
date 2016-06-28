@@ -86,4 +86,8 @@ public class MessageIdConstants {
 
   public static final int CS_ItemGenFundamental = 103026;
 
+  public static final int CS_BattleLogicFrame = 103027;
+
+  public static final int SC_BattleLogicFrame = 103028;
+
 }

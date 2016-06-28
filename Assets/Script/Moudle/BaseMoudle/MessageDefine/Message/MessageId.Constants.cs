@@ -43,5 +43,7 @@ namespace NetWork.Auto
     public static int SC_UsedItem = 103024;
     public static int SC_CreateItem = 103025;
     public static int CS_ItemGenFundamental = 103026;
+    public static int CS_BattleLogicFrame = 103027;
+    public static int SC_BattleLogicFrame = 103028;
   }
 }
