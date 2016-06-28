@@ -213,7 +213,7 @@ public class MessageBufferTool
 
         if (AppManager.Instance.m_bIsShowDebugMsg)
         {
-            Debuger.Log("Rec msg:" + message.ToString());
+            Debuger.Log("Rec at time " + DateTime.Now.Millisecond + " msg: " + message.ToString());
         }
         return index;
     }
