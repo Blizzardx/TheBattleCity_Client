@@ -204,4 +204,8 @@ public class UIBase
     {
         
     }
+    public int GetMaxDeepthValue()
+    {
+        return m_iMaxDeepth;
+    }
 }

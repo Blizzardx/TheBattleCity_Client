@@ -2,17 +2,44 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Common.Component;
 using Common.Tool;
 
 public class UIManager : Singleton<UIManager>
 {
-    private Dictionary<Type, UIBase> m_CurrentWindowStore;
-    private Camera m_UICamera;
-    private UIRoot m_UIRoot;
+    public enum WindowLayer
+    {
+        Tip,
+        Window,
+    }
+    public class LayerInfo
+    {
+        public LayerInfo(int min, int max, GameObject root)
+        {
+            m_iMin = min;
+            m_iMax = max;
+            m_iCurrent = m_iMin;
+            m_Root = root;
+        }
+        public int m_iMin { get; private set; }
+        public int m_iMax { get; private set; }
+        public int m_iCurrent;
+        public GameObject m_Root { get; private set; }
+    }
+    private Dictionary<Type, UIBase>                m_CurrentWindowStore;
+    private Camera                                  m_UICamera;
+    private UIRoot                                  m_UIRoot;
+    private Dictionary<WindowLayer, LayerInfo>      m_LayerIndexStore;
+    private Dictionary<WindowLayer, List<UIBase>>   m_ActivedWindowQueue;
 
     public UIManager()
     {
         m_CurrentWindowStore = new Dictionary<Type, UIBase>();
+        m_UIRoot = ComponentTool.FindChildComponent<UIRoot>("UI_Root", null);
+        m_UICamera = ComponentTool.FindChildComponent<Camera>("Camera", m_UIRoot.gameObject);
+
+        m_LayerIndexStore.Add(WindowLayer.Window, new LayerInfo(0, 20, ComponentTool.FindChild("LayerWindow", m_UIRoot.gameObject)));
+        m_LayerIndexStore.Add(WindowLayer.Tip, new LayerInfo(21, 40, ComponentTool.FindChild("LayerTip", m_UIRoot.gameObject)));
     }
     public UIBase OpenWindow(Type t, object param)
     {
@@ -50,8 +77,14 @@ public class UIManager : Singleton<UIManager>
             Debug.Log(" can't cloas window " + t.ToString());
             return;
         }
-        ui.DoClose();
+
         m_CurrentWindowStore.Remove(t);
+
+        //remove from actived window queue
+        RemoveFromActivedWindowQueue(WindowLayer.Window, ui);
+
+        ui.DoClose();
+
     }
     public void HideWindow<T>() where T : UIBase
     {
@@ -66,45 +99,71 @@ public class UIManager : Singleton<UIManager>
             Debug.Log(" can't cloas window " + t.ToString());
             return;
         }
+        //remove from actived window queue
+        RemoveFromActivedWindowQueue(WindowLayer.Window, ui);
+
         ui.DoHide();
     }
     public Camera GetUICamera()
     {
         return m_UICamera;
     }
-
     public UIRoot GetUIRoot()
     {
         return m_UIRoot;
     }
+
     private void OnWindowLoaded(GameObject windowRoot, UIBase windowBase)
     {
-
+        // test code
+        WindowLayer layer = WindowLayer.Tip;
+        // set deepth ,do it befor add to actived window queue
+        windowBase.ResetDeepth(GetCurrentWindowDeepth(layer));
+        //reset current layer deepth
+        m_LayerIndexStore[layer].m_iCurrent = windowBase.GetMaxDeepthValue();
+        //add to actived window queue
+        AddToActivedWindowQueue(layer, windowBase);
     }
-    //private int GetCurrentWindowDeepth(WindowLayer layer)
-    //{
-    //    int currentLayerDeepth = ++m_LayerIndexStore[layer].m_iCurrent;
-    //    if (currentLayerDeepth > m_LayerIndexStore[layer].m_iMax)
-    //    {
-    //        currentLayerDeepth = ResetDeepth(layer);
-    //    }
-    //    if (currentLayerDeepth > m_LayerIndexStore[layer].m_iMax)
-    //    {
-    //        Debuger.LogError("panel deepth out of range");
-    //    }
-    //    return currentLayerDeepth;
-    //}
-    //private int ResetDeepth(WindowLayer layer)
-    //{
-    //    int lastWindowDeepth = m_LayerIndexStore[layer].m_iMin;
-    //    for (int i = 0; i < m_ActivedWindowQueue[layer].Count; ++i)
-    //    {
-    //        m_ActivedWindowQueue[layer][i].ResetDeepth(lastWindowDeepth + 1);
-    //        lastWindowDeepth = m_ActivedWindowQueue[layer][i].GetMaxDeepthValue();
-    //    }
-    //    m_LayerIndexStore[layer].m_iCurrent = lastWindowDeepth + 1;
-    //    return m_LayerIndexStore[layer].m_iCurrent;
-    //}
+    private void AddToActivedWindowQueue(WindowLayer layer, UIBase windowHandler)
+    {
+        if (!m_ActivedWindowQueue.ContainsKey(layer))
+        {
+            m_ActivedWindowQueue.Add(layer, new List<UIBase>());
+        }
+        m_ActivedWindowQueue[layer].Add(windowHandler);
+    }
+    private void RemoveFromActivedWindowQueue(WindowLayer layer, UIBase windowHandler)
+    {
+        if (!m_ActivedWindowQueue.ContainsKey(layer))
+        {
+            return;
+        }
+        m_ActivedWindowQueue[layer].Remove(windowHandler);
+    }
+    private int GetCurrentWindowDeepth(WindowLayer layer)
+    {
+        int currentLayerDeepth = ++m_LayerIndexStore[layer].m_iCurrent;
+        if (currentLayerDeepth > m_LayerIndexStore[layer].m_iMax)
+        {
+            currentLayerDeepth = ResetDeepth(layer);
+        }
+        if (currentLayerDeepth > m_LayerIndexStore[layer].m_iMax)
+        {
+            Debug.LogError("panel deepth out of range");
+        }
+        return currentLayerDeepth;
+    }
+    private int ResetDeepth(WindowLayer layer)
+    {
+        int lastWindowDeepth = m_LayerIndexStore[layer].m_iMin;
+        for (int i = 0; i < m_ActivedWindowQueue[layer].Count; ++i)
+        {
+            m_ActivedWindowQueue[layer][i].ResetDeepth(lastWindowDeepth + 1);
+            lastWindowDeepth = m_ActivedWindowQueue[layer][i].GetMaxDeepthValue();
+        }
+        m_LayerIndexStore[layer].m_iCurrent = lastWindowDeepth + 1;
+        return m_LayerIndexStore[layer].m_iCurrent;
+    }
     public void HideAllWindow()
     {
     }
