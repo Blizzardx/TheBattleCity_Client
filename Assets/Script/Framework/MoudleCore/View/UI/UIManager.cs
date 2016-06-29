@@ -37,11 +37,13 @@ public class UIManager : Singleton<UIManager>
         m_CurrentWindowStore = new Dictionary<Type, UIBase>();
         m_UIRoot = ComponentTool.FindChildComponent<UIRoot>("UI_Root", null);
         m_UICamera = ComponentTool.FindChildComponent<Camera>("Camera", m_UIRoot.gameObject);
+        m_LayerIndexStore = new Dictionary<WindowLayer, LayerInfo>();
+        m_ActivedWindowQueue = new Dictionary<WindowLayer, List<UIBase>>();
 
         m_LayerIndexStore.Add(WindowLayer.Window, new LayerInfo(0, 20, ComponentTool.FindChild("LayerWindow", m_UIRoot.gameObject)));
         m_LayerIndexStore.Add(WindowLayer.Tip, new LayerInfo(21, 40, ComponentTool.FindChild("LayerTip", m_UIRoot.gameObject)));
     }
-    public UIBase OpenWindow(Type t, object param)
+    public UIBase OpenWindow(Type t, WindowLayer layer, object param = null)
     {
         UIBase ui = null;
         m_CurrentWindowStore.TryGetValue(t, out ui);
@@ -49,8 +51,12 @@ public class UIManager : Singleton<UIManager>
         {
             ui = Activator.CreateInstance(t) as UIBase;
             m_CurrentWindowStore.Add(t, ui);
-
+            ui.SetLayer(layer);
             ui.DoCreate(OnWindowLoaded);
+        }
+        else
+        {
+            ui.SetLayer(layer);
         }
         if (ui.IsOpen())
         {
@@ -60,9 +66,9 @@ public class UIManager : Singleton<UIManager>
         ui.DoOpen(param);
         return ui;
     }
-    public void OpenWindow<T>(object param) where T : UIBase
+    public void OpenWindow<T>(WindowLayer layer,object param = null) where T : UIBase
     {
-        OpenWindow(typeof (T), param);
+        OpenWindow(typeof (T), layer,param);
     }
     public void CloseWindow<T>() where T : UIBase
     {
@@ -81,7 +87,7 @@ public class UIManager : Singleton<UIManager>
         m_CurrentWindowStore.Remove(t);
 
         //remove from actived window queue
-        RemoveFromActivedWindowQueue(WindowLayer.Window, ui);
+        RemoveFromActivedWindowQueue(ui);
 
         ui.DoClose();
 
@@ -100,7 +106,7 @@ public class UIManager : Singleton<UIManager>
             return;
         }
         //remove from actived window queue
-        RemoveFromActivedWindowQueue(WindowLayer.Window, ui);
+        RemoveFromActivedWindowQueue(ui);
 
         ui.DoHide();
     }
@@ -112,28 +118,32 @@ public class UIManager : Singleton<UIManager>
     {
         return m_UIRoot;
     }
-
     private void OnWindowLoaded(GameObject windowRoot, UIBase windowBase)
     {
-        // test code
-        WindowLayer layer = WindowLayer.Tip;
+        WindowLayer layer = windowBase.GetLayer();
+
+        var layerinfo = m_LayerIndexStore[layer];
+        windowRoot.transform.SetParent(layerinfo.m_Root.transform,false);
+
         // set deepth ,do it befor add to actived window queue
         windowBase.ResetDeepth(GetCurrentWindowDeepth(layer));
         //reset current layer deepth
-        m_LayerIndexStore[layer].m_iCurrent = windowBase.GetMaxDeepthValue();
+        layerinfo.m_iCurrent = windowBase.GetMaxDeepthValue();
         //add to actived window queue
-        AddToActivedWindowQueue(layer, windowBase);
+        AddToActivedWindowQueue(windowBase);
     }
-    private void AddToActivedWindowQueue(WindowLayer layer, UIBase windowHandler)
+    private void AddToActivedWindowQueue( UIBase windowHandler)
     {
+        WindowLayer layer = windowHandler.GetLayer();
         if (!m_ActivedWindowQueue.ContainsKey(layer))
         {
             m_ActivedWindowQueue.Add(layer, new List<UIBase>());
         }
         m_ActivedWindowQueue[layer].Add(windowHandler);
     }
-    private void RemoveFromActivedWindowQueue(WindowLayer layer, UIBase windowHandler)
+    private void RemoveFromActivedWindowQueue( UIBase windowHandler)
     {
+        WindowLayer layer = windowHandler.GetLayer();
         if (!m_ActivedWindowQueue.ContainsKey(layer))
         {
             return;

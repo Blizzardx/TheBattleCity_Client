@@ -21,6 +21,7 @@ public class UIBase
     private bool m_bIsDestroyed;
     private bool m_bTriggerOpenAfterLoaded;
     private Action<GameObject, UIBase> m_CreateCallback;
+    private UIManager.WindowLayer m_Layer;
 
     private int m_iDeepth;
     private List<PanelStruct> m_AllPanelsUnderWindow;
@@ -93,6 +94,15 @@ public class UIBase
         }
         m_iMaxDeepth = maxDeepth;
         return maxDeepth;
+    }
+
+    public void SetLayer(UIManager.WindowLayer layer)
+    {
+        m_Layer = layer;
+    }
+    public UIManager.WindowLayer GetLayer()
+    {
+        return m_Layer;
     }
     #endregion
 
