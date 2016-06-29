@@ -10,7 +10,7 @@ FOR %%e IN (*.thrift) DO (
 )
 call GBK2Utf-8.exe gen-csharp
 
-set des=..\..\Assets\Script\\Moudles\BaseMoudle
+set des=..\..\Assets\Script\\Moudle\BaseMoudle
 rd /s /q %des%\Config
 md %des%\Config
 copy gen-csharp\Config\*.* %des%\Config
