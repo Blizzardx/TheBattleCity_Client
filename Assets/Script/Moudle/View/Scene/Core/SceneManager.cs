@@ -27,12 +27,12 @@ public class SceneManager : MonoSingleton<SceneManager>
         m_CurrentScene.Create();
 
         // load empty first
-        LoadEmptyScene();
+        StartCoroutine(LoadEmptyScene());
     }
     IEnumerator LoadEmptyScene()
     {
         yield return UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("Empty");
-        LoadTargetScene();
+        StartCoroutine(LoadTargetScene());
     }
     IEnumerator LoadTargetScene()
     {

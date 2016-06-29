@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using Framework.Asset;
 
 public class UIBase
 {
@@ -62,7 +63,7 @@ public class UIBase
         else
         {
             // begin load ui window resource from bundle or build in resource
-            ResourceManager.Instance.LoadBuildInAssetsAsync(m_strResurceName,AssetType.UI,  (obj) =>
+            ResourceManager.Instance.LoadBuildInResourceAsync(m_strResurceName,  (name,obj) =>
             {
                 m_ObjectRoot = GameObject.Instantiate(obj) as GameObject;
             });

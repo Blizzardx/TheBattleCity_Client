@@ -3,6 +3,7 @@ using Common.Component;
 using Common.Tool;
 using UnityEngine;
 using System;
+using Framework.Asset;
 
 public class AudioPlayer:Singleton<AudioPlayer>
 {
@@ -172,7 +173,7 @@ public class AudioPlayer:Singleton<AudioPlayer>
             elem.m_AudioSource = elem.m_Root.AddComponent<AudioSource>();
         }
 
-        elem.m_AudioClip = ResourceManager.Instance.LoadBuildInResource<AudioClip>(resource, AssetType.Audio);
+        elem.m_AudioClip = ResourceManager.Instance.LoadBuildInResourceSync<AudioClip>(resource);
         if (elem.m_AudioClip == null)
         {
             Debug.LogError("there is no audio : " + resource);
@@ -201,7 +202,7 @@ public class AudioPlayer:Singleton<AudioPlayer>
             elem.m_AudioSource = elem.m_Root.AddComponent<AudioSource>();
         }
 
-        elem.m_AudioClip = ResourceManager.Instance.LoadBuildInResource<AudioClip>(resource, AssetType.Audio);
+        elem.m_AudioClip = ResourceManager.Instance.LoadBuildInResourceSync<AudioClip>(resource);
         if (elem.m_AudioClip == null)
         {
             return null;
