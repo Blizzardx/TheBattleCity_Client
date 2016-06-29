@@ -80,7 +80,7 @@ public class UIManager : Singleton<UIManager>
         m_CurrentWindowStore.TryGetValue(t, out ui);
         if (null == ui)
         {
-            Debug.Log(" can't cloas window " + t.ToString());
+            Debug.Log(" can't close window " + t.ToString());
             return;
         }
 

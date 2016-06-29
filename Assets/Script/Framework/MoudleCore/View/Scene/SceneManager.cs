@@ -20,6 +20,8 @@ public class SceneManager : MonoSingleton<SceneManager>
         m_bIsLoading = true;
         var newScene = Activator.CreateInstance(typeof(T)) as SceneBase;
 
+        Debug.Log("begin load scene " + newScene.ToString());
+
         // on create
         newScene.Create();
 
@@ -35,6 +37,7 @@ public class SceneManager : MonoSingleton<SceneManager>
         if (null != m_CurrentScene)
         {
             // on exit
+            Debug.Log("Unload scene " + m_CurrentScene.ToString());
             m_CurrentScene.Exit();
         }
         m_CurrentScene = scene;
@@ -56,6 +59,8 @@ public class SceneManager : MonoSingleton<SceneManager>
         // on process
         m_CurrentScene.Process(res.progress);
         yield return res;
+
+        Debug.Log("loaded scene " + m_CurrentScene.ToString());
 
         // on init
         m_CurrentScene.Init();
