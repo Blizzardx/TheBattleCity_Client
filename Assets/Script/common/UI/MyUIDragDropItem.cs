@@ -1,6 +1,8 @@
+using Common.Component;
 using UnityEngine;
 using System.Collections;
 using System;
+using Common.Tool;
 
 public class MyUIDragDropItem : UIDragDropItem
 {

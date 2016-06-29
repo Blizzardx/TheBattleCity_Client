@@ -1,9 +1,7 @@
 ﻿using System.Collections;
-using System.IO;
-using Assets.Scripts.Core.Utils;
+using Common.Tool;
 using Communication;
 using Thrift.Protocol;
-using Thrift.Transport;
 using UnityEngine;
 using System.Collections.Generic;
 using System;
@@ -17,8 +15,14 @@ public enum AssetType
     Audio,
     Map,
     Texture,
-    Moudle,
-    Tank,
+    Atlas,
+    Prefab,
+    EditorRes,
+    Char,
+    Trigger,
+    Effect,
+    Materials,
+    Model,
 }
 
 public enum LoadType
@@ -32,13 +36,18 @@ public class LoadResourceElement
     public ResourceRequest  request;
     public bool             isFinishedDownload;
 }
-public class ResourceManager : SingletonTemplateMon<ResourceManager>
+public class ResourceManager : MonoSingleton<ResourceManager>
 {
     private Dictionary<string, UnityEngine.Object>                      m_AssetStore;
     private Dictionary<string, List<Action<UnityEngine.Object>>>        m_AssetLoadCallBackStore;
     private List<string>                                                m_LoadingStore;
     
     #region public interface
+
+    public ResourceManager()
+    {
+        Initialize();
+    }
     public void Initialize()
     {
         m_AssetStore                = new Dictionary<string, UnityEngine.Object>();
@@ -154,7 +163,7 @@ public class ResourceManager : SingletonTemplateMon<ResourceManager>
         }
         else
         {
-            Debuger.LogError("error ");
+            Debug.LogError("error ");
         }
         return false;
     }
@@ -274,8 +283,8 @@ public class ResourceManager : SingletonTemplateMon<ResourceManager>
             if (isAssetBundle)
             {
                 byte[] data = FileUtils.ReadByteFile(realPath);
-                AssetBundleCreateRequest a = AssetBundle.LoadFromMemoryAsync(data);
-                request = a;
+                //AssetBundleCreateRequest a = AssetBundle.LoadFromMemoryAsync(data);
+                request = null;// a;
             }
             else
             {
@@ -371,17 +380,43 @@ public class ResourceManager : SingletonTemplateMon<ResourceManager>
            case AssetType.UI:
                 path = "UI/Prefab/" + path;
                 break;
+           case AssetType.Atlas:
+                path = "UI/Atlas/" + path;
+                break;
+            case AssetType.Animation:
+                path = "Animation/" + path;
+                break;
             case AssetType.Audio:
                 path = "Audio/" + path;
                 break;
             case AssetType.Map:
-                path = "Moudle/Map/" + path;
+                path = "Map/" + path;
                 break;
-            case AssetType.Moudle:
-                path = "Moudle/" + path;
+            case AssetType.Prefab:
+                path = "Prefab/" + path;
                 break;
-                case AssetType.Tank:
-                path = "Moudle/Tank/" + path;
+            //Editor Temp Resource
+            case AssetType.EditorRes:
+                path = "EditorRes/" + path;
+                break;
+            //
+            case AssetType.Char:
+                path = "Char/" + path;
+                break;
+            case AssetType.Trigger:
+                path = "Model/Trigger/" + path;
+                break;
+            case AssetType.Effect:
+                path = "Item/Effect/" + path;
+                break;
+            case AssetType.Materials:
+                path = "Material/" + path;
+                break;
+            case AssetType.Texture:
+                path = "UI/Texture/" + path;
+                break;
+            case AssetType.Model:
+                path = "Model/" + path;
                 break;
             default:
             {
@@ -431,17 +466,8 @@ public class ResourceManager : SingletonTemplateMon<ResourceManager>
         }
         int length = name.LastIndexOf('.') - startIndex;
         string res= name.Substring(startIndex, length);
-        Debuger.Log(res);
+        Debug.Log(res);
         return res;
-    }
-    private void Awake()
-    {
-        if (_instance != null)
-        {
-            Destroy(this);
-            return;
-        }
-        _instance = this;
     }
     #endregion
 }

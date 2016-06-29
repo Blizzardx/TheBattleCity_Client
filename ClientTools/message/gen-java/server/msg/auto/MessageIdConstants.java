@@ -38,14 +38,6 @@ public class MessageIdConstants {
 
   public static final int SC_PONG = 103002;
 
-  public static final int CS_HANDLER = 103003;
-
-  public static final int SC_HANDLER = 103004;
-
-  public static final int CS_FIRE = 103005;
-
-  public static final int SC_FIRE = 103006;
-
   public static final int CS_RoomList = 103007;
 
   public static final int SC_RoomList = 103008;
@@ -72,19 +64,7 @@ public class MessageIdConstants {
 
   public static final int SC_BattleEnd = 103019;
 
-  public static final int CS_Hurt = 103020;
-
-  public static final int SC_Hurt = 103021;
-
   public static final int CS_BattleEnd = 103022;
-
-  public static final int CS_UseItem = 103023;
-
-  public static final int SC_UsedItem = 103024;
-
-  public static final int SC_CreateItem = 103025;
-
-  public static final int CS_ItemGenFundamental = 103026;
 
   public static final int CS_BattleLogicFrame = 103027;
 

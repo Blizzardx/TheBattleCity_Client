@@ -1,94 +1,122 @@
-﻿using NetWork.Auto;
+﻿using System;
 using UnityEngine;
 using System.Collections;
+using Framework.Message;
+using Framework.Network;
 
-public class PingTickTask : AbstractTickTask
+namespace Framework.Tick
 {
-    private const int   m_nPingDuringTime       = 7000;
-    private const int   m_nTimeOut              = 30000;
-    private int         m_nCurrentTimeout       = 0;
-    private bool        m_bIsConnect;
-    private bool        m_bIsActive;
-    static public long  m_iLastSendMsgTime;
+    public class PingTickTask : AbstractTickTask
+    {
+        private const int m_nPingDuringTime = 7000;
+        private const int m_nTimeOut = 30000;
+        private int m_nCurrentTimeout = 0;
+        private bool m_bIsConnect;
+        private bool m_bIsActive;
+        static public long m_iLastSendMsgTime;
+        private DateTime m_iSendPintTime;
+        private int m_iPingDuringTime;
+        private int m_iPingRealDuringTime;
 
-    private static PingTickTask m_Instance;
-    public PingTickTask()
-    {
-        m_Instance = this;
-    }
-    public static PingTickTask Instance
-    {
-        get
+        private static PingTickTask m_Instance;
+
+        public static PingTickTask Instance
         {
-            return m_Instance;
+            get { return m_Instance; }
         }
-    }
-	protected override bool FirstRunExecute ()
-	{
-	    m_bIsConnect = false;
-        //register msg
-        //MessageManager.Instance.RegistMessage(MessageIdConstants.SC_PING, OnPong);
-        m_iLastSendMsgTime = TimeManager.Instance.Now;
-	    m_Instance = this;
-		return false;
-	}
-	protected override int GetTickTime ()
-	{
-		return TickTaskConstant.TICK_PING;
-	}
-	protected override void Beat ()
-	{
-	    if (!m_bIsActive)
-	    {
-	        return;
-	    }
-        if (NetWorkManager.Instance.IsConnected())
-	    {
-	        m_bIsConnect = true;
-	        TryPing();
-	        if (m_nCurrentTimeout > m_nTimeOut)
-	        {
-	            // time out
-                Debuger.LogError("Time Out");
-                MessageManager.Instance.AddToMessageQueue(new MessageObject(ClientCustomMessageDefine.C_SOCKET_TIMEOUT, null));
-	        }
-	    }
-	    else
+
+        protected override bool FirstRunExecute()
         {
-            if (m_bIsConnect)
+            m_bIsConnect = false;
+            //register msg
+            //MessageDispatcher.Instance.RegistMessage(MessageTypeConstants.SC_PING, OnPong);
+            m_iLastSendMsgTime = (int) (Time.time*1000.0f);
+            m_Instance = this;
+            return false;
+        }
+
+        protected override int GetTickTime()
+        {
+            return TickTaskConstant.TICK_PING;
+        }
+
+        protected override void Beat()
+        {
+            if (!m_bIsActive)
             {
-                // disconnect 
-                Debuger.LogError("Disconnect");
-                MessageManager.Instance.AddToMessageQueue(new MessageObject(ClientCustomMessageDefine.C_SOCKET_CLOSE, null));
-                m_bIsConnect = false;
-
-                SetPingStatus(false);
+                return;
             }
-	    }
-	}
-    private void TryPing()
-    {
-        if (TimeManager.Instance.Now - m_iLastSendMsgTime > m_nPingDuringTime)
-        {
-            NetWorkManager.Instance.SendMsgToServer(new CSPingMsg());
-            m_nCurrentTimeout += TickTaskConstant.TICK_PING;
+            if (NetworkManager.Instance.IsConnect())
+            {
+                m_bIsConnect = true;
+                TryPing();
+                if (m_nCurrentTimeout > m_nTimeOut)
+                {
+                    // time out
+                    Debug.LogError("Time Out");
+                    //MessageDispatcher.Instance.BroadcastMessage(ClientCustomMessageDefine.C_SOCKET_TIMEOUT, null);
+                    SetPingStatus(false);
+                }
+            }
+            else
+            {
+                if (m_bIsConnect)
+                {
+                    // disconnect 
+                    Debug.LogError("Disconnect");
+                    //MessageDispatcher.Instance.BroadcastMessage(ClientCustomMessageDefine.C_SOCKET_CLOSE, null);
+                    m_bIsConnect = false;
+
+                    SetPingStatus(false);
+                }
+            }
         }
-        else
+
+        private void TryPing()
         {
+            if ((int) (Time.time*1000.0f) - m_iLastSendMsgTime > m_nPingDuringTime)
+            {
+                //NetworkManager.Instance.SendMsgToServer(new CSPingMsg());
+                m_iSendPintTime = DateTime.Now;
+                m_nCurrentTimeout += TickTaskConstant.TICK_PING;
+            }
+            else
+            {
+                m_nCurrentTimeout = 0;
+            }
+        }
+
+        private void OnPong(object eb)
+        {
+            m_iPingDuringTime = (DateTime.Now - m_iSendPintTime).Milliseconds;
             m_nCurrentTimeout = 0;
+            m_iLastSendMsgTime = (int) (Time.time*1000.0f);
+        }
+
+        public static void ResetSendMsgTime()
+        {
+            m_iLastSendMsgTime = (int) (Time.time*1000.0f);
+        }
+
+        public void SetPingStatus(bool isActive)
+        {
+            m_bIsActive = isActive;
+        }
+
+        public int GetPingDuringTime()
+        {
+            return m_iPingDuringTime;
+        }
+
+        public int GetPingRealDuringTime()
+        {
+            return m_iPingRealDuringTime;
+        }
+
+        public void OnRecievePoingRealTime()
+        {
+            m_iPingRealDuringTime = (DateTime.Now - m_iSendPintTime).Milliseconds;
         }
     }
-    private void OnPong(object eb)
-    {
-        m_nCurrentTimeout = 0;
-        m_iLastSendMsgTime = TimeManager.Instance.Now;
-    }
-    public static void ResetSendMsgTime()
-    {
-        m_iLastSendMsgTime = TimeManager.Instance.Now;
-    }
-    public void SetPingStatus(bool isActive)
-    {
-        m_bIsActive = isActive;
-    }
+
 }

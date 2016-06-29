@@ -41,5 +41,10 @@ namespace Framework.Async
                 return messageQueue.Dequeue();
             }
         }
+
+        public int GetCount()
+        {
+            return messageQueue.Count;
+        }
     }
 }

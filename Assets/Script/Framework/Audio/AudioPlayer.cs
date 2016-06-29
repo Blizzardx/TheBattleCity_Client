@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Common.Component;
+using Common.Tool;
 using UnityEngine;
 using System;
 
@@ -18,10 +20,10 @@ public class AudioPlayer:Singleton<AudioPlayer>
         {
             if (null == callBackFunc)
             {
-                Debuger.Log("Execute call back " + name + " but ,callback is null !");
+                Debug.Log("Execute call back " + name + " but ,callback is null !");
                 return;
             }
-            Debuger.Log("Execute call back " + name);
+            Debug.Log("Execute call back " + name);
             callBackFunc(name);
         }
     }
@@ -51,15 +53,10 @@ public class AudioPlayer:Singleton<AudioPlayer>
         m_AudioCallBacktmpList = new List<AudioCallBackElement>();
 
         InitAudioPool();
-
-        if (null != MessageManager.Instance)
-        {
-            MessageManager.Instance.RegistMessage(ClientCustomMessageDefine.C_CHANGE_SCENE, OnChangeScene);
-        }
     }
     public void PlayAudio(string resource,Vector3 postion,bool isLoop,Action<string> onFinishedCallBack = null)
     {
-        Debuger.Log("Play audio: " + resource);
+        Debug.Log("Play audio: " + resource);
 
         CheckResource();
 
@@ -74,7 +71,7 @@ public class AudioPlayer:Singleton<AudioPlayer>
     }
     public void PlayAudio(string resource, Transform parent, bool isLoop, Action<string> onFinishedCallBack = null)
     {
-        Debuger.Log("Play audio: " + resource);
+        Debug.Log("Play audio: " + resource);
 
         CheckResource();
 
@@ -89,7 +86,7 @@ public class AudioPlayer:Singleton<AudioPlayer>
     }
     public void PlayAudio(AudioClip clip, Vector3 postion, bool isLoop, Action<string> onFinishedCallBack = null)
     {
-        Debuger.Log("Play audio: " + clip.name);
+        Debug.Log("Play audio: " + clip.name);
 
         AudioElementStruct elem = null;
         if (m_AudioStorePool.Count > 0)
@@ -258,7 +255,6 @@ public class AudioPlayer:Singleton<AudioPlayer>
         {
             return;
         }
-        elem.m_OnFinishedCallBack = null;
         elem.m_AudioSource.Stop();
         elem.m_AudioSource.clip = null;
         if (elem.m_Root.transform.parent.gameObject != m_AudioRoot)
@@ -296,8 +292,6 @@ public class AudioPlayer:Singleton<AudioPlayer>
         elem.m_OnFinishedCallBack = callBack;
         elem.m_fAudioLength = elem.m_AudioClip.length;
         elem.m_fCurrentPlayedLength = 0.0f;
-
-        UITickTask.Instance.RegisterToUpdateList(Update);
     }
     private void CheckHavCallBackAudio()
     {
@@ -314,15 +308,12 @@ public class AudioPlayer:Singleton<AudioPlayer>
 
         if (!hav)
         {
-            Debuger.Log("No audio call back,clear store");
-
-            UITickTask.Instance.UnRegisterFromUpdateList(Update);
+            Debug.Log("No audio call back,clear store");
         }
     }
-    private void Update()
+    public void Update()
     {
-        //float deltaTime = TimeManager.Instance.GetDeltaTime();
-        float deltaTime = TimeManager.Instance.GetRealDeltaTime();
+        float deltaTime = Time.deltaTime;
         for (int i = 0; i < m_AudioClipList.Count; )
         {
             AudioElementStruct elem = m_AudioClipList[i];
@@ -375,17 +366,5 @@ public class AudioPlayer:Singleton<AudioPlayer>
             m_AudioCallBacktmpList.Clear();
         }
         
-    }
-    private void OnChangeScene(MessageObject obj)
-    {
-        for (int i = 0; i < m_AudioClipList.Count;++i)
-        {
-            AudioElementStruct elem = m_AudioClipList[i];
-            
-            CollectionAudio(elem);
-            
-        }
-        m_AudioClipList.Clear();
-        m_AudioCallBacktmpList.Clear();
     }
 }

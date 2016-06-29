@@ -19,10 +19,6 @@ namespace NetWork.Auto
   {
     public static int CS_PING = 103001;
     public static int SC_PONG = 103002;
-    public static int CS_HANDLER = 103003;
-    public static int SC_HANDLER = 103004;
-    public static int CS_FIRE = 103005;
-    public static int SC_FIRE = 103006;
     public static int CS_RoomList = 103007;
     public static int SC_RoomList = 103008;
     public static int CS_SearchRoom = 103009;
@@ -36,13 +32,7 @@ namespace NetWork.Auto
     public static int SC_BeginLoadBattle = 103017;
     public static int SC_BattleBegin = 103018;
     public static int SC_BattleEnd = 103019;
-    public static int CS_Hurt = 103020;
-    public static int SC_Hurt = 103021;
     public static int CS_BattleEnd = 103022;
-    public static int CS_UseItem = 103023;
-    public static int SC_UsedItem = 103024;
-    public static int SC_CreateItem = 103025;
-    public static int CS_ItemGenFundamental = 103026;
     public static int CS_BattleLogicFrame = 103027;
     public static int SC_BattleLogicFrame = 103028;
   }

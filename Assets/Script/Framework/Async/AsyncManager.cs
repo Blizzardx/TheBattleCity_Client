@@ -79,5 +79,36 @@ namespace Framework.Async
             message.AsyncTask = asyncTask;
             SystemMessageQueue.Instance.Offer(message);
         }
+
+        static public void Update()
+        {
+            if (SystemMessageQueue.Instance.GetCount() == 0)
+            {
+                return;
+            }
+            IInternalMessage message = SystemMessageQueue.Instance.Poll();
+            if (message != null)
+            {
+                switch (message.GetMessageId())
+                {
+                    case AsyncTaskMessage.ASYNC_MESSAGE_ID:
+                        {
+                            AsyncTaskMessage asyncTaskMessage = message as AsyncTaskMessage;
+                            AsyncState state = asyncTaskMessage.State;
+                            IAsyncTask asyncTask = asyncTaskMessage.AsyncTask;
+                            if (state == AsyncState.DoAsync)
+                            {
+                                throw new ApplicationException(string.Format("asyncTask:{0} [DoAsyncTask] infinite loop.", asyncTask.GetType().FullName));
+                            }
+                            AsyncManager.Instance.ExecuteAsyncTask(state, asyncTask);
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+                }
+            }
+        }
     }
 }

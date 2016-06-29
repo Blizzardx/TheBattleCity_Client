@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Assets.Scripts.Core.Utils;
+﻿using System.IO;
 using UnityEditor;
 using UnityEngine;
-using System.Collections;
 
 public class EditorCommon 
 {

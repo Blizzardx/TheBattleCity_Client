@@ -1,18 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Framework.Message;
 
-public class MessageTickTask : AbstractTickTask
+namespace Framework.Tick
 {
-    protected override bool FirstRunExecute()
+    public class MessageTickTask : AbstractTickTask
     {
-        return true;
-    }
-    protected override int GetTickTime()
-    {
-        return TickTaskConstant.TICK_MESSAGE;
-    }
-    protected override void Beat()
-    {
-        MessageManager.Instance.Update();
+        protected override bool FirstRunExecute()
+        {
+            return true;
+        }
+
+        protected override int GetTickTime()
+        {
+            return TickTaskConstant.TICK_MESSAGE;
+        }
+
+        protected override void Beat()
+        {
+            MessageDispatcher.Instance.Update();
+        }
     }
 }
