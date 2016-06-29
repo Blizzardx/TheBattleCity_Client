@@ -417,7 +417,7 @@ namespace Framework.Asset
         {
             foreach (var elem in m_LoadedBundleMap)
             {
-                elem.Value.Unload(true);
+                elem.Value.Unload(false);
             }
             m_LoadedBundleMap.Clear();
             m_LoadingAllAssetbundleMap.Clear();

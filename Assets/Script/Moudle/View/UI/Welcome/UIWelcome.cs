@@ -10,6 +10,6 @@ class UIWelcome:UIBase
     protected override void OnCreate()
     {
         base.OnCreate();
-        SetResourceName("BuildIn/UI/Prefab/MainMenu/Window_Welcom");
+        SetResourceName("BuildIn/UI/Prefab/MainMenu/Window_Welcom", PerloadAssetType.BuildInAsset);
     }
 }

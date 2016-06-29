@@ -8,7 +8,7 @@ public class SceneMenu : SceneBase
     {
         base.OnCreate();
         SetSceneName("SceneMenu");
-        AddPreloadResource("BuildIn/UI/Prefab/MainMenu/Window_Welcom", PerloadAssetType.BuildIn);
+        AddPreloadResource("BuildIn/UI/Prefab/MainMenu/Window_Welcom", PerloadAssetType.BuildInAsset);
 
         UIManager.Instance.OpenWindow<UILoading>(UIManager.WindowLayer.Tip);
     }

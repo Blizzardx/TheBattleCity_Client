@@ -2,6 +2,8 @@
 using UnityEngine;
 using System.Collections;
 using Common.Tool;
+using Framework.Asset;
+using ResourceManager = Framework.Asset.ResourceManager;
 
 public class SceneManager : MonoSingleton<SceneManager>
 {
@@ -15,16 +17,27 @@ public class SceneManager : MonoSingleton<SceneManager>
             Debug.LogWarning("System busy");
             return;
         }
+        m_bIsLoading = true;
+        var newScene = Activator.CreateInstance(typeof(T)) as SceneBase;
+
+        // on create
+        newScene.Create();
+
+        newScene.DoBeforeLoad(BeginLoadScene);
+    }
+    public SceneBase GetCurrentScene()
+    {
+        return m_CurrentScene;
+    }
+    private void BeginLoadScene(SceneBase scene)
+    {
         // try load scen
         if (null != m_CurrentScene)
         {
             // on exit
             m_CurrentScene.Exit();
         }
-        m_CurrentScene = Activator.CreateInstance(typeof (T)) as SceneBase;
-
-        // on create
-        m_CurrentScene.Create();
+        m_CurrentScene = scene;
 
         // load empty first
         StartCoroutine(LoadEmptyScene());
@@ -32,7 +45,9 @@ public class SceneManager : MonoSingleton<SceneManager>
     IEnumerator LoadEmptyScene()
     {
         yield return UnityEngine.SceneManagement.SceneManager.LoadSceneAsync("Empty");
-        StartCoroutine(LoadTargetScene());
+        yield return Clear();
+        yield return LoadTargetScene();
+        m_bIsLoading = false;
     }
     IEnumerator LoadTargetScene()
     {
@@ -44,5 +59,11 @@ public class SceneManager : MonoSingleton<SceneManager>
 
         // on init
         m_CurrentScene.Init();
+    }
+    IEnumerator Clear()
+    {
+        yield return Resources.UnloadUnusedAssets();
+        ResourceManager.Instance.Clear();
+        AssetbundleManager.Instance.Clear();
     }
 }

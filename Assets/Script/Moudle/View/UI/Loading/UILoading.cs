@@ -6,7 +6,7 @@ public class UILoading : UIBase
     protected override void OnCreate()
     {
         base.OnCreate();
-        SetResourceName("BuildIn/UI/Prefab/Loading/UIWindow_Loading");
+        SetResourceName("BuildIn/UI/Prefab/Loading/UIWindow_Loading",PerloadAssetType.BuildInAsset);
         //SetResource(Resources.Load("BuildIn/UI/Prefab/Loading/UIWindow_Loading") as GameObject);
     }
 
