@@ -20,6 +20,10 @@ namespace Framework.Tick
         {
             get
             {
+                if (null == m_Instance)
+                {
+                    m_Instance = new CustomTickTask();
+                }
                 return m_Instance;
             }
         }

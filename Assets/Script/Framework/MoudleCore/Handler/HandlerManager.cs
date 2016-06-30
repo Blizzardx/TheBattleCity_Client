@@ -20,7 +20,7 @@ public class HandlerManager : Singleton<HandlerManager>
             m_HandlerStore.Add(elem, modelInstance);
         }
     }
-    public T GetModel<T>() where T : HandlerBase
+    public T GetHandler<T>() where T : HandlerBase
     {
         HandlerBase res = null;
         m_HandlerStore.TryGetValue(typeof(T), out res);

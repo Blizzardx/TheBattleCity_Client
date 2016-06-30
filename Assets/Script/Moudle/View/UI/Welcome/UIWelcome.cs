@@ -12,4 +12,16 @@ class UIWelcome:UIBase
         base.OnCreate();
         SetResourceName("BuildIn/UI/Prefab/MainMenu/Window_Welcom", PerloadAssetType.BuildInAsset);
     }
+
+    protected override void OnInit()
+    {
+        base.OnInit();
+        UIEventListener.Get(FindChild("Image_bg")).onClick = OnClickEnter;
+    }
+
+    private void OnClickEnter(GameObject go)
+    {
+        UIManager.Instance.OpenWindow<UIMainMenu>(UIManager.WindowLayer.Window);
+        Hide();
+    }
 }

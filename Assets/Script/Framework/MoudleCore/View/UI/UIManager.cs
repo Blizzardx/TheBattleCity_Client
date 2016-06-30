@@ -176,8 +176,21 @@ public class UIManager : Singleton<UIManager>
     }
     public void HideAllWindow()
     {
+        foreach (var elem in m_CurrentWindowStore)
+        {
+            HideWindow(elem.Key);
+        }
     }
     public void CloseAllWindow()
     {
+        List<Type> list = new List<Type>();
+        foreach (var elem in m_CurrentWindowStore)
+        {
+            list.Add(elem.Key);
+        }
+        foreach (var elem in list)
+        {
+            CloseWindow(elem);
+        }
     }
 }

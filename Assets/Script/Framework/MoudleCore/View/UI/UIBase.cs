@@ -206,6 +206,14 @@ public class UIBase
     }
     #endregion
 
+    protected GameObject FindChild(string name)
+    {
+        return ComponentTool.FindChild(name, m_ObjectRoot);
+    }
+    protected T GetChildComponent<T>(string name) where T : Component
+    {
+        return ComponentTool.FindChildComponent<T>(name, m_ObjectRoot);
+    }
     protected virtual void OnCreate()
     {
         

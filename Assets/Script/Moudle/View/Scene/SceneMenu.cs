@@ -9,6 +9,7 @@ public class SceneMenu : SceneBase
         base.OnCreate();
         SetSceneName("SceneMenu");
         AddPreloadResource("BuildIn/UI/Prefab/MainMenu/Window_Welcom", PerloadAssetType.BuildInAsset);
+        AddPreloadResource("BuildIn/UI/Prefab/MainMenu/Window_SelectMode", PerloadAssetType.BuildInAsset);
 
         UIManager.Instance.OpenWindow<UILoading>(UIManager.WindowLayer.Tip);
     }
@@ -31,7 +32,7 @@ public class SceneMenu : SceneBase
     {
         base.OnProcess(process);
         Debug.Log("Process " + process);
-        EventDispatcher.Instance.BroadcastAsync(0, process);
+        EventDispatcher.Instance.BroadcastAsync(EventIdDefine.LoadingSceneProcess, process);
     }
 
     protected override void OnExit()

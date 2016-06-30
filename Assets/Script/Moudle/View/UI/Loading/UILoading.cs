@@ -13,13 +13,13 @@ public class UILoading : UIBase
     protected override void OnInit()
     {
         base.OnInit();
-        EventDispatcher.Instance.RegistEvent(0, OnProcess);
+        EventDispatcher.Instance.RegistEvent(EventIdDefine.LoadingSceneProcess, OnProcess);
     }
 
     protected override void OnClose()
     {
         base.OnClose();
-        EventDispatcher.Instance.UnregistEvent(0, OnProcess);
+        EventDispatcher.Instance.UnregistEvent(EventIdDefine.LoadingSceneProcess, OnProcess);
     }
 
     private void OnProcess(EventElement obj)

@@ -87,6 +87,7 @@ namespace Framework.Event
             {
                 //log error
                 Debug.LogError("Wrong msg callback" + errorId + "error log: " + e.Message);
+                Debug.LogException(e);
             }
             m_MsgCallList.EndUpdate();
         }
