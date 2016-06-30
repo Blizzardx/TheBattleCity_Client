@@ -1,14 +1,11 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Common.Component;
 using Framework.Asset;
 using Framework.Common;
 using Framework.Event;
 using Framework.Message;
-using NetWork.Auto;
 using Object = UnityEngine.Object;
 
 public class UIBase
