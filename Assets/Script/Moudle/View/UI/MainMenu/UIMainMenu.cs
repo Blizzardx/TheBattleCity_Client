@@ -16,26 +16,17 @@ public class UIMainMenu:UIBase
         UIEventListener.Get(FindChild("Button_LAN")).onClick = OnClickLANMode;
         UIEventListener.Get(FindChild("Button_Console")).onClick = OnClickConsoleMode;
 
-        EventDispatcher.Instance.RegistEvent(EventIdDefine.Connected, SocketConnected);
-        EventDispatcher.Instance.RegistEvent(EventIdDefine.ConnectError, SocketConnectError);
+        RegisterEvent(EventIdDefine.Connected, SocketConnected);
+        RegisterEvent(EventIdDefine.ConnectError, SocketConnectError);
     }
-
-    protected override void OnClose()
-    {
-        base.OnClose();
-        EventDispatcher.Instance.UnregistEvent(EventIdDefine.Connected, SocketConnected);
-        EventDispatcher.Instance.UnregistEvent(EventIdDefine.ConnectError, SocketConnectError);
-    }
-
     private void SocketConnectError(EventElement obj)
     {
         UIManager.Instance.CloseWindow<UILoading>();
-        Debug.Log("connect error");
     }
     private void SocketConnected(EventElement obj)
     {
         UIManager.Instance.CloseWindow<UILoading>();
-        Debug.Log("connected server");
+        Close();
         UIManager.Instance.OpenWindow<UIRoom>(UIManager.WindowLayer.Window);
     }
     private void OnClickOnLineMode(GameObject go)

@@ -31,14 +31,14 @@ public class ModelBase
         CustomTickTask.Instance.RegisterToUpdateList(Update);
         OnCreate();
     }
-    public void RegisterEvent(int eventId, Action<EventElement> callBack)
+    public void RegisterEvent(int dataKey, Action<EventElement> callBack)
     {
-        m_EventHandler.RegistEvent(eventId,callBack);
+        m_EventHandler.RegistEvent(dataKey, callBack);
         CustomTickTask.Instance.RegisterToUpdateList(m_EventHandler.Update);
     }
-    public void UnregisterEvent(int eventId, Action<EventElement> callBack)
+    public void UnregisterEvent(int dataKey, Action<EventElement> callBack)
     {
-        m_EventHandler.UnregistEvent(eventId, callBack);
+        m_EventHandler.UnregistEvent(dataKey, callBack);
         if (m_EventHandler.GetCallbackListCount() == 0)
         {
             CustomTickTask.Instance.UnRegisterFromUpdateList(m_EventHandler.Update);
@@ -82,14 +82,6 @@ public class ModelBase
             Debug.LogError("Error on exec data operation " + dataId);
             Debug.LogException(e);
         }
-    }
-    public void RegisterPermisionKey(object key)
-    {
-        m_PermissionList.Add(key);
-    }
-    public void UnRegisterPermissionKey(object key)
-    {
-        m_PermissionList.Remove(key);
     }
     #endregion
 
@@ -149,6 +141,14 @@ public class ModelBase
         {
             m_IdToDataMap.Add(id, data);
         }
+    }
+    protected void RegisterPermisionKey(object key)
+    {
+        m_PermissionList.Add(key);
+    }
+    protected void UnRegisterPermissionKey(object key)
+    {
+        m_PermissionList.Remove(key);
     }
     #endregion
 

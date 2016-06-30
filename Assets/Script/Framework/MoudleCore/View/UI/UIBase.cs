@@ -5,10 +5,35 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Common.Component;
 using Framework.Asset;
+using Framework.Common;
+using Framework.Event;
+using Framework.Message;
+using NetWork.Auto;
 using Object = UnityEngine.Object;
 
 public class UIBase
 {
+    public class EventInfo
+    {
+        public EventInfo(int id, Action<EventElement> callack)
+        {
+            this.id = id;
+            this.callback = callack;
+        }
+        public int id;
+        public Action<EventElement> callback;
+    }
+
+    public class MessageInfo
+    {
+        public MessageInfo(int id, Action<IMessage> callack)
+        {
+            this.id = id;
+            this.callback = callack;
+        }
+        public int id;
+        public Action<IMessage> callback;
+    }
     public class PanelStruct
     {
         public UIPanel m_Panel;
@@ -22,14 +47,19 @@ public class UIBase
     private bool                m_bTriggerOpenAfterLoaded;
     private Action<GameObject, UIBase>  m_CreateCallback;
     private UIManager.WindowLayer       m_Layer;
-
+    
     private int m_iDeepth;
     private List<PanelStruct> m_AllPanelsUnderWindow;
     private int m_iMaxDeepth;
-
+    private List<MessageInfo> m_MessageInfoList;
+    private List<EventInfo> m_EventInfoList;
+      
     #region public interface
     public void DoCreate(Action<GameObject, UIBase> callback)
     {
+        m_MessageInfoList = new List<MessageInfo>();
+        m_EventInfoList = new List<EventInfo>();
+
         m_CreateCallback = callback;
         OnCreate();
         BeginLoadResource();
@@ -50,6 +80,7 @@ public class UIBase
     }
     public void DoClose()
     {
+        Clear();
         SetDestroyStatus(true);
         OnClose();
         if (null != m_ObjectRoot)
@@ -202,6 +233,48 @@ public class UIBase
                 return;
             }
             callback(name, obj);
+        });
+    }
+    private void Clear()
+    {
+        foreach (var elem in m_EventInfoList)
+        {
+            EventDispatcher.Instance.UnregistEvent(elem.id, elem.callback);
+        }
+        m_EventInfoList = new List<EventInfo>();
+
+        foreach (var elem in m_MessageInfoList)
+        {
+            MessageDispatcher.Instance.UnregistMessage(elem.id, elem.callback);
+        }
+        m_MessageInfoList = new List<MessageInfo>();
+
+    }
+    #endregion
+
+    #region internal function
+    protected void RegisterEvent(int id, Action<EventElement> callback)
+    {
+        m_EventInfoList.Add(new EventInfo(id, callback));
+        EventDispatcher.Instance.RegistEvent(id, (obj) =>
+        {
+            if (m_bIsDestroyed)
+            {
+                return;
+            }
+            callback(obj);
+        });
+    }
+    protected void RegisterMessage(int id, Action<IMessage> callback)
+    {
+        m_MessageInfoList.Add(new MessageInfo(id, callback));
+        MessageDispatcher.Instance.RegistMessage(id, (obj) =>
+        {
+            if (m_bIsDestroyed)
+            {
+                return;
+            }
+            callback(obj);
         });
     }
     #endregion
