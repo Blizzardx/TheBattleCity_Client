@@ -27,7 +27,7 @@ namespace Framework.Event
         {
             m_Handler.Broadcast(eventBody);
         }
-        public void BroadcastAsync(int id, object param)
+        public void BroadcastAsync(int id, object param = null)
         {
             BroadcastAsync(new EventElement(id, param));
         }

@@ -13,7 +13,6 @@ public class ModelBase
     private bool                            m_bIsAutoNoticDataModify;
     private bool                            m_bIsNoticeRightnow;
     private Dictionary<int, Action<object>> m_DataOperationHandlerList;
-    private Dictionary<int, object>         m_IdToDataMap;
     private List<int>                       m_ModifyList;
     private HashSet<object>                 m_PermissionList;
      
@@ -24,7 +23,6 @@ public class ModelBase
         m_bIsAutoNoticDataModify = true;
         m_bIsNoticeRightnow = false;
         m_DataOperationHandlerList = new Dictionary<int, Action<object>>();
-        m_IdToDataMap = new Dictionary<int, object>();
         m_ModifyList = new List<int>();
         m_PermissionList = new HashSet<object>();
 
@@ -65,7 +63,7 @@ public class ModelBase
             {
                 if (m_bIsNoticeRightnow)
                 {
-                    BroadcastEvent(dataId, m_IdToDataMap[dataId]);
+                    BroadcastEvent(dataId, null);
                 }
                 else
                 {
@@ -97,8 +95,7 @@ public class ModelBase
         for (int i = 0; i < list.Count; ++i)
         {
             int id = list[i];
-            object param = m_IdToDataMap[id];
-            BroadcastEvent(id,param);
+            BroadcastEvent(id,null);
         }
     }
     #endregion
@@ -129,17 +126,6 @@ public class ModelBase
         else
         {
             m_DataOperationHandlerList.Add(id,handler);
-        }
-    }
-    protected void RegisterIdToData(int id, object data)
-    {
-        if (m_IdToDataMap.ContainsKey(id))
-        {
-            m_IdToDataMap[id] = data;
-        }
-        else
-        {
-            m_IdToDataMap.Add(id, data);
         }
     }
     protected void RegisterPermisionKey(object key)

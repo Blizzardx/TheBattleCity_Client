@@ -10,20 +10,12 @@ public class PlayerModel : ModelBase
     protected override void OnCreate()
     {
         Debug.Log("init player model");
-
-        // register id to data
-        RegisterId();
-
+        
         // register data handler
         RegisterHandler();
 
         // register handler
         RegisterPermisionHandler();
-    }
-    private void RegisterId()
-    {
-        RegisterIdToData(KeyPlayerId, m_iPlayerUid);
-        
     }
     private void RegisterHandler()
     {

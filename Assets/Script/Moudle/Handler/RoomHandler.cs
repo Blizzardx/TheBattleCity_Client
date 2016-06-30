@@ -1,5 +1,7 @@
 ﻿using Framework.Common;
+using Framework.Event;
 using Framework.Message;
+using Framework.Network;
 using NetWork.Auto;
 
 public class RoomHandler:HandlerBase
@@ -17,57 +19,109 @@ public class RoomHandler:HandlerBase
         MessageDispatcher.Instance.RegistMessage(MessageIdConstants.SC_BattleEnd, OnBattleEnd);
     }
 
-    public void CreateRoom()
+    public void CreateRoom(string playerName,string mapName,string roomName,int memberCount)
     {
         CSCreateRoom msg = new CSCreateRoom();
-        msg.PlayerName = "";
+        msg.PlayerName = playerName;
         msg.RoomInformation = new RoomInfo();
-        msg.RoomInformation.MapName = "";
-        msg.RoomInformation.Name = "";
-        msg.RoomInformation.RoomMemberCount = 1;
+        msg.RoomInformation.MapName = mapName;
+        msg.RoomInformation.Name = roomName;
+        msg.RoomInformation.RoomMemberCount = memberCount;
+        NetworkManager.Instance.SendMsgToServer(msg);
     }
-    public void EnterRoom()
+    public void EnterRoom(string playerName,string roomName)
     {
         CSEnterRoom msg = new CSEnterRoom();
-        msg.PlayerName = "";
-        msg.RoomName = "";
+        msg.PlayerName = playerName;
+        msg.RoomName = roomName;
+        NetworkManager.Instance.SendMsgToServer(msg);
     }
-    public void SearchRoom()
+    public void SearchRoom(string roomName)
     {
         CSSearchRoom msg = new CSSearchRoom();
-        msg.Name = "";
-        
+        msg.Name = roomName;
+        NetworkManager.Instance.SendMsgToServer(msg);
     }
+    public void GetRoomList()
+    {
+        CSRoomList msg = new CSRoomList();
+        msg.RequestCount = 100;
+        NetworkManager.Instance.SendMsgToServer(msg);
+    }
+    public void BackToMainMenu()
+    {
+        if (NetworkManager.Instance.IsConnect())
+        {
+            NetworkManager.Instance.Disconnect();
+        }
+        UIManager.Instance.OpenWindow<UIMainMenu>(UIManager.WindowLayer.Window);
+    }
+    public void BattleLoadEnd()
+    {
+        CSBattleLoadEnd msg = new CSBattleLoadEnd();
+
+        NetworkManager.Instance.SendMsgToServer(msg);
+    }
+
     private void OnCreateRoom(IMessage obj)
     {
-        throw new System.NotImplementedException();
+        MessageElement pkg = obj as MessageElement;
+        SCCreateRoom msg = pkg.GetMessageBody() as SCCreateRoom;
+        if (!msg.IsSucceed)
+        {
+            EventDispatcher.Instance.BroadcastAsync(EventIdDefine.CreateRoom,msg.ErrorInfo);
+        }
+        else
+        {
+            HandlerModelData<PlayerModel>(PlayerModel.KeyPlayerId, msg.PlayerUid);
+            EventDispatcher.Instance.BroadcastAsync(EventIdDefine.CreateRoom);
+        }
     }
     private void OnEnterRoom(IMessage obj)
     {
-        throw new System.NotImplementedException();
+        MessageElement pkg = obj as MessageElement;
+        SCEnterRoom msg = pkg.GetMessageBody() as SCEnterRoom;
+
+        if (!msg.IsSucceed)
+        {
+            EventDispatcher.Instance.BroadcastAsync(EventIdDefine.EnterRoom, msg.ErrorInfo);
+        }
+        else
+        {
+            HandlerModelData<PlayerModel>(PlayerModel.KeyPlayerId, msg.PlayerUid);
+            EventDispatcher.Instance.BroadcastAsync(EventIdDefine.EnterRoom);
+        }
     }
     private void OnRoomList(IMessage obj)
     {
-        throw new System.NotImplementedException();
+        MessageElement pkg = obj as MessageElement;
+        SCRoomList msg = pkg.GetMessageBody() as SCRoomList;
+
+        HandlerModelData<RoomModel>(RoomModel.KeyRoomList, msg.RoomList);
     }
     private void OnSearchRoom(IMessage obj)
     {
-        throw new System.NotImplementedException();
+        MessageElement pkg = obj as MessageElement;
+        SCSearchRoom msg = pkg.GetMessageBody() as SCSearchRoom;
+        EventDispatcher.Instance.BroadcastAsync(EventIdDefine.SearchRoom, msg.RoomInformation);
     }
     private void OnSyncPlayerInfo(IMessage obj)
     {
-        throw new System.NotImplementedException();
+        MessageElement pkg = obj as MessageElement;
+        SCSyncPlayerInfo msg = pkg.GetMessageBody() as SCSyncPlayerInfo;
+
+        HandlerModelData<RoomModel>(RoomModel.KeyPlayerList, msg.PlayerInfomation);
     }
     private void OnBeginLoadBattle(IMessage obj)
     {
-        throw new System.NotImplementedException();
+        EventDispatcher.Instance.BroadcastAsync(EventIdDefine.BeginLoadBattle);
     }
     private void OnBattleBegin(IMessage obj)
     {
-        throw new System.NotImplementedException();
+        EventDispatcher.Instance.BroadcastAsync(EventIdDefine.BattleBegin);
     }
     private void OnBattleEnd(IMessage obj)
     {
-        throw new System.NotImplementedException();
+        EventDispatcher.Instance.BroadcastAsync(EventIdDefine.BattleEnd);
     }
 }
