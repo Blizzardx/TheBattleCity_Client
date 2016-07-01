@@ -5,9 +5,9 @@ namespace Common.Math
 {
     public class LRU_K<T>
     {
-        public class Element<T>
+        public class Element<M>
         {
-            public T key;
+            public M key;
             public int index;
         }
 
