@@ -413,14 +413,10 @@ namespace Common.Component
         public void Update(int id, T param)
         {
             LinkedList<Action<T>> list = null;
-            if (!m_CallbackStore.TryGetValue(id, out list))
+            if (!m_CallbackStore.TryGetValue(id, out list) || list.Count == 0)
             {
                 //empty msg list                    
                 Debug.LogWarning("empty list  " + id.ToString());
-                return;
-            }
-            if (list.Count == 0)
-            {
                 return;
             }
             m_iCurrentUpdatingListId = id;
@@ -547,6 +543,10 @@ namespace Common.Component
                 return list.Count;
             }
             return 0;
+        }
+        public int GetCallbackListCount()
+        {
+            return m_CallbackStore.Keys.Count;
         }
     }
 }
