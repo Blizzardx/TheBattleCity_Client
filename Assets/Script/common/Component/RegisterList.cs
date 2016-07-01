@@ -398,10 +398,6 @@ namespace Common.Component
                 m_UnRegisterList.Clear();
             }
         }
-        public int GetCallbackListCount()
-        {
-            return m_CallbackStore.Keys.Count;
-        }
     }
     public class RegisterDictionaryTemplate_Linkedlist<T>
     {
@@ -421,6 +417,10 @@ namespace Common.Component
             {
                 //empty msg list                    
                 Debug.LogWarning("empty list  " + id.ToString());
+                return;
+            }
+            if (list.Count == 0)
+            {
                 return;
             }
             m_iCurrentUpdatingListId = id;
@@ -520,6 +520,10 @@ namespace Common.Component
                 }
                 list.AddLast(elem.Value);
             }
+            if (list.Count == 0)
+            {
+                m_CallbackStore.Remove(msgId);
+            }
         }
         public void UnregistAllEvent(int msgId)
         {
@@ -543,10 +547,6 @@ namespace Common.Component
                 return list.Count;
             }
             return 0;
-        }
-        public int GetCallbackListCount()
-        {
-            return m_CallbackStore.Keys.Count;
         }
     }
 }
