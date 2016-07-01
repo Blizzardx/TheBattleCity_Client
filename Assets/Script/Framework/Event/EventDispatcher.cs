@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Common.Component;
 using Common.Tool;
-using Framework.Common;
-using Framework.Message;
-using Framework.Queue;
-using UnityEngine;
 
 namespace Framework.Event
 {
