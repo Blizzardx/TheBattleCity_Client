@@ -9,12 +9,12 @@ namespace Framework.Event
 {
     public class EventDispatchTool
     {
-        private RegisterDictionaryTemplate<EventElement>    m_MsgCallList;
+        private RegisterDictionaryTemplate_Linkedlist<EventElement>    m_MsgCallList;
         private TemplateQueue<EventElement>                 m_EventQueue;
 
         public EventDispatchTool()
         {
-            m_MsgCallList = new RegisterDictionaryTemplate<EventElement>();
+            m_MsgCallList = new RegisterDictionaryTemplate_Linkedlist<EventElement>();
             m_EventQueue = new TemplateQueue<EventElement>();
             m_EventQueue.Initialize();
         }
@@ -24,7 +24,6 @@ namespace Framework.Event
         }
         public void Broadcast(EventElement eventBody)
         {
-            m_MsgCallList.BeginUpdate();
             int errorId = 0;
             try
             {
@@ -39,7 +38,6 @@ namespace Framework.Event
                 //log error
                 Debug.LogError("Wrong msg callback" + errorId + "error log: " + e.Message);
             }
-            m_MsgCallList.EndUpdate();
         }
         public void BroadcastAsync(int id, object param)
         {
@@ -67,7 +65,6 @@ namespace Framework.Event
         }
         public void Update()
         {
-            m_MsgCallList.BeginUpdate();
             int errorId = 0;
             try
             {
@@ -89,7 +86,6 @@ namespace Framework.Event
                 Debug.LogError("Wrong msg callback" + errorId + "error log: " + e.Message);
                 Debug.LogException(e);
             }
-            m_MsgCallList.EndUpdate();
         }
         public int GetCallbackListCount()
         {

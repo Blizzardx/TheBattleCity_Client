@@ -10,17 +10,16 @@ namespace Framework.Message
     public class MessageDispatcher : Singleton<MessageDispatcher>
     {
         private RegisterListTemplate<IMessage>                 m_AllMessageListenerList; 
-        private RegisterDictionaryTemplate<IMessage>           m_MsgCallList; 
+        private RegisterDictionaryTemplate_Linkedlist<IMessage>           m_MsgCallList; 
 
         public MessageDispatcher()
         {
-            m_MsgCallList           = new RegisterDictionaryTemplate<IMessage>();
+            m_MsgCallList           = new RegisterDictionaryTemplate_Linkedlist<IMessage>();
             m_AllMessageListenerList = new RegisterListTemplate<IMessage>();
 
         }
         public void Update()
         {
-            m_MsgCallList.BeginUpdate();
             int errorId = 0;
             try
             {
@@ -45,7 +44,6 @@ namespace Framework.Message
                 //log error
                 Debug.LogError("Wrong msg callback" + errorId + "error log: " + e.Message);
             }
-            m_MsgCallList.EndUpdate();
         }
 
         public void BroadcastMessage(int id, object msgValue)

@@ -1,170 +1,201 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Runtime.InteropServices;
 
 namespace Common.Component
 {
     public class RegisterList
     {
-        private List<Action> m_UpdateList;
-        private List<Action> m_UnregisterUpdateListStore;
-        private bool m_bIsUpdateListBusy;
-
-        #region public interface
+        private LinkedList<Action> m_UpdateList;
+        private LinkedList<Action> m_UpdatingList;
+        
         public RegisterList()
         {
-            m_UpdateList = new List<Action>();
-            m_UnregisterUpdateListStore = new List<Action>();
-            m_bIsUpdateListBusy = false;
+            m_UpdateList = new LinkedList<Action>();
+            m_UpdatingList = new LinkedList<Action>();
         }
         public void RegisterToUpdateList(Action element)
         {
-            for (int i = 0; i < m_UpdateList.Count; ++i)
+            if (null != m_UpdatingList)
             {
-                if (element == m_UpdateList[i])
+                foreach (var elem in m_UpdatingList)
                 {
-                    CheckRemovingStore(element);
-                    return;
-                }
-            }
-            m_UpdateList.Add(element);
-        }
-        public void UnRegisterFromUpdateList(Action element)
-        {
-            if (!m_bIsUpdateListBusy)
-            {
-                m_UpdateList.Remove(element);
-            }
-            else
-            {
-                for (int i = 0; i < m_UnregisterUpdateListStore.Count; ++i)
-                {
-                    if (element == m_UnregisterUpdateListStore[i])
+                    if (elem == element)
                     {
                         return;
                     }
                 }
-                m_UnregisterUpdateListStore.Add(element);
+            }
+            foreach (var elem in m_UpdateList)
+            {
+                if (elem == element)
+                {
+                    return;
+                }
+            }
+            m_UpdateList.AddLast(element);
+        }
+        public void UnRegisterFromUpdateList(Action element)
+        {
+            int count = 0;
+            if (null != m_UpdatingList)
+            {
+                count = m_UpdatingList.Count;
+                for (int i = 0; i < count; ++i)
+                {
+                    var elem = m_UpdatingList.First;
+                    m_UpdatingList.RemoveFirst();
+                    if (elem.Value == element)
+                    {
+                        break;
+                    }
+                    m_UpdatingList.AddLast(elem.Value);
+                }
+            }
+            count = m_UpdateList.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                var elem = m_UpdateList.First;
+                m_UpdateList.RemoveFirst();
+                if (elem.Value == element)
+                {
+                    break;
+                }
+                m_UpdateList.AddLast(elem.Value);
             }
         }
         public void ExcutionUpdateList()
         {
-            m_bIsUpdateListBusy = true;
-            foreach (Action elem in m_UpdateList)
-            {
-                elem();
-            }
-            m_bIsUpdateListBusy = false;
-            ExcutionUnregister();
-        }
-        #endregion
-
-        #region system function
-        private void CheckRemovingStore(Action element)
-        {
-            for (int i = 0; i < m_UnregisterUpdateListStore.Count; ++i)
-            {
-                if (element == m_UnregisterUpdateListStore[i])
-                {
-                    m_UnregisterUpdateListStore.RemoveAt(i);
-                    return;
-                }
-            }
-        }
-        private void ExcutionUnregister()
-        {
-            if (m_UnregisterUpdateListStore.Count == 0)
+            if (m_UpdateList.Count == 0)
             {
                 return;
             }
-            for (int i = 0; i < m_UnregisterUpdateListStore.Count; ++i)
+            do
             {
-                m_UpdateList.Remove(m_UnregisterUpdateListStore[i]);
-            }
-            m_UnregisterUpdateListStore.Clear();
+                var elem = m_UpdateList.First;
+                m_UpdateList.RemoveFirst();
+                m_UpdatingList.AddLast(elem.Value);
+
+                try
+                {
+                    // do callback
+                    if (null != elem.Value)
+                    {
+                        elem.Value();
+                    }
+                    else
+                    {
+                        //log error                        
+                        Debug.LogWarning("null of call back fun");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Wrong msg callback error log: " + e.Message);
+                    Debug.LogException(e);
+                }
+            } while (m_UpdateList.Count != 0);
+
+            m_UpdateList = m_UpdatingList;
+            m_UpdatingList = null;
         }
-        #endregion
     }
     public class RegisterListTemplate<T>
     {
-        private List<Action<T>> m_UpdateList;
-        private List<Action<T>> m_UnregisterUpdateListStore;
-        private bool m_bIsUpdateListBusy;
+        private LinkedList<Action<T>> m_UpdateList;
+        private LinkedList<Action<T>> m_UpdatingList;
 
-        #region public interface
         public RegisterListTemplate()
         {
-            m_UpdateList = new List<Action<T>>();
-            m_UnregisterUpdateListStore = new List<Action<T>>();
-            m_bIsUpdateListBusy = false;
+            m_UpdateList = new LinkedList<Action<T>>();
+            m_UpdatingList = new LinkedList<Action<T>>();
         }
         public void RegisterToUpdateList(Action<T> element)
         {
-            for (int i = 0; i < m_UpdateList.Count; ++i)
+            if (null != m_UpdatingList)
             {
-                if (element == m_UpdateList[i])
+                foreach (var elem in m_UpdatingList)
                 {
-                    CheckRemovingStore(element);
-                    return;
-                }
-            }
-            m_UpdateList.Add(element);
-        }
-        public void UnRegisterFromUpdateList(Action<T> element)
-        {
-            if (!m_bIsUpdateListBusy)
-            {
-                m_UpdateList.Remove(element);
-            }
-            else
-            {
-                for (int i = 0; i < m_UnregisterUpdateListStore.Count; ++i)
-                {
-                    if (element == m_UnregisterUpdateListStore[i])
+                    if (elem == element)
                     {
                         return;
                     }
                 }
-                m_UnregisterUpdateListStore.Add(element);
+            }
+            foreach (var elem in m_UpdateList)
+            {
+                if (elem == element)
+                {
+                    return;
+                }
+            }
+            m_UpdateList.AddLast(element);
+        }
+        public void UnRegisterFromUpdateList(Action<T> element)
+        {
+            int count = 0;
+            if (null != m_UpdatingList)
+            {
+                count = m_UpdatingList.Count;
+                for (int i = 0; i < count; ++i)
+                {
+                    var elem = m_UpdatingList.First;
+                    m_UpdatingList.RemoveFirst();
+                    if (elem.Value == element)
+                    {
+                        break;
+                    }
+                    m_UpdatingList.AddLast(elem.Value);
+                }
+            }
+            count = m_UpdateList.Count;
+            for (int i = 0; i < count; ++i)
+            {
+                var elem = m_UpdateList.First;
+                m_UpdateList.RemoveFirst();
+                if (elem.Value == element)
+                {
+                    break;
+                }
+                m_UpdateList.AddLast(elem.Value);
             }
         }
         public void ExcutionUpdateList(T param)
         {
-            m_bIsUpdateListBusy = true;
-            foreach (Action<T> elem in m_UpdateList)
-            {
-                elem(param);
-            }
-            m_bIsUpdateListBusy = false;
-            ExcutionUnregister();
-        }
-        #endregion
-
-        #region system function
-        private void CheckRemovingStore(Action<T> element)
-        {
-            for (int i = 0; i < m_UnregisterUpdateListStore.Count; ++i)
-            {
-                if (element == m_UnregisterUpdateListStore[i])
-                {
-                    m_UnregisterUpdateListStore.RemoveAt(i);
-                    return;
-                }
-            }
-        }
-        private void ExcutionUnregister()
-        {
-            if (m_UnregisterUpdateListStore.Count == 0)
+            if (m_UpdateList.Count == 0)
             {
                 return;
             }
-            for (int i = 0; i < m_UnregisterUpdateListStore.Count; ++i)
+            do
             {
-                m_UpdateList.Remove(m_UnregisterUpdateListStore[i]);
-            }
-            m_UnregisterUpdateListStore.Clear();
+                var elem = m_UpdateList.First;
+                m_UpdateList.RemoveFirst();
+                m_UpdatingList.AddLast(elem.Value);
+
+                try
+                {
+                    // do callback
+                    if (null != elem.Value)
+                    {
+                        elem.Value(param);
+                    }
+                    else
+                    {
+                        //log error                        
+                        Debug.LogWarning("null of call back fun");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Wrong msg callback error log: " + e.Message);
+                    Debug.LogException(e);
+                }
+            } while (m_UpdateList.Count != 0);
+
+            m_UpdateList = m_UpdatingList;
+            m_UpdatingList = null;
         }
-        #endregion
     }
     public class RegisterDictionaryTemplate<T>
     {
@@ -211,7 +242,7 @@ namespace Common.Component
         public void EndUpdate()
         {
             m_bIsProcessingList = false;
-            DoClear();
+            DoUnregister();
         }
         public void RegistEvent(int msgId, Action<T> msgCallback)
         {
@@ -310,7 +341,16 @@ namespace Common.Component
         {
             return m_CallbackStore.ContainsKey(id);
         }
-        private void DoClear()
+        public int GetListCount(int id)
+        {
+            List<Action<T>> list = null;
+            if (m_CallbackStore.TryGetValue(id, out list))
+            {
+                return list.Count;
+            }
+            return 0;
+        }
+        private void DoUnregister()
         {
             // handler add first
             if (m_RegisterList.Count != 0)
@@ -360,8 +400,153 @@ namespace Common.Component
         }
         public int GetCallbackListCount()
         {
-            return m_CallbackStore.Count;
+            return m_CallbackStore.Keys.Count;
         }
     }
+    public class RegisterDictionaryTemplate_Linkedlist<T>
+    {
+        private Dictionary<int, LinkedList<Action<T>>> m_CallbackStore;
+        private LinkedList<Action<T>> m_UpdatingList;
+        private int m_iCurrentUpdatingListId;
 
+        public RegisterDictionaryTemplate_Linkedlist()
+        {
+            m_CallbackStore = new Dictionary<int, LinkedList<Action<T>>>();
+            m_UpdatingList = new LinkedList<Action<T>>();
+        }
+        public void Update(int id, T param)
+        {
+            LinkedList<Action<T>> list = null;
+            if (!m_CallbackStore.TryGetValue(id, out list))
+            {
+                //empty msg list                    
+                Debug.LogWarning("empty list  " + id.ToString());
+                return;
+            }
+            m_iCurrentUpdatingListId = id;
+            m_UpdatingList = new LinkedList<Action<T>>();
+            do
+            {
+                var elem = list.First;
+                list.RemoveFirst();
+                m_UpdatingList.AddLast(elem.Value);
+
+                try
+                {
+                    // do callback
+                    if (null != elem.Value)
+                    {
+                        elem.Value(param);
+                    }
+                    else
+                    {
+                        //log error                        
+                        Debug.LogWarning("null of call back fun" + id.ToString());
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Wrong msg callback" + id + "error log: " + e.Message);
+                    Debug.LogException(e);
+                }
+            } while (list.Count != 0);
+            if (m_CallbackStore.ContainsKey(id))
+            {
+                m_CallbackStore[id] = m_UpdatingList;
+            }
+            m_UpdatingList = null;
+            m_iCurrentUpdatingListId = -1;
+        }
+        public void RegistEvent(int msgId, Action<T> msgCallback)
+        {
+            LinkedList<Action<T>> list = null;
+            if (!m_CallbackStore.TryGetValue(msgId, out list))
+            {
+                list = new LinkedList<Action<T>>();
+                list.AddLast(msgCallback);
+                m_CallbackStore.Add(msgId, list);
+                return;
+            }
+            if (m_iCurrentUpdatingListId == msgId && null != m_UpdatingList)
+            {
+                foreach (var elem in m_UpdatingList)
+                {
+                    if (elem == msgCallback)
+                    {
+                        return;
+                    }
+                }
+            }
+            foreach (var elem in list)
+            {
+                if (elem == msgCallback)
+                {
+                    return;
+                }
+            }
+            list.AddLast(msgCallback);
+        }
+        public void UnregistEvent(int msgId, Action<T> msgCallback)
+        {
+            LinkedList<Action<T>> list = null;
+            if (!m_CallbackStore.TryGetValue(msgId, out list))
+            {
+                return;
+            }
+            if (m_iCurrentUpdatingListId == msgId && null != m_UpdatingList)
+            {
+                int count = m_UpdatingList.Count;
+                for (int i = 0; i < count; ++i)
+                {
+                    var elem = m_UpdatingList.First;
+                    m_UpdatingList.RemoveFirst();
+
+                    if (elem.Value == msgCallback)
+                    {
+                        break;
+                    }
+                    m_UpdatingList.AddLast(elem.Value);
+                }
+            }
+            int listcount = list.Count;
+            for (int i = 0; i < listcount; ++i)
+            {
+                var elem = list.First;
+                list.RemoveFirst();
+
+                if (elem.Value == msgCallback)
+                {
+                    break;
+                }
+                list.AddLast(elem.Value);
+            }
+        }
+        public void UnregistAllEvent(int msgId)
+        {
+            LinkedList<Action<T>> list = null;
+            if (!m_CallbackStore.TryGetValue(msgId, out list))
+            {
+                return;
+            }
+            m_CallbackStore.Remove(msgId);
+            list.Clear();
+        }
+        public bool IsContainsKey(int id)
+        {
+            return m_CallbackStore.ContainsKey(id);
+        }
+        public int GetListCount(int id)
+        {
+            LinkedList<Action<T>> list = null;
+            if (m_CallbackStore.TryGetValue(id, out list))
+            {
+                return list.Count;
+            }
+            return 0;
+        }
+        public int GetCallbackListCount()
+        {
+            return m_CallbackStore.Keys.Count;
+        }
+    }
 }
