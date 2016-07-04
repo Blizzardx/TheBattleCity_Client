@@ -18,7 +18,7 @@ namespace Framework.Event
             m_EventQueue = new TemplateQueue<EventElement>();
             m_EventQueue.Initialize();
         }
-        public void Broadcast(int id, object param)
+        public void Broadcast(int id, object param = null)
         {
             Broadcast(new EventElement(id, param));
         }
@@ -39,7 +39,7 @@ namespace Framework.Event
                 Debug.LogError("Wrong msg callback" + errorId + "error log: " + e.Message);
             }
         }
-        public void BroadcastAsync(int id, object param)
+        public void BroadcastAsync(int id, object param = null)
         {
             BroadcastAsync(new EventElement(id, param));
         }

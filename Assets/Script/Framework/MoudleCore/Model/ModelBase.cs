@@ -32,15 +32,10 @@ public class ModelBase
     public void RegisterEvent(int dataKey, Action<EventElement> callBack)
     {
         m_EventHandler.RegistEvent(dataKey, callBack);
-        CustomTickTask.Instance.RegisterToUpdateList(m_EventHandler.Update);
     }
     public void UnregisterEvent(int dataKey, Action<EventElement> callBack)
     {
         m_EventHandler.UnregistEvent(dataKey, callBack);
-        if (m_EventHandler.GetCallbackListCount() == 0)
-        {
-            CustomTickTask.Instance.UnRegisterFromUpdateList(m_EventHandler.Update);
-        }
     }
     public void DataOperation(object key,int dataId, object param)
     {
@@ -86,26 +81,26 @@ public class ModelBase
     #region internal function
     private void Update()
     {
-        if (m_ModifyList.Count == 0)
+        if (m_ModifyList.Count != 0)
         {
-            return;
+            var list = m_ModifyList;
+            m_ModifyList = new List<int>();
+            for (int i = 0; i < list.Count; ++i)
+            {
+                int id = list[i];
+                BroadcastEvent(id);
+            }
         }
-        var list = m_ModifyList;
-        m_ModifyList = new List<int>();
-        for (int i = 0; i < list.Count; ++i)
-        {
-            int id = list[i];
-            BroadcastEvent(id,null);
-        }
+        m_EventHandler.Update();
     }
     #endregion
 
     #region system function
-    protected void BroadcastEvent(int eventId, object param)
+    protected void BroadcastEvent(int eventId, object param = null)
     {
         m_EventHandler.Broadcast(eventId,param);
     }
-    protected void BroidcastEventAsync(int eventId, object param)
+    protected void BroidcastEventAsync(int eventId, object param = null)
     {
         m_EventHandler.BroadcastAsync(eventId, param);
     }
