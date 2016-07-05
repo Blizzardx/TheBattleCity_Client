@@ -14,9 +14,6 @@ public class RoomHandler:HandlerBase
         MessageDispatcher.Instance.RegistMessage(MessageIdConstants.SC_RoomList, OnRoomList);
         MessageDispatcher.Instance.RegistMessage(MessageIdConstants.SC_SearchRoom, OnSearchRoom);
         MessageDispatcher.Instance.RegistMessage(MessageIdConstants.SC_SyncPlayerInfo, OnSyncPlayerInfo);
-        MessageDispatcher.Instance.RegistMessage(MessageIdConstants.SC_BeginLoadBattle, OnBeginLoadBattle);
-        MessageDispatcher.Instance.RegistMessage(MessageIdConstants.SC_BattleBegin, OnBattleBegin);
-        MessageDispatcher.Instance.RegistMessage(MessageIdConstants.SC_BattleEnd, OnBattleEnd);
     }
 
     public void CreateRoom(string playerName,string mapName,string roomName,int memberCount)
@@ -55,12 +52,6 @@ public class RoomHandler:HandlerBase
             NetworkManager.Instance.Disconnect();
         }
         UIManager.Instance.OpenWindow<UIMainMenu>(UIManager.WindowLayer.Window);
-    }
-    public void BattleLoadEnd()
-    {
-        CSBattleLoadEnd msg = new CSBattleLoadEnd();
-
-        NetworkManager.Instance.SendMsgToServer(msg);
     }
 
     private void OnCreateRoom(IMessage obj)
@@ -111,17 +102,5 @@ public class RoomHandler:HandlerBase
         SCSyncPlayerInfo msg = pkg.GetMessageBody() as SCSyncPlayerInfo;
 
         HandlerModelData<RoomModel>(RoomModel.KeyPlayerList, msg.PlayerInfomation);
-    }
-    private void OnBeginLoadBattle(IMessage obj)
-    {
-        EventDispatcher.Instance.BroadcastAsync(EventIdDefine.BeginLoadBattle);
-    }
-    private void OnBattleBegin(IMessage obj)
-    {
-        EventDispatcher.Instance.BroadcastAsync(EventIdDefine.BattleBegin);
-    }
-    private void OnBattleEnd(IMessage obj)
-    {
-        EventDispatcher.Instance.BroadcastAsync(EventIdDefine.BattleEnd);
     }
 }

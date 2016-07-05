@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using Framework.Event;
 
 public class SceneMenu : SceneBase
@@ -7,9 +6,16 @@ public class SceneMenu : SceneBase
     protected override void OnCreate()
     {
         base.OnCreate();
+
         SetSceneName("SceneMenu");
+
         AddPreloadResource("BuildIn/UI/Prefab/MainMenu/Window_Welcom", PerloadAssetType.BuildInAsset);
         AddPreloadResource("BuildIn/UI/Prefab/MainMenu/Window_SelectMode", PerloadAssetType.BuildInAsset);
+        AddPreloadResource("BuildIn/UI/Prefab/Room/UIWindow_Room", PerloadAssetType.BuildInAsset);
+        AddPreloadResource("BuildIn/UI/Prefab/Room/UIWindow_CreateRoom", PerloadAssetType.BuildInAsset);
+        AddPreloadResource("BuildIn/UI/Prefab/Room/UIWindow_EnterRoom", PerloadAssetType.BuildInAsset);
+        AddPreloadResource("BuildIn/UI/Prefab/Room/UIWindow_SearchRoom", PerloadAssetType.BuildInAsset);
+        AddPreloadResource("BuildIn/UI/Prefab/Room/UIWindow_WaitBattle", PerloadAssetType.BuildInAsset);
 
         UIManager.Instance.OpenWindow<UILoading>(UIManager.WindowLayer.Tip);
     }

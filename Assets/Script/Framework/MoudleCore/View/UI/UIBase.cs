@@ -21,6 +21,18 @@ public class UIBase
         public Action<EventElement> callback;
     }
 
+    public class ModelEventInfo
+    {
+        public ModelEventInfo(int id, Action<EventElement> callack,ModelBase model)
+        {
+            this.id = id;
+            this.callback = callack;
+            this.model = model;
+        }
+        public int id;
+        public Action<EventElement> callback;
+        public ModelBase model;
+    }
     public class MessageInfo
     {
         public MessageInfo(int id, Action<IMessage> callack)
@@ -50,12 +62,14 @@ public class UIBase
     private int m_iMaxDeepth;
     private List<MessageInfo> m_MessageInfoList;
     private List<EventInfo> m_EventInfoList;
+    private List<ModelEventInfo> m_ModelEventInfoList; 
       
     #region public interface
     public void DoCreate(Action<GameObject, UIBase> callback)
     {
         m_MessageInfoList = new List<MessageInfo>();
         m_EventInfoList = new List<EventInfo>();
+        m_ModelEventInfoList = new List<ModelEventInfo>();
 
         m_CreateCallback = callback;
         OnCreate();
@@ -244,12 +258,31 @@ public class UIBase
         {
             MessageDispatcher.Instance.UnregistMessage(elem.id, elem.callback);
         }
-        m_MessageInfoList = new List<MessageInfo>();
 
+        foreach (var elem in m_ModelEventInfoList)
+        {
+            elem.model.UnregisterEvent(elem.id, elem.callback);
+        }
+        m_EventInfoList = new List<EventInfo>();
+        m_MessageInfoList = new List<MessageInfo>();
+        m_ModelEventInfoList = new List<ModelEventInfo>();
     }
     #endregion
 
     #region internal function
+
+    protected void RegisterModelEvent(int id, Action<EventElement> callback, ModelBase model)
+    {
+        m_ModelEventInfoList.Add(new ModelEventInfo(id,callback,model));
+        model.RegisterEvent(id, (obj) =>
+        {
+            if (m_bIsDestroyed)
+            {
+                return;
+            }
+            callback(obj);
+        });
+    }
     protected void RegisterEvent(int id, Action<EventElement> callback)
     {
         m_EventInfoList.Add(new EventInfo(id, callback));
