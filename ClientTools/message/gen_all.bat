@@ -13,7 +13,7 @@ FOR %%e IN (*.thrift) DO (
 call GBK2Utf-8.exe gen-csharp
 call GBK2Utf-8.exe gen-java
 
-set des=..\..\Assets\Script\\Moudle\BaseMoudle
+set des=..\..\Assets\Script\Moudle\Project\BaseMoudle
 rd /s /q %des%\MessageDefine\Message
 md %des%\MessageDefine\Message
 copy gen-csharp\NetWork\Auto\*.* %des%\MessageDefine\Message
