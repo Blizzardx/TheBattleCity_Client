@@ -1,4 +1,5 @@
 ﻿using System;
+using Framework.Common;
 using Framework.Event;
 using UnityEngine;
 

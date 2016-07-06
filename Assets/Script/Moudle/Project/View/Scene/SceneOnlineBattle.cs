@@ -1,4 +1,5 @@
-﻿using Framework.Event;
+﻿using Framework.Common;
+using Framework.Event;
 using UnityEngine;
 
 class SceneOnlineBattle : SceneBase
@@ -25,7 +26,7 @@ class SceneOnlineBattle : SceneBase
         Debug.Log("loaded  SceneOnlineBattle");
         UIManager.Instance.CloseWindow<UILoading>();
 
-        HandlerManager.Instance.GetHandler<BattleHandler>().BattleLoadEnd();
+        HandlerManager.Instance.GetHandler<RoomHandler>().BattleLoadEnd();
     }
 
     protected override void OnProcess(float process)

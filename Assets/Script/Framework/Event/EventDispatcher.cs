@@ -11,7 +11,7 @@ namespace Framework.Event
         {
             m_Handler = new EventDispatchTool();
         }
-        public void Broadcast(int id, object param)
+        public void Broadcast(int id, object param = null)
         {
             Broadcast(new EventElement(id, param));
         }

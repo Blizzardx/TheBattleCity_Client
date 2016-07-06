@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Framework.Common;
+using UnityEngine;
 using Framework.Event;
 
 public class SceneMenu : SceneBase

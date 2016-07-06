@@ -6,6 +6,7 @@ using NetWork.Auto;
 
 public class RoomHandler:HandlerBase
 {
+    private BattleManager m_BattleMgr;
     public override void OnCreate()
     {
         base.OnCreate();
@@ -14,8 +15,15 @@ public class RoomHandler:HandlerBase
         MessageDispatcher.Instance.RegistMessage(MessageIdConstants.SC_RoomList, OnRoomList);
         MessageDispatcher.Instance.RegistMessage(MessageIdConstants.SC_SearchRoom, OnSearchRoom);
         MessageDispatcher.Instance.RegistMessage(MessageIdConstants.SC_SyncPlayerInfo, OnSyncPlayerInfo);
+
+
+        MessageDispatcher.Instance.RegistMessage(MessageIdConstants.SC_BattleEnd, OnBattleEnd);
+        MessageDispatcher.Instance.RegistMessage(MessageIdConstants.SC_BattleBegin, OnBattleBegin);
+        MessageDispatcher.Instance.RegistMessage(MessageIdConstants.SC_BattleLogicFrame, OnBattleLogicFrame);
+        MessageDispatcher.Instance.RegistMessage(MessageIdConstants.SC_BeginLoadBattle, OnBeginLoadBattle);
     }
 
+#region room
     public void CreateRoom(string playerName,string mapName,string roomName,int memberCount)
     {
         CSCreateRoom msg = new CSCreateRoom();
@@ -53,7 +61,12 @@ public class RoomHandler:HandlerBase
         }
         UIManager.Instance.OpenWindow<UIMainMenu>(UIManager.WindowLayer.Window);
     }
+    public void BattleLoadEnd()
+    {
+        CSBattleLoadEnd msg = new CSBattleLoadEnd();
 
+        NetworkManager.Instance.SendMsgToServer(msg);
+    }
     private void OnCreateRoom(IMessage obj)
     {
         MessageElement pkg = obj as MessageElement;
@@ -103,4 +116,30 @@ public class RoomHandler:HandlerBase
 
         HandlerModelData<RoomModel>(RoomModel.KeyPlayerList, msg.PlayerInfomation);
     }
+
+    #endregion
+
+    #region battle
+    private void OnBattleBegin(IMessage obj)
+    {
+        EventDispatcher.Instance.BroadcastAsync(EventIdDefine.BattleBegin);
+    }
+    private void OnBattleEnd(IMessage obj)
+    {
+        EventDispatcher.Instance.Broadcast(EventIdDefine.BattleEnd);
+    }
+    private void OnBattleLogicFrame(IMessage obj)
+    {
+        MessageElement msgElement = obj as MessageElement;
+        SCBattleLogicFrame msg = msgElement.GetMessageBody() as SCBattleLogicFrame;
+
+        EventDispatcher.Instance.BroadcastAsync(EventIdDefine.BattleLogicFrame, msg);
+    }
+    private void OnBeginLoadBattle(IMessage obj)
+    {
+        m_BattleMgr = new BattleManager();
+        m_BattleMgr.Initialize();
+        EventDispatcher.Instance.BroadcastAsync(EventIdDefine.BeginLoadBattle);
+    }
+    #endregion
 }

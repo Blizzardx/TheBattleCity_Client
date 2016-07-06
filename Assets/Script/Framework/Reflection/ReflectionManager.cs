@@ -39,7 +39,12 @@ public class ReflectionManager : Singleton<ReflectionManager>
         for (int i = 0; i < m_ClassList.Count; ++i)
         {
             var elem = m_ClassList[i];
-            if (elem.BaseType == baseType )
+            if (elem.BaseType == baseType)
+            {
+                // add to list
+                resList.Add(elem);
+            }
+            else if (!elem.IsInterface && !elem.IsAbstract && baseType.IsInterface && baseType.IsAssignableFrom(elem))
             {
                 // add to list
                 resList.Add(elem);

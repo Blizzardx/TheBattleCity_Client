@@ -1,6 +1,6 @@
-﻿using System.IO;
-using Common.Tool;
-using Framework.Async;
+﻿using Common.Tool;
+using Framework.Common;
+using Framework.Event;
 using Framework.Log;
 using Framework.Queue;
 using Framework.Task;
@@ -16,7 +16,7 @@ public class GameManager : Singleton<GameManager>
         ClearTmpCache();
 
         LogManager.Instance.Initialize(AppManager.Instance.m_bIsShowDebugMsg);
-        CustomMain.Instance.Initialize();
+        EventDispatcher.Instance.Broadcast(EventIdDefine.AppInit);
     }
     public void Update()
     {
@@ -24,7 +24,7 @@ public class GameManager : Singleton<GameManager>
     }
     public void OnAppQuit()
     {
-        CustomMain.Instance.OnAppQuit();
+        EventDispatcher.Instance.Broadcast(EventIdDefine.AppQuit);
         LogManager.Instance.Distructor();
         TaskManager.Instance.QuickFinishedAllTask();
     }

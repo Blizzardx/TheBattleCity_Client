@@ -1,4 +1,5 @@
-﻿using Framework.Event;
+﻿using Framework.Common;
+using Framework.Event;
 using UnityEngine;
 
 public class UIMainMenu:UIBase

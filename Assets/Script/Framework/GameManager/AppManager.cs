@@ -9,8 +9,9 @@ public class AppManager : SingletonTemplateMon<AppManager>
     {
         _instance = this;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        DontDestroyOnLoad(this);        
-        
+        DontDestroyOnLoad(this);
+
+        TriggerOnAppInitManager.Instance.Init();
     }
 	void Start () 
     {

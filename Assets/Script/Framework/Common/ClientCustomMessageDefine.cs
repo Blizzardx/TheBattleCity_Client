@@ -1,6 +1,6 @@
 ﻿namespace Framework.Common
 {
-    public class ClientCustomMessageDefine
+    public partial class ClientCustomMessageDefine
     {
 
         public static bool IsClientCustomMessage(int message)
