@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using NetWork.Auto;
 using Thrift.Protocol;
 using UnityEngine;
 
