@@ -23,7 +23,7 @@ public class RoomHandler:HandlerBase
         MessageDispatcher.Instance.RegistMessage(MessageIdConstants.SC_BeginLoadBattle, OnBeginLoadBattle);
     }
 
-#region room
+    #region room
     public void CreateRoom(string playerName,string mapName,string roomName,int memberCount)
     {
         CSCreateRoom msg = new CSCreateRoom();

@@ -30,15 +30,13 @@ public class UIRoom:UIBase
     }
     private void OnSearchRoom(EventElement obj)
     {
-        throw new NotImplementedException();
     }
     private void OnRoomList(EventElement obj)
     {
-        throw new NotImplementedException();
     }
     private void OnCreateRoom(EventElement obj)
     {
-        throw new NotImplementedException();
+        UIManager.Instance.CloseWindow<UILoading>();
     }
 
     private void OnClickBack(GameObject go)

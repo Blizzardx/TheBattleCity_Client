@@ -57,11 +57,11 @@ public class UIBase
     private Action<GameObject, UIBase>  m_CreateCallback;
     private UIManager.WindowLayer       m_Layer;
     
-    private int m_iDeepth;
-    private List<PanelStruct> m_AllPanelsUnderWindow;
-    private int m_iMaxDeepth;
-    private List<MessageInfo> m_MessageInfoList;
-    private List<EventInfo> m_EventInfoList;
+    private int                 m_iDeepth;
+    private List<PanelStruct>   m_AllPanelsUnderWindow;
+    private int                 m_iMaxDeepth;
+    private List<MessageInfo>   m_MessageInfoList;
+    private List<EventInfo>     m_EventInfoList;
     private List<ModelEventInfo> m_ModelEventInfoList; 
       
     #region public interface
@@ -137,7 +137,6 @@ public class UIBase
         m_iMaxDeepth = maxDeepth;
         return maxDeepth;
     }
-
     public void SetLayer(UIManager.WindowLayer layer)
     {
         m_Layer = layer;
@@ -145,6 +144,10 @@ public class UIBase
     public UIManager.WindowLayer GetLayer()
     {
         return m_Layer;
+    }
+    public int GetMaxDeepthValue()
+    {
+        return m_iMaxDeepth;
     }
     #endregion
 
@@ -205,24 +208,6 @@ public class UIBase
             DoOpen(m_OpenParam);
         }
     }
-    protected void SetResourceName(string name,PerloadAssetType type)
-    {
-        m_ResourceInfo = new PreloadAssetInfo();
-        m_ResourceInfo.assetName = name;
-        m_ResourceInfo.assetType = type;
-    }
-    protected void SetResource(GameObject root)
-    {
-        m_ObjectRoot = root;
-    }
-    protected void Hide()
-    {
-        UIManager.Instance.HideWindow(GetType());
-    }
-    protected void Close()
-    {
-        UIManager.Instance.CloseWindow(GetType());
-    }
     private void SetLoadingStatus(bool status)
     {
         m_bIsLoading = status;
@@ -230,21 +215,6 @@ public class UIBase
     private void SetDestroyStatus(bool status)
     {
         m_bIsDestroyed = status;
-    }
-    protected bool IsDestroyed()
-    {
-        return m_bIsDestroyed;
-    }
-    protected void LoadResourceAsync(string assetName, Action<string, Object> callback)
-    {
-        ResourceManager.Instance.LoadBuildInResourceAsync(assetName, (name, obj) =>
-        {
-            if (m_bIsDestroyed)
-            {
-                return;
-            }
-            callback(name, obj);
-        });
     }
     private void Clear()
     {
@@ -270,7 +240,35 @@ public class UIBase
     #endregion
 
     #region internal function
-
+    protected void SetResourceName(string name,PerloadAssetType type)
+    {
+        m_ResourceInfo = new PreloadAssetInfo();
+        m_ResourceInfo.assetName = name;
+        m_ResourceInfo.assetType = type;
+    }
+    protected void SetResource(GameObject root)
+    {
+        m_ObjectRoot = root;
+    }
+    protected void Hide()
+    {
+        UIManager.Instance.HideWindow(GetType());
+    }
+    protected void Close()
+    {
+        UIManager.Instance.CloseWindow(GetType());
+    }
+    protected void LoadResourceAsync(string assetName, Action<string, Object> callback)
+    {
+        ResourceManager.Instance.LoadBuildInResourceAsync(assetName, (name, obj) =>
+        {
+            if (m_bIsDestroyed)
+            {
+                return;
+            }
+            callback(name, obj);
+        });
+    }
     protected void RegisterModelEvent(int id, Action<EventElement> callback, ModelBase model)
     {
         m_ModelEventInfoList.Add(new ModelEventInfo(id,callback,model));
@@ -307,8 +305,10 @@ public class UIBase
             callback(obj);
         });
     }
-    #endregion
-
+    protected bool IsDestroyed()
+    {
+        return m_bIsDestroyed;
+    }
     protected GameObject FindChild(string name)
     {
         return ComponentTool.FindChild(name, m_ObjectRoot);
@@ -317,6 +317,9 @@ public class UIBase
     {
         return ComponentTool.FindChildComponent<T>(name, m_ObjectRoot);
     }
+    #endregion
+
+    #region 
     protected virtual void OnCreate()
     {
         
@@ -337,8 +340,5 @@ public class UIBase
     {
         
     }
-    public int GetMaxDeepthValue()
-    {
-        return m_iMaxDeepth;
-    }
+    #endregion
 }

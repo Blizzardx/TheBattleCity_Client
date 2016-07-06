@@ -43,6 +43,7 @@ public class ModelBase
         {
             if (!m_PermissionList.Contains(key))
             {
+                Debug.Log(key.GetHashCode());
                 Debug.LogError("the handler do not have permission to modify data " + key.GetType().Name);
                 return;
             }
@@ -125,6 +126,7 @@ public class ModelBase
     }
     protected void RegisterPermisionKey(object key)
     {
+        Debug.Log(key.GetType() + " register permision key " + key.GetHashCode() + " to model " + GetType());
         m_PermissionList.Add(key);
     }
     protected void UnRegisterPermissionKey(object key)

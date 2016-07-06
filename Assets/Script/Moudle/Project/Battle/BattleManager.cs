@@ -4,6 +4,7 @@ using NetWork.Auto;
 
 public class BattleManager
 {
+    #region public interface
     public void Initialize()
     {
         EventDispatcher.Instance.RegistEvent(EventIdDefine.BeginLoadBattle, OnRecieveBeginLoadBattle);
@@ -11,6 +12,7 @@ public class BattleManager
         EventDispatcher.Instance.RegistEvent(EventIdDefine.BattleEnd, OnRecieveBattleEnd);
         EventDispatcher.Instance.RegistEvent(EventIdDefine.BattleLogicFrame, OnRecieveLogicFrame);
     }
+    #endregion
 
     #region event
     private void OnRecieveLogicFrame(EventElement obj)
@@ -31,6 +33,7 @@ public class BattleManager
     }
     #endregion
 
+    #region system function
     private void Distructor()
     {
         
@@ -43,9 +46,9 @@ public class BattleManager
     {
         SceneManager.Instance.LoadScene<SceneOnlineBattle>();
     }
-
     private void BattleBegin()
     {
         
     }
+    #endregion
 }
