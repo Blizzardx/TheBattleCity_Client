@@ -8,9 +8,10 @@ class SceneOnlineBattle : SceneBase
     {
         base.OnCreate();
         SetSceneName("OnLineBattle");
-        AddPreloadResource("BuildIn/UI/Prefab/MainMenu/UIWindow_Battle", PerloadAssetType.BuildInAsset);
-        AddPreloadResource("BuildIn/UI/Prefab/MainMenu/Player_Info", PerloadAssetType.BuildInAsset);
+        AddPreloadResource("BuildIn/UI/Prefab/Battle/UIWindow_Battle", PerloadAssetType.BuildInAsset);
+        AddPreloadResource("BuildIn/UI/Prefab/Battle/Player_Info", PerloadAssetType.BuildInAsset);
 
+        UIManager.Instance.CloseAllWindow();
         UIManager.Instance.OpenWindow<UILoading>(UIManager.WindowLayer.Tip);
     }
 

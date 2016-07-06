@@ -28,6 +28,10 @@ public class HandlerManager : Singleton<HandlerManager>
     }
     public void CheckInit()
     {
+        if (null != m_HandlerStore)
+        {
+            return;
+        }
         m_HandlerStore = new Dictionary<Type, HandlerBase>();
         AutoRegister();
 

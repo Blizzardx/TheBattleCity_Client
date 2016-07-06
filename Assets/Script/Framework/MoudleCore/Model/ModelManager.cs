@@ -27,6 +27,10 @@ public class ModelManager :Singleton<ModelManager>
     }
     public void CheckInit()
     {
+        if (null != m_ModelStore)
+        {
+            return;
+        }
         m_ModelStore = new Dictionary<Type, ModelBase>();
         AutoRegister();
 

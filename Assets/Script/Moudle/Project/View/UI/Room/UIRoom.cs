@@ -37,6 +37,15 @@ public class UIRoom:UIBase
     private void OnCreateRoom(EventElement obj)
     {
         UIManager.Instance.CloseWindow<UILoading>();
+        if (obj.eventParam != null)
+        {
+            string errorInfo = obj.eventParam as string;
+            Debug.LogError(errorInfo);
+        }
+        else
+        {
+            UIManager.Instance.OpenWindow<UIWaitBattle>(UIManager.WindowLayer.Window);
+        }
     }
 
     private void OnClickBack(GameObject go)

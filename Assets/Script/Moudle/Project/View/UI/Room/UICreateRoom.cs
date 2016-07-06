@@ -12,7 +12,15 @@ class UICreateRoom : UIBase
     {
         base.OnCreate();
         SetResourceName("BuildIn/UI/Prefab/Room/UIWindow_CreateRoom", PerloadAssetType.BuildInAsset);
+
+        RegisterEvent(EventIdDefine.CreateRoom, OnCreateRoom);
     }
+
+    private void OnCreateRoom(EventElement obj)
+    {
+        Hide();
+    }
+
     protected override void OnInit()
     {
         base.OnInit();
@@ -30,6 +38,6 @@ class UICreateRoom : UIBase
     private void OnClickOk(GameObject go)
     {
         UIManager.Instance.OpenWindow<UILoading>(UIManager.WindowLayer.Window);
-        HandlerManager.Instance.GetHandler<RoomHandler>().CreateRoom(m_InputPlayerName.value,"map_1", m_InputRoomName.value, 2);
+        HandlerManager.Instance.GetHandler<RoomHandler>().CreateRoom(m_InputPlayerName.value,"map_1", m_InputRoomName.value, 1);
     }
 }

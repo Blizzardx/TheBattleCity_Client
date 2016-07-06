@@ -122,6 +122,8 @@ namespace Framework.Network.GamePack
             }
             var res = m_RecievedMsg;
             m_RecievedMsg = null;
+            var currentTime = DateTime.Now;
+            Debug.Log("rec msg " + res.GetMessageBody().ToString() + " at time " + currentTime.Second + " : " + currentTime.Millisecond);
             return res;
         }
 
@@ -263,7 +265,7 @@ namespace Framework.Network.GamePack
             index += 4;
 
             Array.Copy(byteMsgBody, 0, sendBuffer, index, byteMsgBody.Length);
-
+            Debug.Log("send msg" + msgBody.ToString());
             return sendBuffer;
         }
         #endregion
