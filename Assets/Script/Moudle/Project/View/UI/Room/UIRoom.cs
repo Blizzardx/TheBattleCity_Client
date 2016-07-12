@@ -20,14 +20,15 @@ public class UIRoom:UIBase
         UIEventListener.Get(FindChild("Button_Refresh")).onClick = OnClickRefreshRoom;
         UIEventListener.Get(FindChild("Button_Back")).onClick = OnClickBack;
         m_RoomList = GetChildComponent<UIList>("UIList");
-        m_RoomList.InitUIList<RoomListViewUI>();
+        m_RoomList.InitUIList<UIRoomListViewUI>();
         RegisterEvent(EventIdDefine.CreateRoom, OnCreateRoom);
         RegisterEvent(EventIdDefine.SearchRoom, OnSearchRoom);
         RegisterEvent(EventIdDefine.EnterRoom, OnEnterRoom);
 
         RegisterModelEvent(RoomModel.KeyRoomList,OnRoomList,ModelManager.Instance.GetModel<RoomModel>());
 
-        UpdateRoomList();
+        SetBlock(true);
+        HandlerManager.Instance.GetHandler<RoomHandler>().GetRoomList();
     }
     private void OnEnterRoom(EventElement obj)
     {

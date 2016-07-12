@@ -4,11 +4,19 @@ using UnityEngine;
 
 public class PlayerInfo
 {
+    public void SetData(NetWork.Auto.PlayerInfo info)
+    {
+        Uid = info.Uid;
+        name = info.Name;
+        hp = info.Hp;
+        meshName = info.MeshName;
+        positionId = info.PositionId;
+    }
     public int Uid;
     public string name;
     public int hp;
-    public int mesh;
-    public int texture;
+    public string meshName;
+    public int positionId;
 }
 class RoomModel : ModelBase
 {
@@ -23,7 +31,7 @@ class RoomModel : ModelBase
     private int m_iMemberCount;
     private List<RoomInfo> m_RoomList;
     private List<PlayerInfo> m_PlayerList;
-     
+    private PlayerInfo m_RoomSelfPlayer;
 
     protected override void OnCreate()
     {
@@ -79,6 +87,10 @@ class RoomModel : ModelBase
     {
         return m_RoomList;
     }
+    public PlayerInfo GetSelf()
+    {
+        return m_RoomSelfPlayer;
+    }
     #endregion
 
     #region set
@@ -104,6 +116,21 @@ class RoomModel : ModelBase
         if (null == m_PlayerList)
         {
             m_PlayerList = new List<PlayerInfo>();
+        }
+        NetWork.Auto.PlayerInfo info = obj as NetWork.Auto.PlayerInfo;
+        PlayerInfo elem = new PlayerInfo();
+        elem.SetData(info);
+
+        m_PlayerList.Add(elem);
+
+        for (int i = 0; i < m_PlayerList.Count; ++i)
+        {
+            if (m_PlayerList[i].Uid == ModelManager.Instance.GetModel<PlayerModel>().GetPlayerUid())
+            {
+                m_RoomSelfPlayer = m_PlayerList[i];
+                // mark self player
+                break;
+            }
         }
     }
     #endregion

@@ -328,7 +328,7 @@ public class UIBase
     {
         
     }
-    protected virtual void OnOpen(object parma)
+    protected virtual void OnOpen(object param)
     {
         
     }

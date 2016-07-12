@@ -53,17 +53,18 @@ public class UIManager : Singleton<UIManager>
             m_CurrentWindowStore.Add(t, ui);
             ui.SetLayer(layer);
             ui.DoCreate(OnWindowLoaded);
+            ui.DoOpen(param);
         }
         else
         {
             ui.SetLayer(layer);
+            if (ui.IsOpen())
+            {
+                // do nothing
+                return ui;
+            }
+            ui.DoOpen(param);
         }
-        if (ui.IsOpen())
-        {
-            // do nothing
-            return ui;
-        }
-        ui.DoOpen(param);
         return ui;
     }
     public void OpenWindow<T>(WindowLayer layer,object param = null) where T : UIBase
