@@ -75,6 +75,10 @@ class RoomModel : ModelBase
     {
         return m_PlayerList;
     }
+    public List<RoomInfo> GetRoomList()
+    {
+        return m_RoomList;
+    }
     #endregion
 
     #region set

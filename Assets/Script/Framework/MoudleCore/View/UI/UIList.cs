@@ -69,6 +69,10 @@ public class UIList:MonoBehaviour
     }
     public void SetData<T>(List<T> content)
     {
+        if (null == content)
+        {
+            return;
+        }
         //reset position
         m_ObjectPanelRoot.transform.localPosition = m_InitPos;
         m_UIPanel.clipOffset = m_InitPanelOffset;

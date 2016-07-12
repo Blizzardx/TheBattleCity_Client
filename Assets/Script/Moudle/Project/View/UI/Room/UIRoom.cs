@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class UIRoom:UIBase
 {
+    private UIList m_RoomList;
+
     protected override void OnCreate()
     {
         base.OnCreate();
@@ -17,12 +19,15 @@ public class UIRoom:UIBase
         UIEventListener.Get(FindChild("Button_Search")).onClick = OnClickSearchRoom;
         UIEventListener.Get(FindChild("Button_Refresh")).onClick = OnClickRefreshRoom;
         UIEventListener.Get(FindChild("Button_Back")).onClick = OnClickBack;
-
+        m_RoomList = GetChildComponent<UIList>("UIList");
+        m_RoomList.InitUIList<RoomListViewUI>();
         RegisterEvent(EventIdDefine.CreateRoom, OnCreateRoom);
         RegisterEvent(EventIdDefine.SearchRoom, OnSearchRoom);
         RegisterEvent(EventIdDefine.EnterRoom, OnEnterRoom);
 
         RegisterModelEvent(RoomModel.KeyRoomList,OnRoomList,ModelManager.Instance.GetModel<RoomModel>());
+
+        UpdateRoomList();
     }
     private void OnEnterRoom(EventElement obj)
     {
@@ -33,6 +38,7 @@ public class UIRoom:UIBase
     }
     private void OnRoomList(EventElement obj)
     {
+        UpdateRoomList();
     }
     private void OnCreateRoom(EventElement obj)
     {
@@ -73,5 +79,12 @@ public class UIRoom:UIBase
     private void SetBlock(bool status)
     {
         
+    }
+
+    private void UpdateRoomList()
+    {
+        var list = ModelManager.Instance.GetModel<RoomModel>().GetRoomList();
+        
+        m_RoomList.SetData(list);
     }
 }
