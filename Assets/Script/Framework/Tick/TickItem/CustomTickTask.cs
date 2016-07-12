@@ -10,7 +10,7 @@ namespace Framework.Tick
     {
         private RegisterList m_RegisterList;
 
-        public CustomTickTask()
+        private CustomTickTask()
         {
             m_RegisterList = new RegisterList();
             m_Instance = this;

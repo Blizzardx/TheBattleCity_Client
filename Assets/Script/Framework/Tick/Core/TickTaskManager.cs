@@ -25,7 +25,7 @@ namespace Framework.Tick
             m_TickTaskStore.Add(new EventTickTask());
             m_TickTaskStore.Add(new AsyncTickTask());
             m_TickTaskStore.Add(new NetworkTickTask());
-            m_TickTaskStore.Add(new CustomTickTask());
+            m_TickTaskStore.Add(CustomTickTask.Instance);
             m_TickTaskStore.Add(new LogTickTask());
         }
 

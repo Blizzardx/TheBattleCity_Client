@@ -38,6 +38,7 @@ public class UIRoom:UIBase
     }
     private void OnRoomList(EventElement obj)
     {
+        SetBlock(false);
         UpdateRoomList();
     }
     private void OnCreateRoom(EventElement obj)
@@ -62,8 +63,8 @@ public class UIRoom:UIBase
 
     private void OnClickRefreshRoom(GameObject go)
     {
-        HandlerManager.Instance.GetHandler<RoomHandler>().GetRoomList();
         SetBlock(true);
+        HandlerManager.Instance.GetHandler<RoomHandler>().GetRoomList();
     }
 
     private void OnClickSearchRoom(GameObject go)
@@ -78,7 +79,14 @@ public class UIRoom:UIBase
 
     private void SetBlock(bool status)
     {
-        
+        if (status)
+        {
+            UIManager.Instance.OpenWindow<UILoading>(UIManager.WindowLayer.Window);
+        }
+        else
+        {
+            UIManager.Instance.CloseWindow<UILoading>();
+        }
     }
 
     private void UpdateRoomList()

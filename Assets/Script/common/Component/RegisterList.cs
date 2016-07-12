@@ -71,6 +71,7 @@ namespace Common.Component
             {
                 return;
             }
+            m_UpdatingList = new LinkedList<Action>();
             do
             {
                 var elem = m_UpdateList.First;
@@ -167,6 +168,7 @@ namespace Common.Component
             {
                 return;
             }
+            m_UpdatingList = new LinkedList<Action<T>>();
             do
             {
                 var elem = m_UpdateList.First;
