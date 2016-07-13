@@ -3,7 +3,7 @@ using Framework.Event;
 using Framework.Network;
 using UnityEngine;
 
-public class CustomMain : TriggerOnAppInit
+public class CustomMain : SystemEventTrigger
 {
     public int GetSortId()
     {

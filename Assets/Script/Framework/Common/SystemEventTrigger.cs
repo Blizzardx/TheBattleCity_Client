@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Framework.Common
 {
-    interface TriggerOnAppInit
+    interface SystemEventTrigger
     {
         int GetSortId();
         void Init();

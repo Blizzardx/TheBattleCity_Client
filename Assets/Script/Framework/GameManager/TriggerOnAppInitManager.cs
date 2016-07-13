@@ -9,11 +9,11 @@ public class TriggerOnAppInitManager:Singleton<TriggerOnAppInitManager>
 {
     public void Init()
     {
-        var list = ReflectionManager.Instance.GetTypeByBase(typeof (TriggerOnAppInit));
-        List<TriggerOnAppInit> instanceList = new List<TriggerOnAppInit>(list.Count);
+        var list = ReflectionManager.Instance.GetTypeByBase(typeof (SystemEventTrigger));
+        List<SystemEventTrigger> instanceList = new List<SystemEventTrigger>(list.Count);
         for (int i = 0; i < list.Count; ++i)
         {
-            TriggerOnAppInit constructerInstance = Activator.CreateInstance(list[i])  as TriggerOnAppInit;
+            SystemEventTrigger constructerInstance = Activator.CreateInstance(list[i])  as SystemEventTrigger;
             instanceList.Add(constructerInstance);
         }
         instanceList.Sort(SortById);
@@ -23,7 +23,7 @@ public class TriggerOnAppInitManager:Singleton<TriggerOnAppInitManager>
         }
     }
 
-    private int SortById(TriggerOnAppInit x, TriggerOnAppInit y)
+    private int SortById(SystemEventTrigger x, SystemEventTrigger y)
     {
         if (x.GetSortId() < y.GetSortId())
         {

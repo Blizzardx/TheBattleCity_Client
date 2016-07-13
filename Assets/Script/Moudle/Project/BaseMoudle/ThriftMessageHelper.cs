@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Framework.Common
 {
-    public class ThriftMessageHelper_Constructor : TriggerOnAppInit
+    public class ThriftMessageHelper_Constructor : SystemEventTrigger
     {
         public int GetSortId()
         {
