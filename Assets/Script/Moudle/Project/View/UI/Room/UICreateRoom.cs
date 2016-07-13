@@ -38,6 +38,6 @@ class UICreateRoom : UIBase
     private void OnClickOk(GameObject go)
     {
         UIManager.Instance.OpenWindow<UILoading>(UIManager.WindowLayer.Window);
-        HandlerManager.Instance.GetHandler<RoomHandler>().CreateRoom(m_InputPlayerName.value,"map_1", m_InputRoomName.value, 2);
+        HandlerManager.Instance.GetHandler<RoomHandler>().CreateRoom(m_InputPlayerName.value,"map_1", m_InputRoomName.value,1);
     }
 }

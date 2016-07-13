@@ -66,6 +66,8 @@ public class RoomHandler:HandlerBase
         CSBattleLoadEnd msg = new CSBattleLoadEnd();
 
         NetworkManager.Instance.SendMsgToServer(msg);
+
+        m_BattleMgr.InitBattleScene();
     }
     private void OnCreateRoom(IMessage obj)
     {
