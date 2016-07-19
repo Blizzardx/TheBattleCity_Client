@@ -33,7 +33,7 @@ public class UIGenScriptAgent : MonoBehaviour
     public void AutoGenScript()
     {
         // load template file
-        var templateFileContent = FileUtils.ReadStringFile(m_strTemplateFilePath);
+        var templateFileContent = FileUtils.ReadStringFile(Application.dataPath + "/" + m_strTemplateFilePath);
 
         if (string.IsNullOrEmpty(templateFileContent))
         {
@@ -73,7 +73,7 @@ public class UIGenScriptAgent : MonoBehaviour
         content = content.Replace("{1}", headContent.ToString());
         content = content.Replace("{2}", bodyContent.ToString());
 
-        FileUtils.WriteStringFile(outputPath + "/" + className + filetype, content.ToString());
+        FileUtils.WriteStringFile(Application.dataPath + "/" + outputPath + "/" + className + filetype, content.ToString());
     }
     private void CheckObject(bool isRoot ,bool isCustomRoot,ref StringBuilder headContent, ref StringBuilder bodyContent, Transform root)
     {
@@ -128,7 +128,7 @@ public class UIGenScriptAgent : MonoBehaviour
     private void GenCustomRootScript(UIGenScriptCustomRootInfo info,Transform root)
     {
         // load template file
-        var templateFileContent = FileUtils.ReadStringFile(info.m_strTemplateFilePath);
+        var templateFileContent = FileUtils.ReadStringFile(Application.dataPath + "/" + info.m_strTemplateFilePath);
 
         if (string.IsNullOrEmpty(templateFileContent))
         {
