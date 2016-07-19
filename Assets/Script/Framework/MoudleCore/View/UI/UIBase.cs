@@ -154,6 +154,7 @@ public class UIBase
     #region system function
     private void DoInit()
     {
+        AutoRegisterMember();
         OnInit();
     }
     private void BeginLoadResource()
@@ -337,6 +338,10 @@ public class UIBase
         
     }
     protected virtual void OnHide()
+    {
+        
+    }
+    protected virtual void AutoRegisterMember()
     {
         
     }
