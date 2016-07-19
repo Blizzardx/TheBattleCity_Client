@@ -144,6 +144,7 @@ public class UIList:MonoBehaviour
     {
         GameObject tmpchild = GameObject.Instantiate(m_ChildElementTemplate) as GameObject;
         ListData result = new ListData(tmpchild, Activator.CreateInstance(m_HandlerType) as UIListItemBase,this);
+        result.m_Handler.AutoRegisterMember();
         result.m_Handler.OnInit();
         ComponentTool.Attach(m_ObjectGridRoot.transform,tmpchild.transform);
         return result;
@@ -156,6 +157,10 @@ public class UIListItemBase
     public GameObject   m_ObjectRoot;
     public int          m_iIndex;
 
+    virtual public void AutoRegisterMember()
+    {
+        
+    }
     virtual public void OnInit()
     {
         
@@ -176,7 +181,7 @@ public class UIListItemBase
     {
         set; get;
     }
-    protected T FindChildComponent<T>(string childName) where T : Component
+    protected T GetChildComponent<T>(string childName) where T : Component
     {
         return ComponentTool.FindChildComponent<T>(childName, m_ObjectRoot);
     }
