@@ -6,12 +6,20 @@
  */
  internal partial class UIWindow_TestTemplateView : UIBase
 {
+		private UIButton m_ButtonCreate;
+		private UIButton m_ButtonSearch;
+		private UIButton m_ButtonRefresh;
+		private UIButton m_ButtonBack;
 		private UIList m_UIListRoomList;
 		private UILabel m_LabelName;
 		private UIInput m_InputName;
 
     protected override void AutoRegisterMember()
     {
+		m_ButtonCreate = GetChildComponent<UIButton>("BtnCreate");;
+		m_ButtonSearch = GetChildComponent<UIButton>("BtnSearch");;
+		m_ButtonRefresh = GetChildComponent<UIButton>("BtnRefresh");;
+		m_ButtonBack = GetChildComponent<UIButton>("BtnBack");;
 		m_UIListRoomList = GetChildComponent<UIList>("UIListRoomList");;
 		m_LabelName = GetChildComponent<UILabel>("LabelName");;
 		m_InputName = GetChildComponent<UIInput>("InputName");;
