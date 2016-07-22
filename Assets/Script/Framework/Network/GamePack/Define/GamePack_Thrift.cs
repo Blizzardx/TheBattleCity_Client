@@ -50,19 +50,15 @@ namespace Framework.Network.GamePack
             m_Body = null;
             m_bWithError = false;
             m_Status = Status.Id;
-            m_RevBuff.Flip();
+            m_RevBuff.Clear();
         }
         public void AddToBuffer(byte[] source, int size)
         {
-            if (m_RevBuff.Length() + size > m_RevBuff.Capcity())
+            if (m_RevBuff.Length + size > m_RevBuff.Capacity)
             {
                 m_RevBuff.Compact();
-                m_RevBuff.Flip();
             }
-            long pos = m_RevBuff.Position();
-            m_RevBuff.SetPosition(m_RevBuff.Length());
-            m_RevBuff.Put(source, size);
-            m_RevBuff.SetPosition(pos);
+            m_RevBuff.PushBytes(source, size);
         }
 
         #region decode
@@ -133,8 +129,7 @@ namespace Framework.Network.GamePack
             {
                 return false;
             }
-            byte[] msgId = new byte[MESSAGE_ID_SIZE];
-            m_RevBuff.Read(msgId);
+            byte[] msgId = m_RevBuff.Read(MESSAGE_ID_SIZE);
             m_iMessageId = ByteArrayUtil.bytesToInt(msgId);
             m_Status = Status.Prefix;
             return true;
@@ -146,8 +141,7 @@ namespace Framework.Network.GamePack
             {
                 return false;
             }
-            byte[] prefix = new byte[MESSAGE_ID_SIZE];
-            m_RevBuff.Read(prefix);
+            byte[] prefix = m_RevBuff.Read(MESSAGE_ID_SIZE);
             m_Status = Status.HeaderLength;
             return true;
         }
@@ -158,8 +152,7 @@ namespace Framework.Network.GamePack
             {
                 return false;
             }
-            byte[] headerLength = new byte[HEADER_LENGTH_SIZE];
-            m_RevBuff.Read(headerLength);
+            byte[] headerLength = m_RevBuff.Read(HEADER_LENGTH_SIZE);
             m_iHeaderLength = ByteArrayUtil.bytesToShort(headerLength);
             m_Status = Status.Header;
             return true;
@@ -181,8 +174,7 @@ namespace Framework.Network.GamePack
             {
                 return false;
             }
-            byte[] bodyLength = new byte[BODY_LENGTH_SIZE];
-            m_RevBuff.Read(bodyLength);
+            byte[] bodyLength = m_RevBuff.Read(BODY_LENGTH_SIZE);
             m_iBodyLength = ByteArrayUtil.bytesToInt(bodyLength);
             m_Status = Status.Body;
             return true;
@@ -194,8 +186,7 @@ namespace Framework.Network.GamePack
             {
                 return false;
             }
-            byte[] body = new byte[m_iBodyLength];
-            m_RevBuff.Read(body);
+            byte[] body = m_RevBuff.Read(m_iBodyLength);
             try
             {
 
