@@ -98,6 +98,7 @@ public class BattleManager
     {
         foreach (var elem in msg.BattleFrameDataList)
         {
+            Debug.Log(" frame " + elem.FrameIndex + " : count " + elem.CharCommandList.Count);
             m_LogicFrameQueue.Enqueue(elem);
         }
     }
@@ -122,6 +123,14 @@ public class BattleManager
     private void Update()
     {
         ExecLogicFrame();
+
+        // test code
+        if (Input.GetMouseButtonDown(0))
+        {
+            BattleCmdInfo_Move cmd = new BattleCmdInfo_Move();
+            cmd.dir = Input.mousePosition;
+            SendCmd(cmd);
+        }
     }
     private void ExecLogicFrame()
     {
@@ -138,7 +147,6 @@ public class BattleManager
                 break;
         }
     }
-
     private void LogicFrameWait()
     {
         if (m_LogicFrameQueue.Count >= m_iMinExeFrameCount)

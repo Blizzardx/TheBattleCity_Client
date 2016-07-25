@@ -5,4 +5,7 @@
 
     // fire
     Fire,
+
+    // speed
+    Speed,
 }

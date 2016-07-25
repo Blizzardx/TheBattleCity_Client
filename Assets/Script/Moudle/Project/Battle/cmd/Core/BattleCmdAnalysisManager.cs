@@ -9,20 +9,22 @@ public class BattleCmdAnalysisManager
 {
     private Dictionary<Type, BattleCmdAnalysisBase> m_AnalyzerToInfoMap;
     private Dictionary<int, BattleCmdAnalysisBase> m_AnalyzerToTypeMap;
+
     public void Initialize()
     {
         if (null != m_AnalyzerToInfoMap)
         {
             return;
         }
+        m_AnalyzerToTypeMap = new Dictionary<int, BattleCmdAnalysisBase>();
         m_AnalyzerToInfoMap = new Dictionary<Type, BattleCmdAnalysisBase>();
-        var list = ReflectionManager.Instance.GetTypeByBase(typeof(BattleCmdAnalysisBase));
+        var list = ReflectionManager.Instance.GetTypeByBase(typeof (BattleCmdAnalysisBase));
         for (int i = 0; i < list.Count; ++i)
         {
             BattleCmdAnalysisBase analysis = Activator.CreateInstance(list[i]) as BattleCmdAnalysisBase;
             analysis.Init();
             m_AnalyzerToInfoMap.Add(analysis.GetDataInfoType(), analysis);
-            m_AnalyzerToTypeMap.Add((int)(analysis.GetMessageInfoType()), analysis);
+            m_AnalyzerToTypeMap.Add((int) (analysis.GetMessageInfoType()), analysis);
         }
     }
     public List<BattleCmdInfo> DecodeCmd(int charId,List<BattleCommandData> cmdList)

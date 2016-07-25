@@ -22,7 +22,8 @@ class MainMenuHandler:HandlerBase
         }
         Debug.Log("try connect to server");
         // try connet to server 
-        NetworkManager.Instance.Connect("120.25.176.42", 1234);
+        //NetworkManager.Instance.Connect("120.25.176.42", 1234);
+        NetworkManager.Instance.Connect("127.0.0.1", 1234);
         return true;
     }
     private void SocketConnectError(IMessage obj)

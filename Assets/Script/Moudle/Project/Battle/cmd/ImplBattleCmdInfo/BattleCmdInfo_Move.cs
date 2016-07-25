@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 
 
-public class MoveInfo : BattleCmdInfo
+public class BattleCmdInfo_Move : BattleCmdInfo
 {
     public Vector3 dir;
-    public float speed;
     public int charId;
 
     public int GetCharId()
