@@ -23,9 +23,9 @@ namespace NetWork.Auto
   #endif
   public partial class CSBattleLogicFrame : TBase
   {
-    private BattleCommandData _commandData;
+    private List<BattleCommandData> _commandData;
 
-    public BattleCommandData CommandData
+    public List<BattleCommandData> CommandData
     {
       get
       {
@@ -63,9 +63,19 @@ namespace NetWork.Auto
         switch (field.ID)
         {
           case 10:
-            if (field.Type == TType.Struct) {
-              CommandData = new BattleCommandData();
-              CommandData.Read(iprot);
+            if (field.Type == TType.List) {
+              {
+                CommandData = new List<BattleCommandData>();
+                TList _list12 = iprot.ReadListBegin();
+                for( int _i13 = 0; _i13 < _list12.Count; ++_i13)
+                {
+                  BattleCommandData _elem14 = new BattleCommandData();
+                  _elem14 = new BattleCommandData();
+                  _elem14.Read(iprot);
+                  CommandData.Add(_elem14);
+                }
+                iprot.ReadListEnd();
+              }
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -85,10 +95,17 @@ namespace NetWork.Auto
       TField field = new TField();
       if (CommandData != null && __isset.commandData) {
         field.Name = "commandData";
-        field.Type = TType.Struct;
+        field.Type = TType.List;
         field.ID = 10;
         oprot.WriteFieldBegin(field);
-        CommandData.Write(oprot);
+        {
+          oprot.WriteListBegin(new TList(TType.Struct, CommandData.Count));
+          foreach (BattleCommandData _iter15 in CommandData)
+          {
+            _iter15.Write(oprot);
+          }
+          oprot.WriteListEnd();
+        }
         oprot.WriteFieldEnd();
       }
       oprot.WriteFieldStop();
@@ -98,7 +115,7 @@ namespace NetWork.Auto
     public override string ToString() {
       StringBuilder sb = new StringBuilder("CSBattleLogicFrame(");
       sb.Append("CommandData: ");
-      sb.Append(CommandData== null ? "<null>" : CommandData.ToString());
+      sb.Append(CommandData);
       sb.Append(")");
       return sb.ToString();
     }

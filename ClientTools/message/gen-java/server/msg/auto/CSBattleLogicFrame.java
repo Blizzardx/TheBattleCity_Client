@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 public class CSBattleLogicFrame implements org.apache.thrift.TBase<CSBattleLogicFrame, CSBattleLogicFrame._Fields>, java.io.Serializable, Cloneable, Comparable<CSBattleLogicFrame> {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("CSBattleLogicFrame");
 
-  private static final org.apache.thrift.protocol.TField COMMAND_DATA_FIELD_DESC = new org.apache.thrift.protocol.TField("commandData", org.apache.thrift.protocol.TType.STRUCT, (short)10);
+  private static final org.apache.thrift.protocol.TField COMMAND_DATA_FIELD_DESC = new org.apache.thrift.protocol.TField("commandData", org.apache.thrift.protocol.TType.LIST, (short)10);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -43,7 +43,7 @@ public class CSBattleLogicFrame implements org.apache.thrift.TBase<CSBattleLogic
     schemes.put(TupleScheme.class, new CSBattleLogicFrameTupleSchemeFactory());
   }
 
-  public BattleCommandData commandData; // required
+  public List<BattleCommandData> commandData; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -108,7 +108,8 @@ public class CSBattleLogicFrame implements org.apache.thrift.TBase<CSBattleLogic
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.COMMAND_DATA, new org.apache.thrift.meta_data.FieldMetaData("commandData", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, BattleCommandData.class)));
+        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, BattleCommandData.class))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(CSBattleLogicFrame.class, metaDataMap);
   }
@@ -117,7 +118,7 @@ public class CSBattleLogicFrame implements org.apache.thrift.TBase<CSBattleLogic
   }
 
   public CSBattleLogicFrame(
-    BattleCommandData commandData)
+    List<BattleCommandData> commandData)
   {
     this();
     this.commandData = commandData;
@@ -128,7 +129,11 @@ public class CSBattleLogicFrame implements org.apache.thrift.TBase<CSBattleLogic
    */
   public CSBattleLogicFrame(CSBattleLogicFrame other) {
     if (other.isSetCommandData()) {
-      this.commandData = new BattleCommandData(other.commandData);
+      List<BattleCommandData> __this__commandData = new ArrayList<BattleCommandData>(other.commandData.size());
+      for (BattleCommandData other_element : other.commandData) {
+        __this__commandData.add(new BattleCommandData(other_element));
+      }
+      this.commandData = __this__commandData;
     }
   }
 
@@ -141,11 +146,26 @@ public class CSBattleLogicFrame implements org.apache.thrift.TBase<CSBattleLogic
     this.commandData = null;
   }
 
-  public BattleCommandData getCommandData() {
+  public int getCommandDataSize() {
+    return (this.commandData == null) ? 0 : this.commandData.size();
+  }
+
+  public java.util.Iterator<BattleCommandData> getCommandDataIterator() {
+    return (this.commandData == null) ? null : this.commandData.iterator();
+  }
+
+  public void addToCommandData(BattleCommandData elem) {
+    if (this.commandData == null) {
+      this.commandData = new ArrayList<BattleCommandData>();
+    }
+    this.commandData.add(elem);
+  }
+
+  public List<BattleCommandData> getCommandData() {
     return this.commandData;
   }
 
-  public CSBattleLogicFrame setCommandData(BattleCommandData commandData) {
+  public CSBattleLogicFrame setCommandData(List<BattleCommandData> commandData) {
     this.commandData = commandData;
     return this;
   }
@@ -171,7 +191,7 @@ public class CSBattleLogicFrame implements org.apache.thrift.TBase<CSBattleLogic
       if (value == null) {
         unsetCommandData();
       } else {
-        setCommandData((BattleCommandData)value);
+        setCommandData((List<BattleCommandData>)value);
       }
       break;
 
@@ -282,9 +302,6 @@ public class CSBattleLogicFrame implements org.apache.thrift.TBase<CSBattleLogic
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
     // check for sub-struct validity
-    if (commandData != null) {
-      commandData.validate();
-    }
   }
 
   private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -322,9 +339,19 @@ public class CSBattleLogicFrame implements org.apache.thrift.TBase<CSBattleLogic
         }
         switch (schemeField.id) {
           case 10: // COMMAND_DATA
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-              struct.commandData = new BattleCommandData();
-              struct.commandData.read(iprot);
+            if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+              {
+                org.apache.thrift.protocol.TList _list24 = iprot.readListBegin();
+                struct.commandData = new ArrayList<BattleCommandData>(_list24.size);
+                for (int _i25 = 0; _i25 < _list24.size; ++_i25)
+                {
+                  BattleCommandData _elem26;
+                  _elem26 = new BattleCommandData();
+                  _elem26.read(iprot);
+                  struct.commandData.add(_elem26);
+                }
+                iprot.readListEnd();
+              }
               struct.setCommandDataIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
@@ -347,7 +374,14 @@ public class CSBattleLogicFrame implements org.apache.thrift.TBase<CSBattleLogic
       oprot.writeStructBegin(STRUCT_DESC);
       if (struct.commandData != null) {
         oprot.writeFieldBegin(COMMAND_DATA_FIELD_DESC);
-        struct.commandData.write(oprot);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.commandData.size()));
+          for (BattleCommandData _iter27 : struct.commandData)
+          {
+            _iter27.write(oprot);
+          }
+          oprot.writeListEnd();
+        }
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -373,7 +407,13 @@ public class CSBattleLogicFrame implements org.apache.thrift.TBase<CSBattleLogic
       }
       oprot.writeBitSet(optionals, 1);
       if (struct.isSetCommandData()) {
-        struct.commandData.write(oprot);
+        {
+          oprot.writeI32(struct.commandData.size());
+          for (BattleCommandData _iter28 : struct.commandData)
+          {
+            _iter28.write(oprot);
+          }
+        }
       }
     }
 
@@ -382,8 +422,17 @@ public class CSBattleLogicFrame implements org.apache.thrift.TBase<CSBattleLogic
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(1);
       if (incoming.get(0)) {
-        struct.commandData = new BattleCommandData();
-        struct.commandData.read(iprot);
+        {
+          org.apache.thrift.protocol.TList _list29 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.commandData = new ArrayList<BattleCommandData>(_list29.size);
+          for (int _i30 = 0; _i30 < _list29.size; ++_i30)
+          {
+            BattleCommandData _elem31;
+            _elem31 = new BattleCommandData();
+            _elem31.read(iprot);
+            struct.commandData.add(_elem31);
+          }
+        }
         struct.setCommandDataIsSet(true);
       }
     }

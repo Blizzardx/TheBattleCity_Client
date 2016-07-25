@@ -23,5 +23,5 @@ struct SCBattleLogicFrame
 }
 struct CSBattleLogicFrame
 {
-	10: BattleCommandData commandData
+	10: list<BattleCommandData> commandData
 }

@@ -51,20 +51,21 @@ public class BattleManager
             m_PlayerList.Add(new BattlePlayerController(list[i]));
         }
     }
-
     public void SendCmd(BattleCmdInfo cmd)
     {
         var realCmd = m_CmdAnayzerMgr.EncodeBattleCmd(cmd);
         if (null == realCmd)
         {
             Debug.LogError("can't encode cmd " + cmd.GetType());
+            return;
         }
-        for (int i = 0; i < realCmd.Length; ++i)
-        {
-            CSBattleLogicFrame msg = new CSBattleLogicFrame();
-            msg.CommandData = realCmd[i];
-            NetworkManager.Instance.SendMsgToServer(msg);
-        }
+        CSBattleLogicFrame msg = new CSBattleLogicFrame();
+        msg.CommandData = new List<BattleCommandData>(realCmd);
+        NetworkManager.Instance.SendMsgToServer(msg);
+    }
+    public int GetClientFrame()
+    {
+        return m_iClientFrame;
     }
     #endregion
 
