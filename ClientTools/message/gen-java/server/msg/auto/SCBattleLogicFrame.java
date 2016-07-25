@@ -341,14 +341,14 @@ public class SCBattleLogicFrame implements org.apache.thrift.TBase<SCBattleLogic
           case 10: // BATTLE_FRAME_DATA_LIST
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list16 = iprot.readListBegin();
-                struct.battleFrameDataList = new ArrayList<BattleFrameData>(_list16.size);
-                for (int _i17 = 0; _i17 < _list16.size; ++_i17)
+                org.apache.thrift.protocol.TList _list24 = iprot.readListBegin();
+                struct.battleFrameDataList = new ArrayList<BattleFrameData>(_list24.size);
+                for (int _i25 = 0; _i25 < _list24.size; ++_i25)
                 {
-                  BattleFrameData _elem18;
-                  _elem18 = new BattleFrameData();
-                  _elem18.read(iprot);
-                  struct.battleFrameDataList.add(_elem18);
+                  BattleFrameData _elem26;
+                  _elem26 = new BattleFrameData();
+                  _elem26.read(iprot);
+                  struct.battleFrameDataList.add(_elem26);
                 }
                 iprot.readListEnd();
               }
@@ -376,9 +376,9 @@ public class SCBattleLogicFrame implements org.apache.thrift.TBase<SCBattleLogic
         oprot.writeFieldBegin(BATTLE_FRAME_DATA_LIST_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.battleFrameDataList.size()));
-          for (BattleFrameData _iter19 : struct.battleFrameDataList)
+          for (BattleFrameData _iter27 : struct.battleFrameDataList)
           {
-            _iter19.write(oprot);
+            _iter27.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -409,9 +409,9 @@ public class SCBattleLogicFrame implements org.apache.thrift.TBase<SCBattleLogic
       if (struct.isSetBattleFrameDataList()) {
         {
           oprot.writeI32(struct.battleFrameDataList.size());
-          for (BattleFrameData _iter20 : struct.battleFrameDataList)
+          for (BattleFrameData _iter28 : struct.battleFrameDataList)
           {
-            _iter20.write(oprot);
+            _iter28.write(oprot);
           }
         }
       }
@@ -423,14 +423,14 @@ public class SCBattleLogicFrame implements org.apache.thrift.TBase<SCBattleLogic
       BitSet incoming = iprot.readBitSet(1);
       if (incoming.get(0)) {
         {
-          org.apache.thrift.protocol.TList _list21 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.battleFrameDataList = new ArrayList<BattleFrameData>(_list21.size);
-          for (int _i22 = 0; _i22 < _list21.size; ++_i22)
+          org.apache.thrift.protocol.TList _list29 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.battleFrameDataList = new ArrayList<BattleFrameData>(_list29.size);
+          for (int _i30 = 0; _i30 < _list29.size; ++_i30)
           {
-            BattleFrameData _elem23;
-            _elem23 = new BattleFrameData();
-            _elem23.read(iprot);
-            struct.battleFrameDataList.add(_elem23);
+            BattleFrameData _elem31;
+            _elem31 = new BattleFrameData();
+            _elem31.read(iprot);
+            struct.battleFrameDataList.add(_elem31);
           }
         }
         struct.setBattleFrameDataListIsSet(true);

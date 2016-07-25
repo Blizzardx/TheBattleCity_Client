@@ -1,13 +1,8 @@
 ﻿public enum BattleCmdType
 {
     // move
-    Move_X,
-    Move_Y,
-    Move_Z,
-    Move_Speed,
+    Move,
 
     // fire
-    Fire_X,
-    Fire_Y,
-    Fire_Z,
+    Fire,
 }

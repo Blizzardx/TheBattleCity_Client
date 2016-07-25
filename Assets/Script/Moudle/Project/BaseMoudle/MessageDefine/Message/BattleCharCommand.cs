@@ -88,13 +88,13 @@ namespace NetWork.Auto
             if (field.Type == TType.List) {
               {
                 CommandList = new List<BattleCommandData>();
-                TList _list0 = iprot.ReadListBegin();
-                for( int _i1 = 0; _i1 < _list0.Count; ++_i1)
+                TList _list4 = iprot.ReadListBegin();
+                for( int _i5 = 0; _i5 < _list4.Count; ++_i5)
                 {
-                  BattleCommandData _elem2 = new BattleCommandData();
-                  _elem2 = new BattleCommandData();
-                  _elem2.Read(iprot);
-                  CommandList.Add(_elem2);
+                  BattleCommandData _elem6 = new BattleCommandData();
+                  _elem6 = new BattleCommandData();
+                  _elem6.Read(iprot);
+                  CommandList.Add(_elem6);
                 }
                 iprot.ReadListEnd();
               }
@@ -130,9 +130,9 @@ namespace NetWork.Auto
         oprot.WriteFieldBegin(field);
         {
           oprot.WriteListBegin(new TList(TType.Struct, CommandList.Count));
-          foreach (BattleCommandData _iter3 in CommandList)
+          foreach (BattleCommandData _iter7 in CommandList)
           {
-            _iter3.Write(oprot);
+            _iter7.Write(oprot);
           }
           oprot.WriteListEnd();
         }

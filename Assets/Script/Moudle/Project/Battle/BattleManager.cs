@@ -60,7 +60,7 @@ public class BattleManager
             return;
         }
         CSBattleLogicFrame msg = new CSBattleLogicFrame();
-        msg.CommandData = new List<BattleCommandData>(realCmd);
+        msg.CommandData = realCmd;
         NetworkManager.Instance.SendMsgToServer(msg);
     }
     public int GetClientFrame()

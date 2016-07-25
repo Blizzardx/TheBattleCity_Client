@@ -426,14 +426,14 @@ public class BattleFrameData implements org.apache.thrift.TBase<BattleFrameData,
           case 20: // CHAR_COMMAND_LIST
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
-                struct.charCommandList = new ArrayList<BattleCharCommand>(_list8.size);
-                for (int _i9 = 0; _i9 < _list8.size; ++_i9)
+                org.apache.thrift.protocol.TList _list16 = iprot.readListBegin();
+                struct.charCommandList = new ArrayList<BattleCharCommand>(_list16.size);
+                for (int _i17 = 0; _i17 < _list16.size; ++_i17)
                 {
-                  BattleCharCommand _elem10;
-                  _elem10 = new BattleCharCommand();
-                  _elem10.read(iprot);
-                  struct.charCommandList.add(_elem10);
+                  BattleCharCommand _elem18;
+                  _elem18 = new BattleCharCommand();
+                  _elem18.read(iprot);
+                  struct.charCommandList.add(_elem18);
                 }
                 iprot.readListEnd();
               }
@@ -464,9 +464,9 @@ public class BattleFrameData implements org.apache.thrift.TBase<BattleFrameData,
         oprot.writeFieldBegin(CHAR_COMMAND_LIST_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.charCommandList.size()));
-          for (BattleCharCommand _iter11 : struct.charCommandList)
+          for (BattleCharCommand _iter19 : struct.charCommandList)
           {
-            _iter11.write(oprot);
+            _iter19.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -503,9 +503,9 @@ public class BattleFrameData implements org.apache.thrift.TBase<BattleFrameData,
       if (struct.isSetCharCommandList()) {
         {
           oprot.writeI32(struct.charCommandList.size());
-          for (BattleCharCommand _iter12 : struct.charCommandList)
+          for (BattleCharCommand _iter20 : struct.charCommandList)
           {
-            _iter12.write(oprot);
+            _iter20.write(oprot);
           }
         }
       }
@@ -521,14 +521,14 @@ public class BattleFrameData implements org.apache.thrift.TBase<BattleFrameData,
       }
       if (incoming.get(1)) {
         {
-          org.apache.thrift.protocol.TList _list13 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.charCommandList = new ArrayList<BattleCharCommand>(_list13.size);
-          for (int _i14 = 0; _i14 < _list13.size; ++_i14)
+          org.apache.thrift.protocol.TList _list21 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.charCommandList = new ArrayList<BattleCharCommand>(_list21.size);
+          for (int _i22 = 0; _i22 < _list21.size; ++_i22)
           {
-            BattleCharCommand _elem15;
-            _elem15 = new BattleCharCommand();
-            _elem15.read(iprot);
-            struct.charCommandList.add(_elem15);
+            BattleCharCommand _elem23;
+            _elem23 = new BattleCharCommand();
+            _elem23.read(iprot);
+            struct.charCommandList.add(_elem23);
           }
         }
         struct.setCharCommandListIsSet(true);

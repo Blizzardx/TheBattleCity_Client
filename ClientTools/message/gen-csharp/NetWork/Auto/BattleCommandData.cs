@@ -24,7 +24,7 @@ namespace NetWork.Auto
   public partial class BattleCommandData : TBase
   {
     private int _type;
-    private int _argv;
+    private List<int> _argvs;
 
     public int Type
     {
@@ -39,16 +39,16 @@ namespace NetWork.Auto
       }
     }
 
-    public int Argv
+    public List<int> Argvs
     {
       get
       {
-        return _argv;
+        return _argvs;
       }
       set
       {
-        __isset.argv = true;
-        this._argv = value;
+        __isset.argvs = true;
+        this._argvs = value;
       }
     }
 
@@ -59,7 +59,7 @@ namespace NetWork.Auto
     #endif
     public struct Isset {
       public bool type;
-      public bool argv;
+      public bool argvs;
     }
 
     public BattleCommandData() {
@@ -85,8 +85,18 @@ namespace NetWork.Auto
             }
             break;
           case 20:
-            if (field.Type == TType.I32) {
-              Argv = iprot.ReadI32();
+            if (field.Type == TType.List) {
+              {
+                Argvs = new List<int>();
+                TList _list0 = iprot.ReadListBegin();
+                for( int _i1 = 0; _i1 < _list0.Count; ++_i1)
+                {
+                  int _elem2 = 0;
+                  _elem2 = iprot.ReadI32();
+                  Argvs.Add(_elem2);
+                }
+                iprot.ReadListEnd();
+              }
             } else { 
               TProtocolUtil.Skip(iprot, field.Type);
             }
@@ -112,12 +122,19 @@ namespace NetWork.Auto
         oprot.WriteI32(Type);
         oprot.WriteFieldEnd();
       }
-      if (__isset.argv) {
-        field.Name = "argv";
-        field.Type = TType.I32;
+      if (Argvs != null && __isset.argvs) {
+        field.Name = "argvs";
+        field.Type = TType.List;
         field.ID = 20;
         oprot.WriteFieldBegin(field);
-        oprot.WriteI32(Argv);
+        {
+          oprot.WriteListBegin(new TList(TType.I32, Argvs.Count));
+          foreach (int _iter3 in Argvs)
+          {
+            oprot.WriteI32(_iter3);
+          }
+          oprot.WriteListEnd();
+        }
         oprot.WriteFieldEnd();
       }
       oprot.WriteFieldStop();
@@ -128,8 +145,8 @@ namespace NetWork.Auto
       StringBuilder sb = new StringBuilder("BattleCommandData(");
       sb.Append("Type: ");
       sb.Append(Type);
-      sb.Append(",Argv: ");
-      sb.Append(Argv);
+      sb.Append(",Argvs: ");
+      sb.Append(Argvs);
       sb.Append(")");
       return sb.ToString();
     }

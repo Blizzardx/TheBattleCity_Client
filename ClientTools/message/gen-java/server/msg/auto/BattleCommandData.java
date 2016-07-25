@@ -36,7 +36,7 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("BattleCommandData");
 
   private static final org.apache.thrift.protocol.TField TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("type", org.apache.thrift.protocol.TType.I32, (short)10);
-  private static final org.apache.thrift.protocol.TField ARGV_FIELD_DESC = new org.apache.thrift.protocol.TField("argv", org.apache.thrift.protocol.TType.I32, (short)20);
+  private static final org.apache.thrift.protocol.TField ARGVS_FIELD_DESC = new org.apache.thrift.protocol.TField("argvs", org.apache.thrift.protocol.TType.LIST, (short)20);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -45,12 +45,12 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
   }
 
   public int type; // required
-  public int argv; // required
+  public List<Integer> argvs; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     TYPE((short)10, "type"),
-    ARGV((short)20, "argv");
+    ARGVS((short)20, "argvs");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -67,8 +67,8 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
       switch(fieldId) {
         case 10: // TYPE
           return TYPE;
-        case 20: // ARGV
-          return ARGV;
+        case 20: // ARGVS
+          return ARGVS;
         default:
           return null;
       }
@@ -110,15 +110,15 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
 
   // isset id assignments
   private static final int __TYPE_ISSET_ID = 0;
-  private static final int __ARGV_ISSET_ID = 1;
   private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.TYPE, new org.apache.thrift.meta_data.FieldMetaData("type", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.ARGV, new org.apache.thrift.meta_data.FieldMetaData("argv", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.ARGVS, new org.apache.thrift.meta_data.FieldMetaData("argvs", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(BattleCommandData.class, metaDataMap);
   }
@@ -128,13 +128,12 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
 
   public BattleCommandData(
     int type,
-    int argv)
+    List<Integer> argvs)
   {
     this();
     this.type = type;
     setTypeIsSet(true);
-    this.argv = argv;
-    setArgvIsSet(true);
+    this.argvs = argvs;
   }
 
   /**
@@ -143,7 +142,10 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
   public BattleCommandData(BattleCommandData other) {
     __isset_bitfield = other.__isset_bitfield;
     this.type = other.type;
-    this.argv = other.argv;
+    if (other.isSetArgvs()) {
+      List<Integer> __this__argvs = new ArrayList<Integer>(other.argvs);
+      this.argvs = __this__argvs;
+    }
   }
 
   public BattleCommandData deepCopy() {
@@ -154,8 +156,7 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
   public void clear() {
     setTypeIsSet(false);
     this.type = 0;
-    setArgvIsSet(false);
-    this.argv = 0;
+    this.argvs = null;
   }
 
   public int getType() {
@@ -181,27 +182,43 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
     __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __TYPE_ISSET_ID, value);
   }
 
-  public int getArgv() {
-    return this.argv;
+  public int getArgvsSize() {
+    return (this.argvs == null) ? 0 : this.argvs.size();
   }
 
-  public BattleCommandData setArgv(int argv) {
-    this.argv = argv;
-    setArgvIsSet(true);
+  public java.util.Iterator<Integer> getArgvsIterator() {
+    return (this.argvs == null) ? null : this.argvs.iterator();
+  }
+
+  public void addToArgvs(int elem) {
+    if (this.argvs == null) {
+      this.argvs = new ArrayList<Integer>();
+    }
+    this.argvs.add(elem);
+  }
+
+  public List<Integer> getArgvs() {
+    return this.argvs;
+  }
+
+  public BattleCommandData setArgvs(List<Integer> argvs) {
+    this.argvs = argvs;
     return this;
   }
 
-  public void unsetArgv() {
-    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __ARGV_ISSET_ID);
+  public void unsetArgvs() {
+    this.argvs = null;
   }
 
-  /** Returns true if field argv is set (has been assigned a value) and false otherwise */
-  public boolean isSetArgv() {
-    return EncodingUtils.testBit(__isset_bitfield, __ARGV_ISSET_ID);
+  /** Returns true if field argvs is set (has been assigned a value) and false otherwise */
+  public boolean isSetArgvs() {
+    return this.argvs != null;
   }
 
-  public void setArgvIsSet(boolean value) {
-    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __ARGV_ISSET_ID, value);
+  public void setArgvsIsSet(boolean value) {
+    if (!value) {
+      this.argvs = null;
+    }
   }
 
   public void setFieldValue(_Fields field, Object value) {
@@ -214,11 +231,11 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
       }
       break;
 
-    case ARGV:
+    case ARGVS:
       if (value == null) {
-        unsetArgv();
+        unsetArgvs();
       } else {
-        setArgv((Integer)value);
+        setArgvs((List<Integer>)value);
       }
       break;
 
@@ -230,8 +247,8 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
     case TYPE:
       return Integer.valueOf(getType());
 
-    case ARGV:
-      return Integer.valueOf(getArgv());
+    case ARGVS:
+      return getArgvs();
 
     }
     throw new IllegalStateException();
@@ -246,8 +263,8 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
     switch (field) {
     case TYPE:
       return isSetType();
-    case ARGV:
-      return isSetArgv();
+    case ARGVS:
+      return isSetArgvs();
     }
     throw new IllegalStateException();
   }
@@ -274,12 +291,12 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
         return false;
     }
 
-    boolean this_present_argv = true;
-    boolean that_present_argv = true;
-    if (this_present_argv || that_present_argv) {
-      if (!(this_present_argv && that_present_argv))
+    boolean this_present_argvs = true && this.isSetArgvs();
+    boolean that_present_argvs = true && that.isSetArgvs();
+    if (this_present_argvs || that_present_argvs) {
+      if (!(this_present_argvs && that_present_argvs))
         return false;
-      if (this.argv != that.argv)
+      if (!this.argvs.equals(that.argvs))
         return false;
     }
 
@@ -309,12 +326,12 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetArgv()).compareTo(other.isSetArgv());
+    lastComparison = Boolean.valueOf(isSetArgvs()).compareTo(other.isSetArgvs());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetArgv()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.argv, other.argv);
+    if (isSetArgvs()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.argvs, other.argvs);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -343,8 +360,12 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
     sb.append(this.type);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("argv:");
-    sb.append(this.argv);
+    sb.append("argvs:");
+    if (this.argvs == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.argvs);
+    }
     first = false;
     sb.append(")");
     return sb.toString();
@@ -399,10 +420,20 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 20: // ARGV
-            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
-              struct.argv = iprot.readI32();
-              struct.setArgvIsSet(true);
+          case 20: // ARGVS
+            if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+              {
+                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
+                struct.argvs = new ArrayList<Integer>(_list0.size);
+                for (int _i1 = 0; _i1 < _list0.size; ++_i1)
+                {
+                  int _elem2;
+                  _elem2 = iprot.readI32();
+                  struct.argvs.add(_elem2);
+                }
+                iprot.readListEnd();
+              }
+              struct.setArgvsIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -425,9 +456,18 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
       oprot.writeFieldBegin(TYPE_FIELD_DESC);
       oprot.writeI32(struct.type);
       oprot.writeFieldEnd();
-      oprot.writeFieldBegin(ARGV_FIELD_DESC);
-      oprot.writeI32(struct.argv);
-      oprot.writeFieldEnd();
+      if (struct.argvs != null) {
+        oprot.writeFieldBegin(ARGVS_FIELD_DESC);
+        {
+          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, struct.argvs.size()));
+          for (int _iter3 : struct.argvs)
+          {
+            oprot.writeI32(_iter3);
+          }
+          oprot.writeListEnd();
+        }
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -449,15 +489,21 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
       if (struct.isSetType()) {
         optionals.set(0);
       }
-      if (struct.isSetArgv()) {
+      if (struct.isSetArgvs()) {
         optionals.set(1);
       }
       oprot.writeBitSet(optionals, 2);
       if (struct.isSetType()) {
         oprot.writeI32(struct.type);
       }
-      if (struct.isSetArgv()) {
-        oprot.writeI32(struct.argv);
+      if (struct.isSetArgvs()) {
+        {
+          oprot.writeI32(struct.argvs.size());
+          for (int _iter4 : struct.argvs)
+          {
+            oprot.writeI32(_iter4);
+          }
+        }
       }
     }
 
@@ -470,8 +516,17 @@ public class BattleCommandData implements org.apache.thrift.TBase<BattleCommandD
         struct.setTypeIsSet(true);
       }
       if (incoming.get(1)) {
-        struct.argv = iprot.readI32();
-        struct.setArgvIsSet(true);
+        {
+          org.apache.thrift.protocol.TList _list5 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
+          struct.argvs = new ArrayList<Integer>(_list5.size);
+          for (int _i6 = 0; _i6 < _list5.size; ++_i6)
+          {
+            int _elem7;
+            _elem7 = iprot.readI32();
+            struct.argvs.add(_elem7);
+          }
+        }
+        struct.setArgvsIsSet(true);
       }
     }
   }

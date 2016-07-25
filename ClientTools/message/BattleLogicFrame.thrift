@@ -5,7 +5,7 @@ namespace csharp NetWork.Auto
 struct BattleCommandData
 {
 	10: i32 type
-	20: i32 argv
+	20: list<i32> argvs
 }
 struct BattleCharCommand
 {
@@ -23,5 +23,5 @@ struct SCBattleLogicFrame
 }
 struct CSBattleLogicFrame
 {
-	10: list<BattleCommandData> commandData
+	10: BattleCommandData commandData
 }

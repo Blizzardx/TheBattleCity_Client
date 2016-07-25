@@ -66,13 +66,13 @@ namespace NetWork.Auto
             if (field.Type == TType.List) {
               {
                 BattleFrameDataList = new List<BattleFrameData>();
-                TList _list8 = iprot.ReadListBegin();
-                for( int _i9 = 0; _i9 < _list8.Count; ++_i9)
+                TList _list12 = iprot.ReadListBegin();
+                for( int _i13 = 0; _i13 < _list12.Count; ++_i13)
                 {
-                  BattleFrameData _elem10 = new BattleFrameData();
-                  _elem10 = new BattleFrameData();
-                  _elem10.Read(iprot);
-                  BattleFrameDataList.Add(_elem10);
+                  BattleFrameData _elem14 = new BattleFrameData();
+                  _elem14 = new BattleFrameData();
+                  _elem14.Read(iprot);
+                  BattleFrameDataList.Add(_elem14);
                 }
                 iprot.ReadListEnd();
               }
@@ -100,9 +100,9 @@ namespace NetWork.Auto
         oprot.WriteFieldBegin(field);
         {
           oprot.WriteListBegin(new TList(TType.Struct, BattleFrameDataList.Count));
-          foreach (BattleFrameData _iter11 in BattleFrameDataList)
+          foreach (BattleFrameData _iter15 in BattleFrameDataList)
           {
-            _iter11.Write(oprot);
+            _iter15.Write(oprot);
           }
           oprot.WriteListEnd();
         }

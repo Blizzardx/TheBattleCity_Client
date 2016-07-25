@@ -1,59 +1,54 @@
-﻿using NetWork.Auto;
+﻿using System;
+using System.Collections.Generic;
+using NetWork.Auto;
 using UnityEngine;
 
 public class BattleCmdAnalysisMove : BattleCmdAnalysisBase
 {
-    private MoveInfo m_MoveInfo;
-    public override void Init()
+    public void Init()
     {
-        RegisterCmd(BattleCmdType.Move_X, Move_X);
-        RegisterCmd(BattleCmdType.Move_Y, Move_Y);
-        RegisterCmd(BattleCmdType.Move_Z, Move_Z);
-        RegisterCmd(BattleCmdType.Move_Speed, Move_Speed);
+        // do nothing
     }
-    public override void ClearBuffer()
+
+    public BattleCmdInfo DecodeCmd(BattleCommandData cmd)
     {
-        m_MoveInfo = new MoveInfo();
+        MoveInfo info = new MoveInfo();
+
+        info.dir = new Vector3(
+            BattleTool.ConvertIntToFloat(cmd.Argvs[0]),// x
+            BattleTool.ConvertIntToFloat(cmd.Argvs[1]),// t
+            BattleTool.ConvertIntToFloat(cmd.Argvs[2]) // z
+            );
+        info.speed = BattleTool.ConvertIntToFloat(cmd.Argvs[3]);
+
+        return info;
     }
-    public override BattleCommandData[] EncodeCmd(BattleCmdInfo param)
+
+    public BattleCommandData EncodeCmd(BattleCmdInfo info)
     {
-        if (!(param is MoveInfo))
+        if (!(info is MoveInfo))
         {
             return null;
         }
-        MoveInfo info = param as MoveInfo;
-        BattleCommandData[] data = new BattleCommandData[4];
-        data[0].Type = (int)(BattleCmdType.Move_X);
-        data[1].Argv = BattleTool.ConvertFloatToInt(info.dir.x);
+        MoveInfo moveInfo = info as MoveInfo;
+        BattleCommandData cmd = new BattleCommandData();
+        cmd.Type = (int) (BattleCmdType.Move);
+        cmd.Argvs = new List<int>(4);
+        cmd.Argvs[0] = BattleTool.ConvertFloatToInt(moveInfo.dir.x);
+        cmd.Argvs[1] = BattleTool.ConvertFloatToInt(moveInfo.dir.y);
+        cmd.Argvs[2] = BattleTool.ConvertFloatToInt(moveInfo.dir.z);
+        cmd.Argvs[3] = BattleTool.ConvertFloatToInt(moveInfo.speed);
+        
+        return cmd;
+    }
 
-        data[1].Type = (int)(BattleCmdType.Move_Y);
-        data[1].Argv = BattleTool.ConvertFloatToInt(info.dir.y);
+    public Type GetDataInfoType()
+    {
+        return typeof (MoveInfo);
+    }
 
-        data[2].Type = (int)(BattleCmdType.Move_Z);
-        data[1].Argv = BattleTool.ConvertFloatToInt(info.dir.z);
-
-        data[3].Type = (int)(BattleCmdType.Move_Speed);
-        data[1].Argv = BattleTool.ConvertFloatToInt(info.speed);
-        return data;
-    }
-    public override BattleCmdInfo GetDataInfo()
+    public BattleCmdType GetMessageInfoType()
     {
-        return m_MoveInfo;
-    }
-    private void Move_X(BattleCommandData obj)
-    {
-        m_MoveInfo.dir.x = BattleTool.ConvertIntToFloat(obj.Argv);
-    }
-    private void Move_Y(BattleCommandData obj)
-    {
-        m_MoveInfo.dir.y = BattleTool.ConvertIntToFloat(obj.Argv);
-    }
-    private void Move_Z(BattleCommandData obj)
-    {
-        m_MoveInfo.dir.z = BattleTool.ConvertIntToFloat(obj.Argv);
-    }
-    private void Move_Speed(BattleCommandData obj)
-    {
-        m_MoveInfo.speed = BattleTool.ConvertIntToFloat(obj.Argv);
+        return BattleCmdType.Move;
     }
 }

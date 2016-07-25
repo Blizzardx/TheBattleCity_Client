@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using Common.Tool;
 using NetWork.Auto;
+using UnityEngine;
 
 
 public class BattleCmdAnalysisManager 
 {
-    private List<BattleCmdAnalysisBase> m_CmdHanderList;
     private Dictionary<Type, BattleCmdAnalysisBase> m_AnalyzerToInfoMap;
+    private Dictionary<int, BattleCmdAnalysisBase> m_AnalyzerToTypeMap;
     public void Initialize()
     {
         if (null != m_AnalyzerToInfoMap)
@@ -16,44 +17,47 @@ public class BattleCmdAnalysisManager
         }
         m_AnalyzerToInfoMap = new Dictionary<Type, BattleCmdAnalysisBase>();
         var list = ReflectionManager.Instance.GetTypeByBase(typeof(BattleCmdAnalysisBase));
-        m_CmdHanderList = new List<BattleCmdAnalysisBase>(list.Count);
         for (int i = 0; i < list.Count; ++i)
         {
             BattleCmdAnalysisBase analysis = Activator.CreateInstance(list[i]) as BattleCmdAnalysisBase;
-            m_CmdHanderList.Add(analysis);
             analysis.Init();
-            m_AnalyzerToInfoMap.Add(analysis.GetDataInfo().GetType(), analysis);
+            m_AnalyzerToInfoMap.Add(analysis.GetDataInfoType(), analysis);
+            m_AnalyzerToTypeMap.Add((int)(analysis.GetMessageInfoType()), analysis);
         }
     }
     public List<BattleCmdInfo> DecodeCmd(int charId,List<BattleCommandData> cmdList)
     {
         List<BattleCmdInfo> realList = new List<BattleCmdInfo>();
-        BattleCmdAnalysisBase lastCmd = null;
         for (int i = 0; i < cmdList.Count; ++i)
         {
             var cmd = cmdList[i];
-            foreach (var handler in m_CmdHanderList)
+            BattleCmdAnalysisBase analyzer = null;
+            m_AnalyzerToTypeMap.TryGetValue(cmd.Type, out analyzer);
+            if (null == analyzer)
             {
-                if (handler.CheckDecode(cmd))
-                {
-                    if (lastCmd != handler)
-                    {
-                        if (null != lastCmd)
-                        {
-                            lastCmd.GetDataInfo().SetCharId(charId);
-                            realList.Add(lastCmd.GetDataInfo());
-                        }
-                        handler.ClearBuffer();
-                        lastCmd = handler;
-                    }
-                    handler.DecodeCmd(cmd);
-                    break;
-                }
+                Debug.LogError("can't decode cmd by type " + cmd.Type);
+                continue;
             }
+            BattleCmdInfo realCmd = null;
+            try
+            {
+                realCmd = analyzer.DecodeCmd(cmd);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("error on decode cmd  type: " + cmd.Type);
+                Debug.LogException(e);
+            }
+            if (null == realCmd)
+            {
+                Debug.LogError("error on decode cmd  type: " + cmd.Type);
+                continue;
+            }
+            realList.Add(realCmd);
         }
         return realList;
     }
-    public BattleCommandData[] EncodeBattleCmd(BattleCmdInfo info)
+    public BattleCommandData EncodeBattleCmd(BattleCmdInfo info)
     {
         Type type = info.GetType();
         BattleCmdAnalysisBase analyzer = null;
