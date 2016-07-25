@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Framework.Common;
 using Framework.Event;
+using Framework.Network;
 using Framework.Tick;
 using NetWork.Auto;
 using UnityEngine;
@@ -23,10 +24,15 @@ public class BattleManager
     private float   m_fDuringTime   = -1.0f;
     private float   m_fLastTime;
     private int     m_iClientFrame = 0;
+    private BattleCmdAnalysisManager m_CmdAnayzerMgr = new BattleCmdAnalysisManager();
+    private BattleCmdHandlerManager m_CmdHandlerMgr = new BattleCmdHandlerManager();
 
     #region public interface
     public void Initialize()
     {
+        m_CmdAnayzerMgr.Initialize();
+        m_CmdHandlerMgr.Initialize();
+
         m_fDuringTime = 0;
         m_FrameStatus = UseFrameStatus.Wait;
         CustomTickTask.Instance.RegisterToUpdateList(Update);
@@ -43,6 +49,21 @@ public class BattleManager
         for (int i = 0; i < list.Count; ++i)
         {
             m_PlayerList.Add(new BattlePlayerController(list[i]));
+        }
+    }
+
+    public void SendCmd(BattleCmdInfo cmd)
+    {
+        var realCmd = m_CmdAnayzerMgr.EncodeBattleCmd(cmd);
+        if (null == realCmd)
+        {
+            Debug.LogError("can't encode cmd " + cmd.GetType());
+        }
+        for (int i = 0; i < realCmd.Length; ++i)
+        {
+            CSBattleLogicFrame msg = new CSBattleLogicFrame();
+            msg.CommandData = realCmd[i];
+            NetworkManager.Instance.SendMsgToServer(msg);
         }
     }
     #endregion
@@ -90,11 +111,12 @@ public class BattleManager
     private void LogicUpdate(BattleFrameData cmd)
     {
         ++ m_iClientFrame;
-        if (cmd.FrameIndex != m_iClientFrame)
+        for (int i = 0; i < cmd.CharCommandList.Count; ++i)
         {
-            Debug.LogWarning("error frame index " + cmd.FrameIndex + " client " + m_iClientFrame);
+            var cmdList = cmd.CharCommandList[i].CommandList;
+            var cmdInfoList = m_CmdAnayzerMgr.DecodeCmd(cmd.CharCommandList[i].CharId,cmdList);
+            m_CmdHandlerMgr.HandlerCmd(cmdInfoList);
         }
-
     }
     private void Update()
     {
@@ -162,6 +184,5 @@ public class BattleManager
         m_FrameStatus = UseFrameStatus.Exec;
     }
     #endregion
-
 
 }
