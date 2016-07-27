@@ -14,6 +14,7 @@ namespace Common.Config
             using (Stream outputStream = new MemoryStream(64))
             {
                 XmlTextWriter a = new XmlTextWriter(outputStream, Encoding.UTF8);
+                a.Formatting = Formatting.Indented;
                 serializer.Serialize(a, config);
                 byte[] bytes = new byte[outputStream.Length];
                 outputStream.Position = 0;
