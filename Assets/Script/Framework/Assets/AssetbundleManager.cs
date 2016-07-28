@@ -400,6 +400,8 @@ namespace Framework.Asset
                 Debug.LogError("can't load manifest from bundle");
                 yield break;
             }
+            // unload
+            manifestLoader.assetBundle.Unload(false);
 
             OnManifestLoaded();
         }
