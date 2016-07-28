@@ -32,14 +32,14 @@ public class SceneBase
 {
     
     private string                      m_strSceneName;
-    private List<PreloadAssetInfo>      m_PreloadResList;
+    private List<PreloadAssetInfo>      m_LoadResList;
     private List<PreloadAssetInfo>      m_BeforloadResList;
     private Action<SceneBase>           m_DoBeforeLoadCompledted;
 
     #region public interface
     public SceneBase()
     {
-        m_PreloadResList = new List<PreloadAssetInfo>();
+        m_LoadResList = new List<PreloadAssetInfo>();
         m_BeforloadResList = new List<PreloadAssetInfo>();
     }
     public void Create()
@@ -53,7 +53,7 @@ public class SceneBase
     public void Init()
     {
         OnInit();
-        BeginLoadResource(m_PreloadResList, OnResourceLoadedCallback);
+        BeginLoadResource(m_LoadResList, OnResourceLoadedCallback);
     }
     public void Exit()
     {
@@ -94,9 +94,9 @@ public class SceneBase
         res.assetName = assetName;
         res.assetType = assetType;
 
-        if (!m_PreloadResList.Contains(res))
+        if (!m_LoadResList.Contains(res))
         {
-            m_PreloadResList.Add(res);
+            m_LoadResList.Add(res);
         }
     }
     private void Completed()
@@ -107,15 +107,15 @@ public class SceneBase
     {
         return m_strSceneName;
     }
-    private void BeginLoadResource(List<PreloadAssetInfo> m_BeforloadResList, Action<string, Object> onBeforLoadResourceLoadedCallback)
+    private void BeginLoadResource(List<PreloadAssetInfo> resList, Action<string, Object> onBeforLoadResourceLoadedCallback)
     {
-        if (null == m_BeforloadResList || m_BeforloadResList.Count == 0)
+        if (null == resList || resList.Count == 0)
         {
             onBeforLoadResourceLoadedCallback(string.Empty, null);
         }
         else
         {
-            foreach (var elem in m_BeforloadResList)
+            foreach (var elem in resList)
             {
                 if (elem.assetType == PerloadAssetType.BuildInAsset)
                 {
@@ -141,15 +141,15 @@ public class SceneBase
     }
     private void OnResourceLoadedCallback(string assetName,Object obj)
     {
-        for (int i = 0; i < m_PreloadResList.Count; ++i)
+        for (int i = 0; i < m_LoadResList.Count; ++i)
         {
-            if (m_PreloadResList[i].assetName == assetName)
+            if (m_LoadResList[i].assetName == assetName)
             {
-                m_PreloadResList.RemoveAt(i);
+                m_LoadResList.RemoveAt(i);
                 break;
             }
         }
-        if (m_PreloadResList.Count == 0)
+        if (m_LoadResList.Count == 0)
         {
             Completed();
         }
