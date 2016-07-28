@@ -88,7 +88,7 @@ public class SceneBase
             m_BeforloadResList.Add(res);
         }
     }
-    protected void AddPreloadResource(string assetName,PerloadAssetType assetType)
+    protected void AddLoadResource(string assetName,PerloadAssetType assetType)
     {
         PreloadAssetInfo res = new PreloadAssetInfo();
         res.assetName = assetName;

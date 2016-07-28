@@ -8,14 +8,14 @@ class SceneOnlineBattle : SceneBase
     {
         base.OnCreate();
         SetSceneName("OnLineBattle");
-        AddPreloadResource("BuildIn/UI/Prefab/Battle/UIWindow_Battle", PerloadAssetType.BuildInAsset);
-        AddPreloadResource("BuildIn/UI/Prefab/Battle/Player_Info", PerloadAssetType.BuildInAsset);
+        AddLoadResource("BuildIn/UI/Prefab/Battle/UIWindow_Battle", PerloadAssetType.BuildInAsset);
+        AddLoadResource("BuildIn/UI/Prefab/Battle/Player_Info", PerloadAssetType.BuildInAsset);
 
         // load tank
         var list = ModelManager.Instance.GetModel<RoomModel>().GetPlayerInfoList();
         for (int i = 0; i < list.Count; ++i)
         {
-            AddPreloadResource("BuildIn/Moudle/Tank/" + list[i].meshName, PerloadAssetType.BuildInAsset);
+            AddLoadResource("BuildIn/Moudle/Tank/" + list[i].meshName, PerloadAssetType.BuildInAsset);
         }
 
         UIManager.Instance.CloseAllWindow();

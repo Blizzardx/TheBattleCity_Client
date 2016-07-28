@@ -10,13 +10,13 @@ public class SceneMenu : SceneBase
 
         SetSceneName("SceneMenu");
 
-        AddPreloadResource("BuildIn/UI/Prefab/MainMenu/Window_Welcom", PerloadAssetType.BuildInAsset);
-        AddPreloadResource("BuildIn/UI/Prefab/MainMenu/Window_SelectMode", PerloadAssetType.BuildInAsset);
-        AddPreloadResource("BuildIn/UI/Prefab/Room/UIWindow_Room", PerloadAssetType.BuildInAsset);
-        AddPreloadResource("BuildIn/UI/Prefab/Room/UIWindow_CreateRoom", PerloadAssetType.BuildInAsset);
-        AddPreloadResource("BuildIn/UI/Prefab/Room/UIWindow_EnterRoom", PerloadAssetType.BuildInAsset);
-        AddPreloadResource("BuildIn/UI/Prefab/Room/UIWindow_SearchRoom", PerloadAssetType.BuildInAsset);
-        AddPreloadResource("BuildIn/UI/Prefab/Room/UIWindow_WaitBattle", PerloadAssetType.BuildInAsset);
+        AddLoadResource("BuildIn/UI/Prefab/MainMenu/Window_Welcom", PerloadAssetType.BuildInAsset);
+        AddLoadResource("BuildIn/UI/Prefab/MainMenu/Window_SelectMode", PerloadAssetType.BuildInAsset);
+        AddLoadResource("BuildIn/UI/Prefab/Room/UIWindow_Room", PerloadAssetType.BuildInAsset);
+        AddLoadResource("BuildIn/UI/Prefab/Room/UIWindow_CreateRoom", PerloadAssetType.BuildInAsset);
+        AddLoadResource("BuildIn/UI/Prefab/Room/UIWindow_EnterRoom", PerloadAssetType.BuildInAsset);
+        AddLoadResource("BuildIn/UI/Prefab/Room/UIWindow_SearchRoom", PerloadAssetType.BuildInAsset);
+        AddLoadResource("BuildIn/UI/Prefab/Room/UIWindow_WaitBattle", PerloadAssetType.BuildInAsset);
 
         UIManager.Instance.OpenWindow<UILoading>(UIManager.WindowLayer.Tip);
     }
