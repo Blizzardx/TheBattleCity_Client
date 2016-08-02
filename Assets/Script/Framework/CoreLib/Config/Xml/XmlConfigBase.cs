@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using System.Xml;
@@ -7,9 +8,17 @@ namespace Common.Config
 {
     public abstract class XmlConfigBase
     {
-        public static string Serialize<T>(T config) where T : XmlConfigBase, new()
+        public static string Serialize<T>(T config, Type[] typelist = null) where T : XmlConfigBase, new()
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
+            XmlSerializer serializer = null;
+            if (null == typelist || typelist.Length == 0)
+            {
+                serializer = new XmlSerializer(typeof(T));
+            }
+            else
+            {
+                serializer = new XmlSerializer(typeof(T), typelist);
+            }
 
             using (Stream outputStream = new MemoryStream(64))
             {
@@ -25,11 +34,19 @@ namespace Common.Config
                 return res;
             }
         }
-        public static T DeSerialize<T>(string xmlData) where T : XmlConfigBase, new()
+        public static T DeSerialize<T>(string xmlData, Type[] typelist = null) where T : XmlConfigBase, new()
         {
             Encoding encoding = Encoding.UTF8;
             byte[] data = encoding.GetBytes(xmlData);
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
+            XmlSerializer serializer = null;
+            if (null == typelist || typelist.Length == 0)
+            {
+                serializer = new XmlSerializer(typeof(T));
+            }
+            else
+            {
+                serializer = new XmlSerializer(typeof(T), typelist);
+            }
 
             T sysConfig = null;
             using (MemoryStream stream = new MemoryStream(data))
