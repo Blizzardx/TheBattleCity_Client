@@ -63,6 +63,10 @@ public class UIManager : Singleton<UIManager>
                 // do nothing
                 return ui;
             }
+
+            // reset deepth
+            ResetDeepth(ui);
+
             ui.DoOpen(param);
         }
         return ui;
@@ -125,6 +129,15 @@ public class UIManager : Singleton<UIManager>
 
         var layerinfo = m_LayerIndexStore[layer];
         windowRoot.transform.SetParent(layerinfo.m_Root.transform,false);
+
+        // reset deepth
+        ResetDeepth(windowBase);
+    }
+    private void ResetDeepth(UIBase windowBase)
+    {
+        WindowLayer layer = windowBase.GetLayer();
+
+        var layerinfo = m_LayerIndexStore[layer];
 
         // set deepth ,do it befor add to actived window queue
         windowBase.ResetDeepth(GetCurrentWindowDeepth(layer));
