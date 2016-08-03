@@ -223,7 +223,6 @@ public class UIBase
         {
             EventDispatcher.Instance.UnregistEvent(elem.id, elem.callback);
         }
-        m_EventInfoList = new List<EventInfo>();
 
         foreach (var elem in m_MessageInfoList)
         {
