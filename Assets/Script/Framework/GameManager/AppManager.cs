@@ -8,6 +8,7 @@ public class AppManager : SingletonTemplateMon<AppManager>
     void Awake()
     {
         _instance = this;
+        Application.runInBackground = true;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         DontDestroyOnLoad(this);
 
