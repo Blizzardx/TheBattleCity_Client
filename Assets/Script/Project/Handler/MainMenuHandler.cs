@@ -6,7 +6,7 @@ using UnityEngine;
 
 class MainMenuHandler:HandlerBase
 {
-    public override void OnCreate()
+    protected override void OnCreate()
     {
         base.OnCreate();
 

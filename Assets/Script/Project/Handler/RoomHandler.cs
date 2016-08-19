@@ -7,7 +7,7 @@ using NetWork.Auto;
 public class RoomHandler:HandlerBase
 {
     private BattleManager m_BattleMgr;
-    public override void OnCreate()
+    protected override void OnCreate()
     {
         base.OnCreate();
         MessageDispatcher.Instance.RegistMessage(MessageIdConstants.SC_CreateRoom, OnCreateRoom);
