@@ -77,6 +77,10 @@ public class ModelBase
             Debug.LogException(e);
         }
     }
+    public void Destroy()
+    {
+        OnDestroy();
+    }
     #endregion
 
     #region internal function
@@ -139,6 +143,10 @@ public class ModelBase
     protected virtual void OnCreate()
     {
         // do sth
+    }
+    protected virtual void OnDestroy()
+    {
+
     }
     #endregion
 }

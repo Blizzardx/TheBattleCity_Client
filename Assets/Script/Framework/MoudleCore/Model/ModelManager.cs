@@ -5,10 +5,7 @@ using Common.Tool;
 public class ModelManager :Singleton<ModelManager>
 {
     private Dictionary<Type, ModelBase> m_ModelStore;
-    public ModelManager()
-    {
-        CheckInit();
-    }
+
     private void AutoRegister()
     {
         var list = ReflectionManager.Instance.GetTypeByBase(typeof (ModelBase));
@@ -21,6 +18,7 @@ public class ModelManager :Singleton<ModelManager>
     }
     public T GetModel<T>() where T : ModelBase
     {
+        CheckInit();
         ModelBase res = null;
         m_ModelStore.TryGetValue(typeof (T), out res);
         return res as T;
@@ -33,6 +31,13 @@ public class ModelManager :Singleton<ModelManager>
         }
         m_ModelStore = new Dictionary<Type, ModelBase>();
         AutoRegister();
-
+    }
+    public void Destroy()
+    {
+        foreach (var elem in m_ModelStore)
+        {
+            elem.Value.Destroy();
+        }
+        m_ModelStore = null;
     }
 }

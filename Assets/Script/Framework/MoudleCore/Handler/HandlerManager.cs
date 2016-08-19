@@ -5,10 +5,7 @@ using Common.Tool;
 public class HandlerManager : Singleton<HandlerManager>
 {
     private Dictionary<Type, HandlerBase> m_HandlerStore;
-    public HandlerManager()
-    {
-        CheckInit();
-    }
+
     private void AutoRegister()
     {
         var list = ReflectionManager.Instance.GetTypeByBase(typeof(HandlerBase));
@@ -16,12 +13,13 @@ public class HandlerManager : Singleton<HandlerManager>
         {
             var elem = list[i];
             HandlerBase modelInstance = Activator.CreateInstance(elem) as HandlerBase;
-            modelInstance.OnCreate();
+            modelInstance.Create();
             m_HandlerStore.Add(elem, modelInstance);
         }
     }
     public T GetHandler<T>() where T : HandlerBase
     {
+        CheckInit();
         HandlerBase res = null;
         m_HandlerStore.TryGetValue(typeof(T), out res);
         return res as T;
@@ -34,6 +32,13 @@ public class HandlerManager : Singleton<HandlerManager>
         }
         m_HandlerStore = new Dictionary<Type, HandlerBase>();
         AutoRegister();
-
+    }
+    public void Destroy()
+    {
+        foreach (var elem in m_HandlerStore)
+        {
+            elem.Value.Create();
+        }
+        m_HandlerStore = null;
     }
 }
