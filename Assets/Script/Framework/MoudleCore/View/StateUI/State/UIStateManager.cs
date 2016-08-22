@@ -44,59 +44,15 @@ public class UIStateManager
             }
         }
     } 
-    public void OpenStage<T>(object param) where T : UIStateBase
+    public void OpenStage<T>(object param, bool isJump = false, bool isClear = false) where T : UIStateBase
     {
-        OpenStage(typeof (T),param);
-    }
-    public void OpenStage(Type type,object param,bool isJump = false,bool isClear = false)
-    {
-        TryInit();
-        var currentTop = m_StateStack.First.Value;
-        if (null != currentTop)
-        {
-            // override 
-            currentTop.handler.Cover();
-        }
-
-        // clear stack if jump
-        if (isJump)
-        {
-            ClearStack();
-        }
-
-        // try get stage from cashe
-        string key = PraseStakeToId() + PraseTypeToId(type);
-        StateInfo info = null;
-        m_StateCashe.TryGetValue(key, out info);
-
-        if (null == info || info.handler == null)
-        {
-            info = new StateInfo();
-            info.param = param;
-            info.handler = Activator.CreateInstance(type) as UIStateBase;
-            info.type = type;
-            m_StateCashe.Add(key, info);
-
-            // create new & initialize
-            info.handler.Init(key);
-        }
-
-        // do open
-        info.handler.Open(param);
-
-        // check clear
-        if (isClear)
-        {
-            ReleaseStackResource();
-        }
-        // add to stack
-        m_StateStack.AddFirst(info);
+        OpenStage(typeof (T),param,isJump,isClear);
     }
     public void BackStage(bool isClearRes = false)
     {
         // pop
         StateInfo info = m_StateStack.First.Value;
-        if (null == info)
+        if (null == m_StateStack.First.Value)
         {
             return;
         }
@@ -128,7 +84,6 @@ public class UIStateManager
             }
         }
     }
-
     public void OpenWindow(UIWindowBase window,object param)
     {
         StateInfo info = m_StateStack.First.Value;
@@ -141,6 +96,51 @@ public class UIStateManager
     #endregion
 
     #region system function
+    protected void OpenStage(Type type,object param,bool isJump = false,bool isClear = false)
+    {
+        TryInit();
+        var currentTop = m_StateStack.First.Value;
+        if (null != currentTop)
+        {
+            // override 
+            currentTop.handler.Cover();
+        }
+
+        // clear stack if jump
+        if (isJump)
+        {
+            ClearStack();
+        }
+
+        // try get stage from cashe
+        string key = PraseStakeToId() + PraseTypeToId(type);
+        StateInfo info = null;
+        m_StateCashe.TryGetValue(key, out info);
+
+        if (null == info || info.handler == null)
+        {
+            info = new StateInfo();
+            info.param = param;
+            info.handler = Activator.CreateInstance(type) as UIStateBase;
+            info.type = type;
+            m_StateCashe.Add(key, info);
+
+            // create new & initialize
+            info.handler.Init(param,key);
+        }
+
+        // do open
+        info.param = param;
+        info.handler.Open(param);
+
+        // check clear
+        if (isClear)
+        {
+            ReleaseStackResource();
+        }
+        // add to stack
+        m_StateStack.AddFirst(info);
+    }
     private void ReleaseStackResource()
     {
         // do clear

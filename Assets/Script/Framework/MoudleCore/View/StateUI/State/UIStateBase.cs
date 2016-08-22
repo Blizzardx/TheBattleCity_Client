@@ -39,14 +39,16 @@ public abstract class UIStateBase
     private List<WindowInfo>                m_WindowList;
     private List<WindowInfo>                m_TmpWindowList;
     protected string                        m_strInstanceKey;
-    
+    protected object                        m_ObjParam;
+
     #region public interface
     public string GetKey()
     {
         return m_strInstanceKey;
     }
-    public void Init(string instanceKey)
+    public void Init(object param,string instanceKey)
     {
+        m_ObjParam = param;
         m_RegisterWindowList = new List<WindowInitInfo>();
         m_WindowList = new List<WindowInfo>();
         m_TmpWindowList = new List<WindowInfo>();
@@ -64,7 +66,8 @@ public abstract class UIStateBase
     }
     public void Open(object param)
     {
-        OnOpen();
+        m_ObjParam = param;
+        OnOpen(m_ObjParam);
         for (int i = 0; i < m_WindowList.Count; ++i)
         {
             //m_WindowList[i].handler;
@@ -99,6 +102,10 @@ public abstract class UIStateBase
             //m_WindowList[i].handler;
         }
     }
+    public void OpenWindow(UIWindowBase window, object param)
+    {
+        m_TmpWindowList.Add(new WindowInfo(window,param));
+    }
     #endregion
 
     #region system function
@@ -117,7 +124,7 @@ public abstract class UIStateBase
     {
         
     }
-    protected virtual void OnOpen()
+    protected virtual void OnOpen(object param)
     {
         
     }
@@ -138,9 +145,4 @@ public abstract class UIStateBase
         
     }
     #endregion
-
-    public void OpenWindow(UIWindowBase window, object param)
-    {
-        m_TmpWindowList.Add(new WindowInfo(window,param));
-    }
 }
