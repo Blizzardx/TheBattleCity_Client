@@ -20,6 +20,7 @@ public class ReflectionManager : Singleton<ReflectionManager>
         {
             return;
         }
+        m_bIsInit = true;
         m_ClassFindMap = new Dictionary<string, Type>();
         Assembly assem = Assembly.GetAssembly(typeof(ReflectionManager));
         m_ClassList=new List<Type>(assem.GetTypes());
