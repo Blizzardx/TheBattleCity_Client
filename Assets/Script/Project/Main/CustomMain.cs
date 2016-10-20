@@ -1,5 +1,6 @@
 ﻿using Framework.Common;
 using Framework.Event;
+using Framework.Log;
 using Framework.Network;
 using UnityEngine;
 
@@ -26,6 +27,7 @@ public class CustomMain : SystemEventTrigger
     }
     private void Initialize()
     {
+        LogManager.Instance.OnApplicationInitializeSucceed();
         HandlerManager.Instance.CheckInit();
         ModelManager.Instance.CheckInit();
 

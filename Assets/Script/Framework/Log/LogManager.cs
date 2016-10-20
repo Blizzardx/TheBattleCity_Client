@@ -20,17 +20,21 @@ namespace Framework.Log
         private LogTaskManage m_TaskManager;
         private Queue<string> m_LogCasheList;
         private const string m_strLogSnapshotHeader = "snapshot_log_";
+        private const float m_InitializeAppTime = 30.0f;// default 30s 
 
         #region public interface
 
         public void Initialize
-            (bool isEnalbeLogToConsole = true, 
+            (bool isEnalbeLogToConsole = true,
             bool isEnableRecord = true,
             string logCashePath = "",
             int logcacheCount = 1024,
             int logHistoryCount = 1,
             int maxLogFileSize = 3 * 1024 * 1024)// 3m
         {
+            // begin counting initialize
+            MarktoBeginInitializeApplication();
+
             if (isEnalbeLogToConsole)
             {
                 Application.logMessageReceived += HandleLog;
@@ -45,7 +49,7 @@ namespace Framework.Log
             m_LogStore = new List<string>();
             if (string.IsNullOrEmpty(logCashePath))
             {
-                m_strLogCashePath = Application.persistentDataPath+"/Logcashe";
+                m_strLogCashePath = Application.persistentDataPath + "/Logcashe";
             }
             else
             {
@@ -53,12 +57,12 @@ namespace Framework.Log
             }
             m_strCurrentLogSavePath = m_strLogCashePath + "/log.txt";
             m_bIsEnalbeRecord = isEnableRecord;
-            m_MaxLogFileSize = maxLogFileSize; 
+            m_MaxLogFileSize = maxLogFileSize;
             m_iLogHistoryCount = logHistoryCount;
-            
+
             // init log history cashe
             InitLogHistory();
-            
+
             //check size
             if (CheckSize())
             {
@@ -88,7 +92,7 @@ namespace Framework.Log
                 res.Append(" " + stackTrace);
             }
             m_LogStore.Add(res.ToString());
-            
+
             if (m_LogStore.Count >= m_iLogStoreCount)
             {
                 SaveToFileSystem();
@@ -97,14 +101,22 @@ namespace Framework.Log
         public void Distructor()
         {
             SaveToFileSystem();
-            m_TaskManager.QuickFinishedAllTask();
+            if (m_TaskManager != null)
+                m_TaskManager.QuickFinishedAllTask();
         }
         public void Update()
         {
+            TimeoutUpdate();
             m_TaskManager.Tick();
         }
-        public void UploadLog(string url)
+        public void UploadLog(string url = "")
         {
+            // print directory info befor upload
+            PrintDirectory();
+
+            // save cashe to disk befor upload
+            SaveToFileSystem();
+
             List<string> fileList = new List<string>();
             int count = m_LogCasheList.Count;
             int index = 0;
@@ -113,27 +125,35 @@ namespace Framework.Log
                 var elem = m_LogCasheList.Dequeue();
                 fileList.Add(elem);
                 m_LogCasheList.Enqueue(elem);
-                ++ index;
+                ++index;
             }
             fileList.Add(m_strCurrentLogSavePath);
 
+            // set default url when url is null&empty
+            url = string.IsNullOrEmpty(url) ? "http://10.12.7.35/client-upload-tools/upload.do" : url;
+
             // send to task list to upload
-            //string url = "http://localhost:8080/config/upload.do";
             for (int i = 0; i < fileList.Count; ++i)
             {
                 string realName = fileList[i];
+                realName = realName.Replace('\\', '/');
+                realName = realName.Substring(realName.LastIndexOf('/')+1);
                 if (!realName.StartsWith(m_strLogSnapshotHeader))
                 {
                     realName = GenLogFileName(false);
                 }
-                else
-                {
-                    string preFix = m_strLogCashePath + "/";
-                    realName = realName.Substring(realName.LastIndexOfAny(preFix.ToCharArray()));
-                }
-                realName = realName.Replace(".txt", ".bytes");
-                m_TaskManager.StartTask(TaskType.UploadFile, new object[] { url, fileList[i] , realName }, null);
+                //else
+                //{
+                //    string preFix = m_strLogCashePath + "/";
+                //    realName = realName.Substring(realName.LastIndexOfAny(preFix.ToCharArray()));
+                //}
+               // realName = realName.Replace(".txt", ".bytes");
+                m_TaskManager.StartTask(TaskType.UploadFile, new object[] { url, fileList[i], realName }, null);
             }
+        }
+        public void OnApplicationInitializeSucceed()
+        {
+            MarktoInitializeApplicationSucceed();
         }
         #endregion
 
@@ -177,7 +197,7 @@ namespace Framework.Log
         {
             // get new file name & save
             string newName = m_strLogCashePath + "/" + GenLogFileName();
-            m_TaskManager.StartTask(TaskType.RenameFile, new object[] {m_strCurrentLogSavePath, newName}, null);
+            m_TaskManager.StartTask(TaskType.RenameFile, new object[] { m_strCurrentLogSavePath, newName }, null);
             if (m_LogCasheList.Count + 1 > m_iLogHistoryCount)
             {
                 string fileName = m_LogCasheList.Dequeue();
@@ -186,7 +206,7 @@ namespace Framework.Log
         }
         private void SaveToFileSystem()
         {
-            if (m_LogStore.Count == 0)
+            if (m_LogStore == null || m_LogStore.Count == 0)
             {
                 // do noting
                 return;
@@ -219,6 +239,49 @@ namespace Framework.Log
         public void LogException(Exception exception, Object context)
         {
             HandleLog(context != null ? context.ToString() : string.Empty, exception.StackTrace, LogType.Exception);
+        }
+        private void PrintDirectory()
+        {
+            object[] paramList = new object[] { Application.persistentDataPath, "" ,m_LogStore};
+
+            m_TaskManager.StartTask(TaskType.PrintDirectory, paramList, PrintDirectoryCallback);
+        }
+        private void PrintDirectoryCallback(object content)
+        {
+            Debug.Log("Write file info to log");
+            object[] paramList = content as object[];
+            List<string> tmpLogStore = paramList[2] as List<string>;
+            tmpLogStore.Add(paramList[1] as string);
+        }
+        #endregion
+
+        #region Crash Log Collection
+
+        private bool m_bIsMarkToInit;
+        private float m_fStartTime;
+
+        private void TimeoutUpdate()
+        {
+            if (!m_bIsMarkToInit)
+            {
+                return;
+            }
+            if (Time.realtimeSinceStartup - m_fStartTime > m_InitializeAppTime)
+            {
+                m_bIsMarkToInit = false;
+                UploadLog();
+            }
+        }
+        private void MarktoBeginInitializeApplication()
+        {
+            Debug.Log("Log: MarktoBeginInitializeApplication");
+            m_bIsMarkToInit = true;
+            m_fStartTime = Time.realtimeSinceStartup;
+        }
+        private void MarktoInitializeApplicationSucceed()
+        {
+            Debug.Log("Log: MarktoInitializeApplicationSucceed");
+            m_bIsMarkToInit = false;
         }
         #endregion
     }

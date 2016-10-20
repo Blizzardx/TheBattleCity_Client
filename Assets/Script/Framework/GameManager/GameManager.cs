@@ -16,7 +16,7 @@ public class GameManager : Singleton<GameManager>
         ClearTmpCache();
 
         LogManager.Instance.Initialize(AppManager.Instance.m_bIsShowDebugMsg);
-        EventDispatcher.Instance.Broadcast(EventIdDefine.AppInit);
+        EventDispatcher.Instance.BroadcastAsync(EventIdDefine.AppInit);
     }
     public void Update()
     {

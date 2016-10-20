@@ -194,8 +194,9 @@ namespace Framework.Network
         }
         #endregion
         #region upload
-        public string UploadFile(string url, string fileName, byte[] data, List<KeyValuePair<string, object>> paramList)
+        public string UploadFile(string url, string fileName, byte[] data, List<KeyValuePair<string, object>> paramList, string version)
         {
+            fileName = fileName.Replace("\\", "/");
             Stream responseStream = null;
             try
             {
@@ -211,8 +212,9 @@ namespace Framework.Network
 
                 postParameters.Add("file", new FileParameter(data, fileName, "application/octet-stream"));
                 postParameters.Add("filename", fileName);
-                postParameters.Add("fileformat", "bytes");
-                postParameters.Add("path", "config");
+                postParameters.Add("fileformat", "txt");
+                postParameters.Add("path", "log");
+                postParameters.Add("version", version);
                 // Create request and receive response
                 HttpWebResponse webResponse = MultipartFormDataPost(url, postParameters);
 

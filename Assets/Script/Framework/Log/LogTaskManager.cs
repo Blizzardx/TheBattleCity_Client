@@ -2,10 +2,13 @@
 using Common.Component;
 using Common.Tool;
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Framework.Async;
 using Framework.Network;
+using NetWork;
 
 namespace Framework.Log
 {
@@ -16,6 +19,7 @@ namespace Framework.Log
         DelFile,
         RenameFile,
         UploadFile,
+        PrintDirectory,
     }
 
     public class FileOperationElem
@@ -78,6 +82,9 @@ namespace Framework.Log
                 case TaskType.UploadFile:
                     OnExec_UploadFile();
                     break;
+                case TaskType.PrintDirectory:
+                    OnExec_PrinitDirectory();
+                    break;
             }
             return AsyncState.AfterAsync;
         }
@@ -100,6 +107,9 @@ namespace Framework.Log
                     break;
                 case TaskType.UploadFile:
                     OnEnd_UploadFile();
+                    break;
+                case TaskType.PrintDirectory:
+                    OnEnd_PrinitDirectory();
                     break;
             }
             return AsyncState.Done;
@@ -183,8 +193,9 @@ namespace Framework.Log
                 string fileName = paramlist[2] as string;
 
                 byte[] data = FileUtils.ReadByteFile(filePath);
+                Debug.Log("Trigger To Upload log "+ fileName);
                 // upload file
-                HttpManager.Instance.UploadFile(url, fileName, data, null);
+                HttpManager.Instance.UploadFile(url, fileName, data, null,"1.0");
             }
             catch (Exception e)
             {
@@ -197,6 +208,79 @@ namespace Framework.Log
             {
                 m_CurrentTask.m_ParamCallback(m_CurrentTask.m_Param);
             }
+        }
+        // print directory
+
+        private void OnExec_PrinitDirectory()
+        {
+            object[] paramlist = m_CurrentTask.m_Param as object[];
+            string path = paramlist[0] as string;
+            paramlist[1]= PrintDirectory(path);
+        }
+        private void OnEnd_PrinitDirectory()
+        {
+            if (m_CurrentTask.m_ParamCallback != null)
+            {
+                m_CurrentTask.m_ParamCallback(m_CurrentTask.m_Param);
+            }
+        }
+        #endregion
+
+        #region Directory printer
+        private string PrintDirectory(string path)
+        {
+            StringBuilder tmpS = new StringBuilder();
+            if (!Directory.Exists(path))
+            {
+                tmpS.Append("Path do not exist " + path);
+                return tmpS.ToString();
+            }
+            DirectoryInfo info = new DirectoryInfo(path);
+            tmpS.Append("begin print directory ===== " + path);
+            tmpS.Append('\n');
+
+            DoPrintDirectory(info, tmpS);
+
+            tmpS.Append("end print directory ===== " + path);
+            tmpS.Append('\n');
+            return tmpS.ToString();
+        }
+        private void DoPrintDirectory(DirectoryInfo info, StringBuilder content)
+        {
+            var allFiles = info.GetFiles();
+            for (int i = 0; i < allFiles.Length; ++i)
+            {
+                DoPrintFile(allFiles[i], content);
+            }
+            var alldir = info.GetDirectories();
+            for (int i = 0; i < alldir.Length; ++i)
+            {
+                DoPrintDirectory(alldir[i], content);
+            }
+        }
+        private void DoPrintFile(FileInfo info, StringBuilder content)
+        {
+            content.Append("Name: ");
+            content.Append(info.FullName);
+            content.Append(" ");
+
+            content.Append("CreateTime: ");
+            content.Append(info.CreationTime);
+            content.Append(" ");
+
+            content.Append("LastAccessTime: ");
+            content.Append(info.LastAccessTime);
+            content.Append(" ");
+
+            content.Append("LastWriteTime: ");
+            content.Append(info.LastWriteTime);
+            content.Append(" ");
+
+            content.Append("Length: ");
+            content.Append(info.Length);
+            content.Append(" ");
+
+            content.Append("\n");
         }
         #endregion
     }
