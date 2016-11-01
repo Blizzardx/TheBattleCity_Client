@@ -4,10 +4,13 @@ using UnityEngine;
 
 class SceneOnlineBattle : SceneBase
 {
+    public override string GetSceneName()
+    {
+        return "OnLineBattle";
+    }
     protected override void OnCreate()
     {
         base.OnCreate();
-        SetSceneName("OnLineBattle");
         AddLoadResource("BuildIn/UI/Prefab/Battle/UIWindow_Battle", PerloadAssetType.BuildInAsset);
         AddLoadResource("BuildIn/UI/Prefab/Battle/Player_Info", PerloadAssetType.BuildInAsset);
 

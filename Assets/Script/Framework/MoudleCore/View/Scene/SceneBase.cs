@@ -28,10 +28,8 @@ public class PreloadAssetInfo
     }
 }
 
-public class SceneBase
+public abstract class SceneBase
 {
-    
-    private string                      m_strSceneName;
     private List<PreloadAssetInfo>      m_LoadResList;
     private List<PreloadAssetInfo>      m_BeforloadResList;
     private Action<SceneBase>           m_DoBeforeLoadCompledted;
@@ -73,10 +71,6 @@ public class SceneBase
         OnBeforeLoadDone();
         m_DoBeforeLoadCompledted(this);
     }
-    protected void SetSceneName(string scene)
-    {
-        m_strSceneName = scene;
-    }
     protected void AddBeforeLoadResource(string assetName, PerloadAssetType assetType)
     {
         PreloadAssetInfo res = new PreloadAssetInfo();
@@ -102,10 +96,6 @@ public class SceneBase
     private void Completed()
     {
         OnCompleted();
-    }
-    public string GetSceneName()
-    {
-        return m_strSceneName;
     }
     private void BeginLoadResource(List<PreloadAssetInfo> resList, Action<string, Object> onBeforLoadResourceLoadedCallback)
     {
@@ -171,6 +161,7 @@ public class SceneBase
     }
     #endregion
 
+    public abstract string GetSceneName();
     protected virtual void OnCreate()
     {
         
