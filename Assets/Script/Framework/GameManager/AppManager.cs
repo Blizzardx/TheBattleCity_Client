@@ -17,7 +17,7 @@ public class AppManager : SingletonTemplateMon<AppManager>
 	void Start () 
     {
 	    GameManager.Instance.Initialize();
-	}
+    }
 	void Update () 
     {
 	    GameManager.Instance.Update();

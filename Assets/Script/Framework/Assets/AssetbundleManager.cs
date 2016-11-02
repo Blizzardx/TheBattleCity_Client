@@ -47,7 +47,7 @@ namespace Framework.Asset
         private List<LoadBundleParam>                       m_LoadBundleList;
         private bool                                        m_bIsLoadingManifest;
         private bool                                        m_bIsLoadingAsset;
-        private bool m_bIsMarkToClear;
+        private bool m_bIsMarkToClear; 
 
         #region public interface
         public AssetbundleManager()
