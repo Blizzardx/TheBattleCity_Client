@@ -4,17 +4,17 @@ namespace Assets.Script.Framework.Assets.NewAssetTest
 {
     internal class AssetbundleInfo
     {
-        private string m_strName;
-        private AssetBundle m_Assetbundle;
-        private int m_iRefrenceCount;
-        private string[] m_DepBundleList;
+        private string          m_strName;
+        private AssetBundle     m_Assetbundle;
+        private int             m_iRefrenceCount;
+        private string[]        m_DepBundleList;
 
         public AssetbundleInfo(string name, AssetBundle body, string[] dep)
         {
             m_strName = name;
             m_Assetbundle = body;
             m_DepBundleList = dep;
-            m_iRefrenceCount = 0;
+            m_iRefrenceCount = 1;
         }
         public string GetName()
         {

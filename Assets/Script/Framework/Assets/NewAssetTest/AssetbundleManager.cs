@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Framework.Queue;
 using UnityEngine;
 
 namespace Assets.Script.Framework.Assets.NewAssetTest
@@ -132,6 +131,7 @@ namespace Assets.Script.Framework.Assets.NewAssetTest
 
             // change refreance count
             info.SetRefrenceCount(info.GetRefrenceCount()+ deltaValue);
+
             // get all dep
             var list = info.GetAllDepBundles();
             for (int i = 0; i < list.Length; ++i)
@@ -161,6 +161,38 @@ namespace Assets.Script.Framework.Assets.NewAssetTest
             {
                 // trigger to clear
                 m_bNeedClear = true;
+            }
+        }
+        public void ReleaseBundle(int leftCount = 0)
+        {
+            if (leftCount <= m_LoadedBundleMap.Count)
+            {
+                // nothing to unload
+                return;
+            }
+
+            int removeCount = m_LoadedBundleMap.Count - leftCount;
+            
+            List<AssetbundleInfo> removeList = new List<AssetbundleInfo>();
+            foreach (var elem in m_LoadedBundleMap)
+            {
+                if (elem.Value.GetRefrenceCount() == 0)
+                {
+                    removeList.Add(elem.Value);
+                }
+                if (removeList.Count >= removeCount)
+                {
+                    break;
+                }
+            }
+            // do unload & remove
+            for (int i = 0; i < removeList.Count; ++i)
+            {
+                var bundle = removeList[i];
+                // remove from list
+                m_LoadedBundleMap.Remove(bundle.GetName());
+                // unload
+                bundle.GetBody().Unload(true);
             }
         }
         #endregion
