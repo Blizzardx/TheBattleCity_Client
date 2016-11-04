@@ -43,7 +43,7 @@ class UIWaitBattle : UIBase
             m_PlayerList.Add(elem);
             elem.SetActive(false);
         }
-        RegisterModelEvent(RoomModel.KeyPlayerList,OnPlayerListUpdate,ModelManager.Instance.GetModel<RoomModel>());
+        RegisterModelEvent(RoomModel.KeyPlayerList,OnPlayerListUpdate,ModelManager.Instance.GetModel<RoomModel>(RoomModel.Index));
         UpdatePlayerList();
     }
     private void OnPlayerListUpdate(EventElement obj)
@@ -52,7 +52,7 @@ class UIWaitBattle : UIBase
     }
     private void UpdatePlayerList()
     {
-        var list = ModelManager.Instance.GetModel<RoomModel>().GetPlayerInfoList();
+        var list = ModelManager.Instance.GetModel<RoomModel>(RoomModel.Index).GetPlayerInfoList();
         for (int i = 0; i < m_PlayerList.Count; ++i)
         {
             if (list != null && i < list.Count)

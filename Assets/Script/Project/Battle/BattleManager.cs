@@ -45,7 +45,7 @@ public class BattleManager
     public void InitBattleScene()
     {
         m_PlayerList = new List<BattlePlayerController>();
-        var list = ModelManager.Instance.GetModel<RoomModel>().GetPlayerInfoList();
+        var list = ModelManager.Instance.GetModel<RoomModel>(RoomModel.Index).GetPlayerInfoList();
         for (int i = 0; i < list.Count; ++i)
         {
             m_PlayerList.Add(new BattlePlayerController(list[i]));

@@ -79,7 +79,7 @@ public class RoomHandler:HandlerBase
         }
         else
         {
-            HandlerModelData<PlayerModel>(PlayerModel.KeyPlayerId, msg.PlayerUid);
+            HandlerModelData<PlayerModel>(PlayerModel.Index,PlayerModel.KeyPlayerId, msg.PlayerUid);
             EventDispatcher.Instance.BroadcastAsync(EventIdDefine.CreateRoom);
         }
     }
@@ -94,7 +94,7 @@ public class RoomHandler:HandlerBase
         }
         else
         {
-            HandlerModelData<PlayerModel>(PlayerModel.KeyPlayerId, msg.PlayerUid);
+            HandlerModelData<PlayerModel>(PlayerModel.Index,PlayerModel.KeyPlayerId, msg.PlayerUid);
             EventDispatcher.Instance.BroadcastAsync(EventIdDefine.EnterRoom);
         }
     }
@@ -103,7 +103,7 @@ public class RoomHandler:HandlerBase
         MessageElement pkg = obj as MessageElement;
         SCRoomList msg = pkg.GetMessageBody() as SCRoomList;
 
-        HandlerModelData<RoomModel>(RoomModel.KeyRoomList, msg.RoomList);
+        HandlerModelData<RoomModel>(RoomModel.Index,RoomModel.KeyRoomList, msg.RoomList);
     }
     private void OnSearchRoom(IMessage obj)
     {
@@ -116,7 +116,7 @@ public class RoomHandler:HandlerBase
         MessageElement pkg = obj as MessageElement;
         SCSyncPlayerInfo msg = pkg.GetMessageBody() as SCSyncPlayerInfo;
 
-        HandlerModelData<RoomModel>(RoomModel.KeyPlayerList, msg.PlayerInfomation);
+        HandlerModelData<RoomModel>(RoomModel.Index,RoomModel.KeyPlayerList, msg.PlayerInfomation);
     }
 
     #endregion
@@ -143,5 +143,13 @@ public class RoomHandler:HandlerBase
         m_BattleMgr.Initialize();
         EventDispatcher.Instance.BroadcastAsync(EventIdDefine.BeginLoadBattle);
     }
+
+    public override int GetIndex()
+    {
+        return Index;
+    }
+
+    public const int Index = 0;
+
     #endregion
 }

@@ -25,10 +25,10 @@ public class UIRoom:UIBase
         RegisterEvent(EventIdDefine.SearchRoom, OnSearchRoom);
         RegisterEvent(EventIdDefine.EnterRoom, OnEnterRoom);
 
-        RegisterModelEvent(RoomModel.KeyRoomList,OnRoomList,ModelManager.Instance.GetModel<RoomModel>());
+        RegisterModelEvent(RoomModel.KeyRoomList,OnRoomList,ModelManager.Instance.GetModel<RoomModel>(RoomModel.Index));
 
         SetBlock(true);
-        HandlerManager.Instance.GetHandler<RoomHandler>().GetRoomList();
+        HandlerManager.Instance.GetHandler<RoomHandler>(RoomHandler.Index).GetRoomList();
     }
     private void OnEnterRoom(EventElement obj)
     {
@@ -59,13 +59,13 @@ public class UIRoom:UIBase
     private void OnClickBack(GameObject go)
     {
         Hide();
-        HandlerManager.Instance.GetHandler<RoomHandler>().BackToMainMenu();
+        HandlerManager.Instance.GetHandler<RoomHandler>(RoomHandler.Index).BackToMainMenu();
     }
 
     private void OnClickRefreshRoom(GameObject go)
     {
         SetBlock(true);
-        HandlerManager.Instance.GetHandler<RoomHandler>().GetRoomList();
+        HandlerManager.Instance.GetHandler<RoomHandler>(RoomHandler.Index).GetRoomList();
     }
 
     private void OnClickSearchRoom(GameObject go)
@@ -92,7 +92,7 @@ public class UIRoom:UIBase
 
     private void UpdateRoomList()
     {
-        var list = ModelManager.Instance.GetModel<RoomModel>().GetRoomList();
+        var list = ModelManager.Instance.GetModel<RoomModel>(RoomModel.Index).GetRoomList();
         
         m_RoomList.SetData(list);
     }

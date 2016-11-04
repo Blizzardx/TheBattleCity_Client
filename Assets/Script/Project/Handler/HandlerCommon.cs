@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class HandlerCommon : HandlerBase
 {
@@ -7,4 +6,11 @@ public class HandlerCommon : HandlerBase
     {
         Debug.Log("Init HandlerCommon");
     }
+
+    public override int GetIndex()
+    {
+        return Index;
+    }
+
+    public const int Index = 2;
 }

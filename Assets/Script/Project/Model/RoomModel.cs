@@ -33,6 +33,11 @@ class RoomModel : ModelBase
     private List<PlayerInfo> m_PlayerList;
     private PlayerInfo m_RoomSelfPlayer;
 
+    public const int Index = 1;
+    public override int GetIndex()
+    {
+        return Index;
+    }
     protected override void OnCreate()
     {
         Debug.Log("init player model");
@@ -53,7 +58,7 @@ class RoomModel : ModelBase
     }
     private void RegisterPermisionHandler()
     {
-        RegisterPermisionKey(HandlerManager.Instance.GetHandler<RoomHandler>());
+        RegisterPermisionKey(HandlerManager.Instance.GetHandler<RoomHandler>(RoomHandler.Index));
     }
     #region get
     public string GetRoomName()
@@ -125,7 +130,7 @@ class RoomModel : ModelBase
 
         for (int i = 0; i < m_PlayerList.Count; ++i)
         {
-            if (m_PlayerList[i].Uid == ModelManager.Instance.GetModel<PlayerModel>().GetPlayerUid())
+            if (m_PlayerList[i].Uid == ModelManager.Instance.GetModel<PlayerModel>(PlayerModel.Index).GetPlayerUid())
             {
                 m_RoomSelfPlayer = m_PlayerList[i];
                 // mark self player

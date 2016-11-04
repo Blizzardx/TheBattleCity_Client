@@ -7,6 +7,11 @@ public class PlayerModel : ModelBase
 
     private int m_iPlayerUid;
 
+    public const int Index = 0;
+    public override int GetIndex()
+    {
+        return Index;
+    }
     protected override void OnCreate()
     {
         Debug.Log("init player model");
@@ -24,7 +29,7 @@ public class PlayerModel : ModelBase
     }
     private void RegisterPermisionHandler()
     {
-        RegisterPermisionKey(HandlerManager.Instance.GetHandler<RoomHandler>());
+        RegisterPermisionKey(HandlerManager.Instance.GetHandler<RoomHandler>(RoomHandler.Index));
     }
 
     #region get

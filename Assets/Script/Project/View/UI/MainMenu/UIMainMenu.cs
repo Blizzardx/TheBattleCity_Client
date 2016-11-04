@@ -32,7 +32,7 @@ public class UIMainMenu:UIBase
     }
     private void OnClickOnLineMode(GameObject go)
     {
-        var handler = HandlerManager.Instance.GetHandler<MainMenuHandler>();
+        var handler = HandlerManager.Instance.GetHandler<MainMenuHandler>(MainMenuHandler.Index);
         if (!handler.ConnectToServer())
         {
             return;

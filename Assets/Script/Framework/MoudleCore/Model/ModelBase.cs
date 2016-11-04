@@ -7,7 +7,7 @@ using Framework.Tick;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 
-public class ModelBase
+public abstract class ModelBase
 {
     protected EventDispatchTool             m_EventHandler;
     private bool                            m_bIsAutoNoticDataModify;
@@ -17,7 +17,7 @@ public class ModelBase
     private HashSet<object>                 m_PermissionList;
      
     #region public interface
-    public ModelBase()
+    public void Create()
     {
         m_EventHandler = new EventDispatchTool();
         m_bIsAutoNoticDataModify = true;
@@ -81,6 +81,7 @@ public class ModelBase
     {
         OnDestroy();
     }
+    public abstract int GetIndex();
     #endregion
 
     #region internal function

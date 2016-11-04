@@ -1,43 +1,96 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common.Tool;
+using UnityEngine;
 
 public class ModelManager :Singleton<ModelManager>
 {
-    private Dictionary<Type, ModelBase> m_ModelStore;
+    private ModelBase[] m_ModelList;
+    private const int MAX_EMPTY_INDEX_COUNT = 10;
 
     private void AutoRegister()
     {
-        var list = ReflectionManager.Instance.GetTypeByBase(typeof (ModelBase));
+        var list = ReflectionManager.Instance.GetTypeByBase(typeof(ModelBase));
+        List<ModelBase> tmpInstanceList = new List<ModelBase>(list.Count);
         for (int i = 0; i < list.Count; ++i)
         {
             var elem = list[i];
             ModelBase modelInstance = Activator.CreateInstance(elem) as ModelBase;
-            m_ModelStore.Add(elem, modelInstance);
+            tmpInstanceList.Add(modelInstance);
+        }
+        // check correct
+        HashSet<int> tmpHashset = new HashSet<int>();
+
+        int max = 1;
+        for (int i = 0; i < tmpInstanceList.Count; ++i)
+        {
+            int index = tmpInstanceList[i].GetIndex();
+            if (tmpHashset.Contains(index))
+            {
+                Debug.LogError(tmpInstanceList[i].GetType().Name + " index conflict " + index);
+            }
+            tmpHashset.Add(index);
+            max = index > max ? index : max;
+        }
+        m_ModelList = new ModelBase[max + 1];
+        for (int i = 0; i < tmpInstanceList.Count; ++i)
+        {
+            var elemInstance = tmpInstanceList[i];
+            if (elemInstance.GetIndex() < 0)
+            {
+                Debug.LogError(elemInstance.GetType().Name + " index error " + elemInstance.GetIndex());
+                continue;
+            }
+            m_ModelList[elemInstance.GetIndex()] = elemInstance;
+        }
+        int emptyIndexCount = 0;
+        // show empty
+        for (int i = 0; i < m_ModelList.Length; ++i)
+        {
+            if (null == m_ModelList[i])
+            {
+                Debug.LogWarning("empty unused handler index " + i);
+                ++emptyIndexCount;
+            }
+        }
+        if (emptyIndexCount > MAX_EMPTY_INDEX_COUNT)
+        {
+            Debug.LogError(" handler map have too many empty index !!! " + emptyIndexCount);
+        }
+        // initialize
+        for (int i = 0; i < m_ModelList.Length; ++i)
+        {
+            var instance = m_ModelList[i];
+            if (instance != null)
+            {
+                instance.Create();
+            }
         }
     }
-    public T GetModel<T>() where T : ModelBase
+    public T GetModel<T>(int index) where T : ModelBase
     {
         CheckInit();
-        ModelBase res = null;
-        m_ModelStore.TryGetValue(typeof (T), out res);
-        return res as T;
+        if (index < 0 || index >= m_ModelList.Length)
+        {
+            Debug.LogError("Error index");
+            return null;
+        }
+        return m_ModelList[index] as T;
     }
     public void CheckInit()
     {
-        if (null != m_ModelStore)
+        if (null != m_ModelList)
         {
             return;
         }
-        m_ModelStore = new Dictionary<Type, ModelBase>();
         AutoRegister();
     }
     public void Destroy()
     {
-        foreach (var elem in m_ModelStore)
+        for (int i = 0; i < m_ModelList.Length; ++i)
         {
-            elem.Value.Destroy();
+            m_ModelList[i].Destroy();
         }
-        m_ModelStore = null;
+        m_ModelList = null;
     }
 }

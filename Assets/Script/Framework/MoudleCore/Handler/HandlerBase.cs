@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HandlerBase
+public abstract class HandlerBase
 {
     #region public interface
     public void Create()
@@ -14,12 +14,13 @@ public class HandlerBase
         Debug.Log(this.GetType() + " destroy ");
         OnDestroy();
     }
+    public abstract int GetIndex();
     #endregion
 
     #region function for override
-    protected void HandlerModelData<T>(int dataId, object param) where T : ModelBase
+    protected void HandlerModelData<T>(int modelIndex,int dataId, object param) where T : ModelBase
     {
-        ModelManager.Instance.GetModel<T>().DataOperation(this, dataId, param);
+        ModelManager.Instance.GetModel<T>(modelIndex).DataOperation(this, dataId, param);
     }
     protected virtual void OnDestroy()
     {

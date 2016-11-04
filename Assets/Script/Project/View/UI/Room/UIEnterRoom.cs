@@ -47,7 +47,7 @@ class UIEnterRoom : UIBase
     private void OnClickEnter(GameObject go)
     {
         SetBlock(true);
-        HandlerManager.Instance.GetHandler<RoomHandler>().EnterRoom(m_InputName.value, m_RoomInfo.Name);
+        HandlerManager.Instance.GetHandler<RoomHandler>(RoomHandler.Index).EnterRoom(m_InputName.value, m_RoomInfo.Name);
     }
     private void SetBlock(bool status)
     {

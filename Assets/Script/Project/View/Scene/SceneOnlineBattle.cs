@@ -15,7 +15,7 @@ class SceneOnlineBattle : SceneBase
         AddLoadResource("BuildIn/UI/Prefab/Battle/Player_Info", PerloadAssetType.BuildInAsset);
 
         // load tank
-        var list = ModelManager.Instance.GetModel<RoomModel>().GetPlayerInfoList();
+        var list = ModelManager.Instance.GetModel<RoomModel>(RoomModel.Index).GetPlayerInfoList();
         for (int i = 0; i < list.Count; ++i)
         {
             AddLoadResource("BuildIn/Moudle/Tank/" + list[i].meshName, PerloadAssetType.BuildInAsset);
@@ -36,7 +36,7 @@ class SceneOnlineBattle : SceneBase
         
 
         UIManager.Instance.CloseWindow<UILoading>();
-        HandlerManager.Instance.GetHandler<RoomHandler>().BattleLoadEnd();
+        HandlerManager.Instance.GetHandler<RoomHandler>(RoomHandler.Index).BattleLoadEnd();
     }
     protected override void OnProcess(float process)
     {

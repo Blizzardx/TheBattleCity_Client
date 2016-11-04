@@ -36,4 +36,10 @@ class MainMenuHandler:HandlerBase
         EventDispatcher.Instance.BroadcastAsync(EventIdDefine.Connected, null);
     }
 
+    public override int GetIndex()
+    {
+        return Index;
+    }
+
+    public const int Index = 1;
 }
