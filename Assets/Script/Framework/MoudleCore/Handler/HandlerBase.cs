@@ -6,12 +6,10 @@ public abstract class HandlerBase
     #region public interface
     public void Create()
     {
-        Debug.Log(this.GetType() + " hash code " + GetHashCode());
         OnCreate();
     }
     public void Destroy()
     {
-        Debug.Log(this.GetType() + " destroy ");
         OnDestroy();
     }
     public abstract int GetIndex();

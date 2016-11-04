@@ -21,7 +21,7 @@ public class ModelManager :Singleton<ModelManager>
         // check correct
         HashSet<int> tmpHashset = new HashSet<int>();
 
-        int max = 1;
+        int max = 0;
         for (int i = 0; i < tmpInstanceList.Count; ++i)
         {
             int index = tmpInstanceList[i].GetIndex();
@@ -63,6 +63,7 @@ public class ModelManager :Singleton<ModelManager>
             var instance = m_ModelList[i];
             if (instance != null)
             {
+                Debug.Log("On Create Model " + instance.GetType().Name);
                 instance.Create();
             }
         }
@@ -89,7 +90,9 @@ public class ModelManager :Singleton<ModelManager>
     {
         for (int i = 0; i < m_ModelList.Length; ++i)
         {
-            m_ModelList[i].Destroy();
+            var instance = m_ModelList[i];
+            Debug.Log("On Destroy Model " + instance.GetType().Name);
+            instance.Destroy();
         }
         m_ModelList = null;
     }
