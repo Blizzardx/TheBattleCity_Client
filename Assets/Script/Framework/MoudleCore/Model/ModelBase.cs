@@ -1,11 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
-using System.Runtime.InteropServices;
 using Framework.Event;
 using Framework.Tick;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
 
 public class ModelBase
 {
