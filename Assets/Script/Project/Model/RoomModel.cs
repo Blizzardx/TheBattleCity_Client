@@ -18,7 +18,7 @@ public class PlayerInfo
     public string meshName;
     public int positionId;
 }
-class RoomModel : ModelBase
+partial class RoomModel : ModelBase
 {
     public const int KeyRoomName = 0;
     public const int KeyMapName = 1;
@@ -32,12 +32,7 @@ class RoomModel : ModelBase
     private List<RoomInfo> m_RoomList;
     private List<PlayerInfo> m_PlayerList;
     private PlayerInfo m_RoomSelfPlayer;
-
-    public const int Index = 1;
-    public override int GetIndex()
-    {
-        return Index;
-    }
+    
     protected override void OnCreate()
     {
         Debug.Log("init player model");
