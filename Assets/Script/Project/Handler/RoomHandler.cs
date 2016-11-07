@@ -4,7 +4,7 @@ using Framework.Message;
 using Framework.Network;
 using NetWork.Auto;
 
-public class RoomHandler:HandlerBase
+public partial class RoomHandler:HandlerBase
 {
     private BattleManager m_BattleMgr;
     protected override void OnCreate()
@@ -143,13 +143,5 @@ public class RoomHandler:HandlerBase
         m_BattleMgr.Initialize();
         EventDispatcher.Instance.BroadcastAsync(EventIdDefine.BeginLoadBattle);
     }
-
-    public override int GetIndex()
-    {
-        return Index;
-    }
-
-    public const int Index = 0;
-
     #endregion
 }

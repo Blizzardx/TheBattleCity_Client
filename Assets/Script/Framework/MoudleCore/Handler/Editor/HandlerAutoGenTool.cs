@@ -32,7 +32,10 @@ namespace Assets.Script.Framework.MoudleCore.Handler.Editor
             m_bIsGenUserCode = isGenUserCode;
 
             // check path 
-            FileUtils.EnsureFolder(m_strUserCodeOutputPath);
+            if (isGenUserCode)
+            {
+                FileUtils.EnsureFolder(m_strUserCodeOutputPath);
+            }
             FileUtils.EnsureFolder(m_strAutoCodeOutputPath);
 
             m_strAutoCodeTemplateContent = FileUtils.ReadStringFile(m_strAutoCodeTemplatePath);
@@ -40,11 +43,11 @@ namespace Assets.Script.Framework.MoudleCore.Handler.Editor
 
             if (string.IsNullOrEmpty(m_strAutoCodeTemplateContent))
             {
-                Debug.LogError("Can't load auto code template file form " + m_strAutoCodeTemplateContent);
+                Debug.LogError("Can't load auto code template file form " + m_strAutoCodeTemplatePath);
             }
             if (string.IsNullOrEmpty(m_strUserCodeTemplateContent))
             {
-                Debug.LogError("Can't load user code template file form " + m_strUserCodeTemplateContent);
+                Debug.LogError("Can't load user code template file form " + m_strUserCodeTemplatePath);
             }
 
         }
@@ -102,7 +105,7 @@ namespace Assets.Script.Framework.MoudleCore.Handler.Editor
                 GenCode(list[i].Name, index++);
             }
             
-            string outputUserCodePath = m_strUserCodeOutputPath + "/" + className + ".cs";
+            string outputUserCodePath = m_strUserCodeOutputPath + className + ".cs";
             
             if (File.Exists(outputUserCodePath))
             {
@@ -122,7 +125,7 @@ namespace Assets.Script.Framework.MoudleCore.Handler.Editor
                 // add class name
                 tmpUser = tmpUser.Replace("{0}", className);
                 // build out put file name
-                string outputUserCodePath = m_strUserCodeOutputPath + "/" + className + ".cs";
+                string outputUserCodePath = m_strUserCodeOutputPath + className + ".cs";
 
                 // check file class already exist
                 if (File.Exists(outputUserCodePath))
@@ -142,7 +145,7 @@ namespace Assets.Script.Framework.MoudleCore.Handler.Editor
             // add index
             tmpAuto = tmpAuto.Replace("{1}", index.ToString());
             // build out put file name
-            string outputAutoCodePath = m_strAutoCodeOutputPath + "/" + className + ".cs";
+            string outputAutoCodePath = m_strAutoCodeOutputPath + className + ".cs";
             // check file class already exist
             if (File.Exists(outputAutoCodePath))
             {

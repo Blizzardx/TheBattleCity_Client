@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public abstract class HandlerBase
+﻿public class HandlerBase
 {
     #region public interface
     public void Create()
@@ -12,7 +9,11 @@ public abstract class HandlerBase
     {
         OnDestroy();
     }
-    public abstract int GetIndex();
+
+    public virtual int GetIndex()
+    {
+        return 0;
+    }
     #endregion
 
     #region function for override

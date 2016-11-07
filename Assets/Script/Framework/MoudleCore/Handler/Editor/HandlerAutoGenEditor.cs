@@ -5,10 +5,10 @@ namespace Assets.Script.Framework.MoudleCore.Handler.Editor
 {
     class HandlerAutoGenEditor : EditorWindow
     {
-        private string m_strUserCodeOutputPath = "Assets/Script/Project/Handler/User";
-        private string m_strAutoCodeOutputPath = "Assets/Script/Project/Handler/Auto";
-        private string m_strUserCodeTemplatePath = "Assets/Script/Framework/MoudleCore/Handler/Editor/HanderUserCodeTemplate.txt";
-        private string m_strAutoCodeTemplatePath = "Assets/Script/Framework/MoudleCore/Handler/Editor/HanderAutoCodeTemplate.txt";
+        private string m_strUserCodeOutputPath = "Script/Project/Handler/User/";
+        private string m_strAutoCodeOutputPath = "Script/Project/Handler/Auto/";
+        private string m_strUserCodeTemplatePath = "Script/Framework/MoudleCore/Handler/Editor/HanderUserCodeTemplate.txt";
+        private string m_strAutoCodeTemplatePath = "Script/Framework/MoudleCore/Handler/Editor/HanderAutoCodeTemplate.txt";
         private bool m_bIsGenUserCode = false;
 
         private string m_strTmpClassName;
@@ -28,7 +28,6 @@ namespace Assets.Script.Framework.MoudleCore.Handler.Editor
             m_Handler = new HandlerAutoGenTool();
             m_Handler.Initialize(m_strUserCodeOutputPath,m_strAutoCodeOutputPath,m_strUserCodeTemplatePath,m_strAutoCodeTemplatePath,m_bIsGenUserCode);
         }
-
         private void OnGUI()
         {
             EditorGUILayout.BeginVertical();
@@ -77,6 +76,7 @@ namespace Assets.Script.Framework.MoudleCore.Handler.Editor
                     if (GUILayout.Button("添加", GUILayout.Width(100f)))
                     {
                         m_Handler.Add(m_strTmpClassName);
+                        Refresh();
                     }
                 }
                 EditorGUILayout.EndHorizontal();
@@ -89,6 +89,7 @@ namespace Assets.Script.Framework.MoudleCore.Handler.Editor
                     if (GUILayout.Button("删除", GUILayout.Width(100f)))
                     {
                         m_Handler.Remove(m_strTmpClassName);
+                        Refresh();
                     }
                 }
                 EditorGUILayout.EndHorizontal();
@@ -99,11 +100,16 @@ namespace Assets.Script.Framework.MoudleCore.Handler.Editor
                     if (GUILayout.Button("刷新", GUILayout.Width(100f)))
                     {
                         m_Handler.Refresh();
+                        Refresh();
                     }
                 }
                 EditorGUILayout.EndHorizontal();
             }
             EditorGUILayout.EndVertical();
+        }
+        private void Refresh()
+        {
+            AssetDatabase.Refresh();
         }
     }
 }

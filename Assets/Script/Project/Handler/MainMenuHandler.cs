@@ -4,7 +4,7 @@ using Framework.Message;
 using Framework.Network;
 using UnityEngine;
 
-class MainMenuHandler:HandlerBase
+partial class MainMenuHandler:HandlerBase
 {
     protected override void OnCreate()
     {
@@ -35,11 +35,4 @@ class MainMenuHandler:HandlerBase
     {
         EventDispatcher.Instance.BroadcastAsync(EventIdDefine.Connected, null);
     }
-
-    public override int GetIndex()
-    {
-        return Index;
-    }
-
-    public const int Index = 1;
 }
