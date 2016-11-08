@@ -2,11 +2,13 @@
 using Common.Component;
 using Common.Tool;
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Framework.Async;
 using Framework.Network;
+using NetWork;
 
 namespace Framework.Log
 {
@@ -135,7 +137,19 @@ namespace Framework.Log
             }
             FileOperationElem fileElem = m_CurrentTask.m_Param as FileOperationElem;
             var content = fileElem.m_strParam as List<string>;
+            // is reset create time
+            bool isresetCreatetime = !File.Exists(fileElem.m_strFilePath);
+
             FileUtils.WriteStringFile(fileElem.m_strFilePath, content);
+            FileInfo info = new FileInfo(fileElem.m_strFilePath);
+            if (isresetCreatetime)
+            {
+                info.CreationTime = DateTime.Now;
+            }
+            else
+            {
+                info.LastWriteTime = DateTime.Now;
+            }
         }
         private void OnEnd_WriteFile()
         {
@@ -191,6 +205,10 @@ namespace Framework.Log
                 string fileName = paramlist[2] as string;
 
                 byte[] data = FileUtils.ReadByteFile(filePath);
+                if (null == data)
+                {
+                    return;
+                }
                 Debug.Log("Trigger To Upload log "+ fileName);
                 // upload file
                 HttpManager.Instance.UploadFile(url, fileName, data, null,"1.0");

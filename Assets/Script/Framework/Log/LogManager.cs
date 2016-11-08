@@ -19,8 +19,10 @@ namespace Framework.Log
         private int m_iLogHistoryCount;
         private LogTaskManage m_TaskManager;
         private Queue<string> m_LogCasheList;
-        private const string m_strLogSnapshotHeader = "snapshot_log_";
-        private const float m_InitializeAppTime = 30.0f;// default 30s 
+        private bool m_bIsPrintDirectoryBeforupload;
+        private bool m_bIsEnableTimeoutAutoUpload;
+        private float m_InitSystemTimeout;
+        private const string m_strLogSnapshotHeader = "log_";
 
         #region public interface
 
@@ -28,12 +30,21 @@ namespace Framework.Log
             (bool isEnalbeLogToConsole = true,
             bool isEnableRecord = true,
             string logCashePath = "",
-            int logcacheCount = 1024,
+            int logQueueCount = 1024,
             int logHistoryCount = 1,
-            int maxLogFileSize = 3 * 1024 * 1024)// 3m
+            int maxLogFileSize = 3 * 1024 * 1024,// 3m
+            bool isPrintDirectoryBeforUpload = true,
+            bool isEnableInitSystemTimeoutAutoUpload = true,
+            float timeout = 30.0f
+            )
         {
+            m_InitSystemTimeout = timeout;
+            m_bIsEnableTimeoutAutoUpload = isEnableInitSystemTimeoutAutoUpload;
+
             // begin counting initialize
             MarktoBeginInitializeApplication();
+
+            m_bIsPrintDirectoryBeforupload = isPrintDirectoryBeforUpload;
 
             if (isEnalbeLogToConsole)
             {
@@ -43,7 +54,7 @@ namespace Framework.Log
             {
                 Debug.logger.logHandler = this;
             }
-            m_iLogStoreCount = logcacheCount;
+            m_iLogStoreCount = logQueueCount;
             m_TaskManager = new LogTaskManage();
             m_TaskManager.CheckInit();
             m_LogStore = new List<string>();
@@ -55,7 +66,7 @@ namespace Framework.Log
             {
                 m_strCurrentLogSavePath = logCashePath;
             }
-            m_strCurrentLogSavePath = m_strLogCashePath + "/log.txt";
+            m_strCurrentLogSavePath = m_strLogCashePath + "/CurrentLog.txt";
             m_bIsEnalbeRecord = isEnableRecord;
             m_MaxLogFileSize = maxLogFileSize;
             m_iLogHistoryCount = logHistoryCount;
@@ -102,7 +113,9 @@ namespace Framework.Log
         {
             SaveToFileSystem();
             if (m_TaskManager != null)
+            {
                 m_TaskManager.QuickFinishedAllTask();
+            }
         }
         public void Update()
         {
@@ -111,8 +124,11 @@ namespace Framework.Log
         }
         public void UploadLog(string url = "")
         {
-            // print directory info befor upload
-            PrintDirectory();
+            if (m_bIsPrintDirectoryBeforupload)
+            {
+                // print directory info befor upload
+                PrintDirectory();
+            }
 
             // save cashe to disk befor upload
             SaveToFileSystem();
@@ -140,7 +156,7 @@ namespace Framework.Log
                 realName = realName.Substring(realName.LastIndexOf('/')+1);
                 if (!realName.StartsWith(m_strLogSnapshotHeader))
                 {
-                    realName = GenLogFileName(false);
+                    realName = GenLogFileName(GetCurrentLogCreateTime(),false);
                 }
                 //else
                 //{
@@ -186,19 +202,19 @@ namespace Framework.Log
         {
             if (x.LastWriteTime > y.LastWriteTime)
             {
-                return -1;
+                return 1;
             }
             else
             {
-                return 1;
+                return -1;
             }
         }
         private void ClearCashe()
         {
             // get new file name & save
-            string newName = m_strLogCashePath + "/" + GenLogFileName();
+            string newName = m_strLogCashePath + "/" + GenLogFileName(GetCurrentLogCreateTime());
             m_TaskManager.StartTask(TaskType.RenameFile, new object[] { m_strCurrentLogSavePath, newName }, null);
-            if (m_LogCasheList.Count + 1 > m_iLogHistoryCount)
+            while (m_LogCasheList.Count + 1 > m_iLogHistoryCount)
             {
                 string fileName = m_LogCasheList.Dequeue();
                 m_TaskManager.StartTask(TaskType.DelFile, fileName, null);
@@ -222,12 +238,12 @@ namespace Framework.Log
         {
             return FileUtils.GetFileLength(m_strCurrentLogSavePath) > m_MaxLogFileSize;
         }
-        private string GenLogFileName(bool withTime = true)
+        private string GenLogFileName(DateTime createTime,bool withEndTime = true)
         {
             string deviceId = SystemInfo.deviceUniqueIdentifier;
             string deviceName = SystemInfo.deviceName;
-            string time = withTime ? TimeControl.Instance.GetCurrentTime() : "";
-            string res = m_strLogSnapshotHeader + "_" + time + deviceName + "_" + deviceId + ".txt";
+            string endTime = withEndTime ? "-" + DateTime.Now.ToString("yyyyMMdd-HH:mm:ss") : "-Now";
+            string res = m_strLogSnapshotHeader + "_" + deviceName + "_" + deviceId + "_" + createTime.ToString("yyyyMMdd-HH:mm:ss") + endTime + ".txt";
             res = res.Replace(' ', '_');
             res = res.Replace(':', '_');
             return res;
@@ -253,6 +269,11 @@ namespace Framework.Log
             List<string> tmpLogStore = paramList[2] as List<string>;
             tmpLogStore.Add(paramList[1] as string);
         }
+        private DateTime GetCurrentLogCreateTime()
+        {
+            FileInfo file = new FileInfo(m_strCurrentLogSavePath);
+            return file.CreationTime;
+        }
         #endregion
 
         #region Crash Log Collection
@@ -266,7 +287,7 @@ namespace Framework.Log
             {
                 return;
             }
-            if (Time.realtimeSinceStartup - m_fStartTime > m_InitializeAppTime)
+            if (Time.realtimeSinceStartup - m_fStartTime > m_InitSystemTimeout)
             {
                 m_bIsMarkToInit = false;
                 UploadLog();
@@ -274,6 +295,10 @@ namespace Framework.Log
         }
         private void MarktoBeginInitializeApplication()
         {
+            if (!m_bIsEnableTimeoutAutoUpload)
+            {
+                return;
+            }
             Debug.Log("Log: MarktoBeginInitializeApplication");
             m_bIsMarkToInit = true;
             m_fStartTime = Time.realtimeSinceStartup;
