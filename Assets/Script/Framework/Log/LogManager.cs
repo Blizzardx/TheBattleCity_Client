@@ -156,7 +156,7 @@ namespace Framework.Log
                 realName = realName.Substring(realName.LastIndexOf('/')+1);
                 if (!realName.StartsWith(m_strLogSnapshotHeader))
                 {
-                    realName = GenLogFileName(GetCurrentLogCreateTime(),false);
+                    realName = GenLogFileName(null,false);
                 }
                 //else
                 //{
@@ -212,9 +212,12 @@ namespace Framework.Log
         private void ClearCashe()
         {
             // get new file name & save
-            string newName = m_strLogCashePath + "/" + GenLogFileName(GetCurrentLogCreateTime());
+            string newName = m_strLogCashePath + "/" + GenLogFileName(GetCurrentLogCreateTime().ToString("yyyyMMdd-HH:mm:ss"));
             m_TaskManager.StartTask(TaskType.RenameFile, new object[] { m_strCurrentLogSavePath, newName }, null);
-            while (m_LogCasheList.Count + 1 > m_iLogHistoryCount)
+            // add to log cashe
+            m_LogCasheList.Enqueue(newName);
+            // check cashe size
+            while (m_LogCasheList.Count > m_iLogHistoryCount)
             {
                 string fileName = m_LogCasheList.Dequeue();
                 m_TaskManager.StartTask(TaskType.DelFile, fileName, null);
@@ -238,12 +241,13 @@ namespace Framework.Log
         {
             return FileUtils.GetFileLength(m_strCurrentLogSavePath) > m_MaxLogFileSize;
         }
-        private string GenLogFileName(DateTime createTime,bool withEndTime = true)
+        private string GenLogFileName(string createTime,bool withEndTime = true)
         {
             string deviceId = SystemInfo.deviceUniqueIdentifier;
             string deviceName = SystemInfo.deviceName;
             string endTime = withEndTime ? "-" + DateTime.Now.ToString("yyyyMMdd-HH:mm:ss") : "-Now";
-            string res = m_strLogSnapshotHeader + "_" + deviceName + "_" + deviceId + "_" + createTime.ToString("yyyyMMdd-HH:mm:ss") + endTime + ".txt";
+            string strCreateTime = string.IsNullOrEmpty(createTime) ? "" : "_" + createTime;
+            string res = m_strLogSnapshotHeader + "_" + deviceName + "_" + deviceId + strCreateTime + endTime + ".txt";
             res = res.Replace(' ', '_');
             res = res.Replace(':', '_');
             return res;
