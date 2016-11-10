@@ -13,7 +13,7 @@ namespace Assets.Script.Framework.MoudleCore.Handler.Editor
 
         private string m_strTmpClassName;
         private HandlerAutoGenTool m_Handler;
-        [MenuItem("Editors/Common/Handler Editor")]
+        [MenuItem("Editors/Handler/Handler Editor")]
         public static void Open()
         {
             CreateInstance<HandlerAutoGenEditor>().Show();

@@ -13,7 +13,7 @@ namespace Assets.Script.Framework.MoudleCore.Handler.Editor
 
         private string m_strTmpClassName;
         private ModelAutoGenTool m_Handler;
-        [MenuItem("Editors/Common/Model Editor")]
+        [MenuItem("Editors/Model/Model Editor")]
         public static void Open()
         {
             CreateInstance<ModelAutoGenEditor>().Show();
