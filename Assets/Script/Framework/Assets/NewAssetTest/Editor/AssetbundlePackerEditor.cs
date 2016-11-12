@@ -6,9 +6,9 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
 {
     class AssetbundlePackerEditor:EditorWindow
     {
-        private string m_strUGUIAtlasPath = Application.dataPath + "/ResourcePacker/UGUIAtlas/";
-        private string m_strNGUIAtlasPath = Application.dataPath + "/ResourcePacker/NGUIAtlas/";
-        private string m_strDependentAssetRootPath = Application.dataPath + "/ResourcePacker/Asset/";
+        private string m_strUGUIAtlasPath = Application.dataPath + "/UGUI/";
+        private string m_strNGUIAtlasPath = Application.dataPath + "/NGUI/";
+        private string m_strDependentAssetRootPath = Application.dataPath + "/Data/";
         private string m_strOutputPath = Application.dataPath + "/../output/";
         private AssetbundlePacker m_Handler;
 

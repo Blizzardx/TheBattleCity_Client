@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection.Emit;
-using NUnit.Framework.Constraints;
-using Text.Tool;
+using Common.Tool;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,19 +11,12 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
     {
         private class AssetbundleRefInfo
         {
-            public AssetbundleRefInfo()
-            {
-                
-            }
-
-            public AssetbundleRefInfo(string name, int refCount,int treeDeepth)
+            public AssetbundleRefInfo(string name,int treeDeepth)
             {
                 this.name = name;
-                this.refCount = refCount;
                 this.treeDeepth = treeDeepth;
             }
             public string name;
-            public int refCount;
             public int treeDeepth;
         }
         private string[] m_IgnoreList = new string[] {".meta",".svn",".cs"};
@@ -60,11 +50,32 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
             m_Bundle2AssetFindMap = new Dictionary<string, List<string>>();
             m_Asset2BundleFindMap = new Dictionary<string, string>();
 
-            BeginSetBundleName();
+            if (!CheckDirectory())
+            {
+                return;
+            }
+            if (!CheckName())
+            {
+                return;
+            }
+            if (!SetDependentPathBundleName())
+            {
+                return;
+            }
+            if (!SetUGUIPathBundleName())
+            {
+                return;
+            }
+            if (!SetNGUIPathBundleName())
+            {
+                return;
+            }
+            Debug.Log("Done");
         }
         public void BeginBuild()
         {
             BuildPipeline.BuildAssetBundles(Application.streamingAssetsPath, BuildAssetBundleOptions.DeterministicAssetBundle, EditorUserBuildSettings.activeBuildTarget);
+            Debug.Log("Done");
         }
         public void ResetAllBundleName(string AppDataPath)
         {
@@ -78,14 +89,17 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
                     // is in ignore list
                     if (!IsInIgnoreList(fileInfo.FullName))
                     {
-                        //AssetImporter tmp = AssetImporter.GetAtPath(GetNameByPath(fileInfo.FullName));
-                        //if (tmp != null)
-                        //{
-                        //    tmp.assetBundleName = null;
-                        //}
+                        string tmpName = FixPathToMutiPlantformFormate(fileInfo.FullName);
+                        tmpName = FixPathToRelatePathFormate(tmpName);
+                        AssetImporter tmp = AssetImporter.GetAtPath(tmpName);
+                        if (tmp != null)
+                        {
+                            tmp.assetBundleName = null;
+                        }
                     }
                 }
-            }
+            } 
+            Debug.Log("Done");
         }
         public void GenAssetToBundleFindMap()
         {
@@ -121,19 +135,7 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
         }
         #endregion
 
-        #region system function
-
-        private void BeginSetBundleName()
-        {
-            if (!CheckDirectory())
-            {
-                return;
-            }
-            if (!SetDependentPathBundleName())
-            {
-                return;
-            }
-        }
+        #region check
         private bool CheckDirectory()
         {
             // fix path to mutiplantform
@@ -182,8 +184,189 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
 
             return true;
         }
+        private bool CheckName()
+        {
+            bool res = true;
+
+            if (!CheckDependentAssetNames())
+            {
+                res = false;
+            }
+            if (!CheckNGUIAssetNames())
+            {
+                res = false;
+            }
+            if (!CheckUGUIAssetNames())
+            {
+                res = false;
+            }
+            return res;
+        }
+        private bool CheckDependentAssetNames()
+        {
+            if (!Directory.Exists(m_strDependentAssetRootPath))
+            {
+                return true;
+            }
+            var dir = new DirectoryInfo(m_strDependentAssetRootPath);
+            var files = dir.GetFiles("*", SearchOption.AllDirectories);
+            List<string> allFile = new List<string>(files.Length);
+            for (var i = 0; i < files.Length; ++i)
+            {
+                var fileInfo = files[i];
+                if (IsInIgnoreList(fileInfo.Name))
+                {
+                    continue;
+                }
+                // add to ready list
+                string relatePathName = FixPathToRelatePathFormate(files[i].FullName);
+                allFile.Add(relatePathName);
+            }
+            var allDepList = AssetDatabase.GetDependencies(allFile.ToArray());
+
+            bool res = true;
+
+            if (!CheckIsNameVailedInList(allDepList))
+            {
+                res = false;
+            }
+            if (CheckIsSameNameFileInList(allFile))
+            {
+                res = false;
+            }
+            if (CheckIsFilePathInResourceDir(allFile))
+            {
+                res = false;
+            }
+            return res;
+        }
+        private bool CheckNGUIAssetNames()
+        {
+            if (!Directory.Exists(m_strNGUIAtlasPath))
+            {
+                return true;
+            }
+            var dir = new DirectoryInfo(m_strNGUIAtlasPath);
+            var files = dir.GetFiles("*", SearchOption.AllDirectories);
+            List<string> allFile = new List<string>(files.Length);
+            for (var i = 0; i < files.Length; ++i)
+            {
+                var fileInfo = files[i];
+                if (IsInIgnoreList(fileInfo.Name))
+                {
+                    continue;
+                }
+                // add to ready list
+                string relatePathName = FixPathToRelatePathFormate(files[i].FullName);
+                allFile.Add(relatePathName);
+            }
+            var allDepList = AssetDatabase.GetDependencies(allFile.ToArray());
+
+            bool res = true;
+
+            if (!CheckIsNameVailedInList(allDepList))
+            {
+                res = false;
+            }
+            if (CheckIsSameNameFileInList(allFile))
+            {
+                res = false;
+            }
+            if (CheckIsFilePathInResourceDir(allFile))
+            {
+                res = false;
+            }
+            CheckNGUIDirectory(dir, ref res);
+            return res;
+        }
+        private void CheckNGUIDirectory(DirectoryInfo dir, ref bool res)
+        {
+            var tmpFiles = dir.GetFiles();
+            List<string> files = new List<string>();
+            for (int i = 0; i < tmpFiles.Count(); ++i)
+            {
+                if (!tmpFiles[i].Name.EndsWith(".meta"))
+                {
+                    files.Add(tmpFiles[i].Name);
+                }
+            }
+            if (files.Count != 0)
+            {
+                if (files.Count != 3)
+                {
+                    //
+                    res = false;
+                    Debug.LogError("NGUI PATH " + dir.FullName + " with error ");
+                }
+                else
+                {
+                    for (int j = 0; j < 3; ++j)
+                    {
+                        string name = files[j];
+                        if (!name.EndsWith(".prefab") &&
+                            !name.EndsWith(".mat") &&
+                            !name.EndsWith(".png"))
+                        {
+                            res = false;
+                            Debug.LogError("NGUI PATH " + dir.FullName + " with error " + name);
+                        }
+                    }
+                }
+            }
+            var subDir = dir.GetDirectories();
+            for (int i = 0; i < subDir.Length; ++i)
+            {
+                CheckNGUIDirectory(subDir[i], ref res);
+            }
+        }
+        private bool CheckUGUIAssetNames()
+        {
+            if (!Directory.Exists(m_strUGUIAtlasPath))
+            {
+                return true;
+            }
+            var dir = new DirectoryInfo(m_strUGUIAtlasPath);
+            var files = dir.GetFiles("*", SearchOption.AllDirectories);
+            List<string> allFile = new List<string>(files.Length);
+            for (var i = 0; i < files.Length; ++i)
+            {
+                var fileInfo = files[i];
+                if (IsInIgnoreList(fileInfo.Name))
+                {
+                    continue;
+                }
+                // add to ready list
+                string relatePathName = FixPathToRelatePathFormate(files[i].FullName);
+                allFile.Add(relatePathName);
+            }
+            var allDepList = AssetDatabase.GetDependencies(allFile.ToArray());
+
+            bool res = true;
+
+            if (!CheckIsNameVailedInList(allDepList))
+            {
+                res = false;
+            }
+            if (CheckIsSameNameFileInList(allFile))
+            {
+                res = false;
+            }
+            if (CheckIsFilePathInResourceDir(allFile))
+            {
+                res = false;
+            }
+            return res;
+        }
+        #endregion
+
+        #region dependent path
         private bool SetDependentPathBundleName()
         {
+            if (!Directory.Exists(m_strDependentAssetRootPath))
+            {
+                return true;
+            }
+
             Dictionary<string, List<string>> allAssetDepMap = new Dictionary<string, List<string>>();
             Dictionary<string, int> allAssetRefMap = new Dictionary<string, int>();
 
@@ -201,12 +384,6 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
                 // add to ready list
                 allFileList.Add(files[i]);
             }
-
-            // check name
-            if (!CheckIsSameNameFileInList(allFileList))
-            {
-                return false;
-            }
             List<string> allFileNameList = new List<string>(allFileList.Count);
             for (int i = 0; i < allFileList.Count; ++i)
             {
@@ -217,6 +394,7 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
                 allFileNameList.Add(relatePath);
             }
             var allDepList = AssetDatabase.GetDependencies(allFileNameList.ToArray());
+
             // get refrence count
             for (int i = 0; i < allDepList.Length; ++i)
             {
@@ -236,18 +414,15 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
                 }
             }
 
-            // check asset name
-            if (!CheckIsNameVailedInList(allAssetRefMap.Keys.ToArray()))
-            {
-                return false;
-            }
+            // print ref map - test
+            TestPrintRefCount(allAssetRefMap);
 
             // build all asset list
             List<AssetbundleRefInfo> allAssetList = new List<AssetbundleRefInfo>();
             foreach (var elem in allAssetRefMap)
             {
                 int treeDeepth = GetTreeDeepth(elem.Key);
-                allAssetList.Add(new AssetbundleRefInfo(elem.Key,elem.Value,treeDeepth));
+                allAssetList.Add(new AssetbundleRefInfo(elem.Key,treeDeepth));
             }
 
             // sort asset by tree deepth 
@@ -297,41 +472,6 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
             }
             return true;
         }
-        private void DoSetBundleName(string bundleName, string path)
-        {
-            // set to lower
-            bundleName = bundleName.ToLower();
-
-            AssetImporter tmp = AssetImporter.GetAtPath(path);
-            if (tmp != null)
-            {
-                //tmp.assetBundleName = bundleName;
-                //tmp.SaveAndReimport();
-
-                // test code - begin
-                if (tmp.assetBundleName != bundleName)
-                {
-                    Debug.LogError(bundleName+" " + path);
-                }
-                // test code - end
-
-                // build Asset to Asset bundle find map
-                m_Asset2BundleFindMap.Add(path, bundleName);
-                // build Asset bundle to Asset find map
-                if (!m_Bundle2AssetFindMap.ContainsKey(bundleName))
-                {
-                    m_Bundle2AssetFindMap.Add(bundleName,new List<string>() {path});
-                }
-                else
-                {
-                    m_Bundle2AssetFindMap[bundleName].Add(path);
-                }
-            }
-            else
-            {
-                Debug.LogWarning("error on convert to asset importer " + path);
-            }
-        }
         private void SetBundleNameByRoot
             (List<string> allfileList, 
             Dictionary<string, List<string>> bundleGroupMap, 
@@ -341,7 +481,22 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
             for (int i = 0; i < allfileList.Count; ++i)
             {
                 string name = allfileList[i];
+                bool isScene = IsAssetIsSceneFile(name);
                 string bundleName = GetBundleNameByPath(name);
+               
+                // add to bundle list
+                if (!bundleGroupMap.ContainsKey(bundleName))
+                {
+                    bundleGroupMap.Add(bundleName, new List<string>());
+                }
+                bundleGroupMap[bundleName].Add(name);
+                markList.Add(name);
+                if (isScene)
+                {
+                    bundleName = GetBundleSceneNameByPath(name);
+                    bundleGroupMap.Add(bundleName, new List<string>());
+                }
+                
                 SetBundleNameByRoot(name,bundleName,bundleGroupMap,allAssetRefMap,markList);
             }
         }
@@ -352,28 +507,26 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
             Dictionary<string, int> allAssetRefMap, 
             HashSet<string> markList)
         {
-            if (markList.Contains(assetName))
-            {
-                return;
-            }
             int rootRefCount = allAssetRefMap[assetName];
 
-            var deps = AssetDatabase.GetDependencies(assetName, true);
+            var deps = AssetDatabase.GetDependencies(assetName, false);
             for (int i = 0; i < deps.Length; ++i)
             {
-                int selfRefCount = allAssetRefMap[deps[i]];
-                if (rootRefCount == selfRefCount + 1)
+                if (IsInIgnoreList(deps[i]))
                 {
-                    // add to list
-                    markList.Add(deps[i]);
-                    // add to bundle list
-                    if (!bundleGroupMap.ContainsKey(bundleName))
-                    {
-                        bundleGroupMap.Add(bundleName,new List<string>());
-                    }
-                    bundleGroupMap[bundleName].Add(deps[i]);
+                    continue;
                 }
-                SetBundleNameByRoot(deps[i], bundleName, bundleGroupMap, allAssetRefMap, markList);
+                if (IsInDepPath(deps[i]))
+                {
+                    continue;
+                }
+                int selfRefCount = allAssetRefMap[deps[i]];
+                if (rootRefCount == selfRefCount - 1)
+                {
+                    markList.Add(deps[i]);
+                    bundleGroupMap[bundleName].Add(deps[i]);
+                    SetBundleNameByRoot(deps[i], bundleName, bundleGroupMap, allAssetRefMap, markList);
+                }
             }
         }
         private void SetBundleNameByRoot
@@ -454,9 +607,136 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
 
             return num + 1;
         }
+        private bool IsInDepPath(string path)
+        {
+            string depRelatePath = FixPathToRelatePathFormate(m_strDependentAssetRootPath);
+
+            return path.StartsWith(depRelatePath);
+        }
+        #endregion
+
+        #region NGUI path
+        private bool SetNGUIPathBundleName()
+        {
+            if (!Directory.Exists(m_strNGUIAtlasPath))
+            {
+                return true;
+            }
+            DirectoryInfo dir = new DirectoryInfo(m_strNGUIAtlasPath);
+            SetNGUIBundleName(dir);
+            return true;
+        }
+        private void SetNGUIBundleName(DirectoryInfo dir)
+        {
+            string bundleName = dir.Name + ".bundle";
+            var files = dir.GetFiles();
+            for (int i = 0; i < files.Length; ++i)
+            {
+                if (IsInIgnoreList(files[i].FullName))
+                {
+                    continue;
+                }
+                string tmpPath = FixPathToMutiPlantformFormate(files[i].FullName);
+                tmpPath = FixPathToRelatePathFormate(tmpPath);
+                DoSetBundleName(bundleName, tmpPath);
+            }
+            var subDirs = dir.GetDirectories();
+
+            for (int i = 0; i < subDirs.Length; ++i)
+            {
+                SetUGUIBundleName(subDirs[i]);
+            }
+        }
+
+        #endregion
+
+        #region UGUI path
+
+        private bool SetUGUIPathBundleName()
+        {
+            if (!Directory.Exists(m_strUGUIAtlasPath))
+            {
+                return true;
+            }
+            DirectoryInfo dir = new DirectoryInfo(m_strUGUIAtlasPath);
+            SetUGUIBundleName(dir);
+            return true;
+        }
+        private void SetUGUIBundleName(DirectoryInfo dir)
+        {
+            string bundleName = dir.Name+".bundle";
+            var files = dir.GetFiles();
+            for (int i = 0; i < files.Length; ++i)
+            {
+                if (IsInIgnoreList(files[i].FullName))
+                {
+                    continue;
+                }
+                string tmpPath = FixPathToMutiPlantformFormate(files[i].FullName);
+                tmpPath = FixPathToRelatePathFormate(tmpPath);
+                var importer = TextureImporter.GetAtPath(tmpPath) as TextureImporter;
+                if (null != importer)
+                {
+                    importer.spritePackingTag = dir.Name;
+                    importer.textureType = TextureImporterType.Sprite;
+                    importer.textureFormat = TextureImporterFormat.AutomaticTruecolor;
+                    importer.maxTextureSize = 1024;
+                    importer.mipmapEnabled = false;
+                    importer.filterMode = FilterMode.Trilinear;
+
+                    DoSetBundleName(bundleName, tmpPath);
+                }
+            }
+            var subDirs = dir.GetDirectories();
+
+            for (int i = 0; i < subDirs.Length; ++i)
+            {
+                SetUGUIBundleName(subDirs[i]);
+            }
+        }
         #endregion
 
         #region tool
+        private void DoSetBundleName(string bundleName, string path)
+        {
+            // set to lower
+            bundleName = bundleName.ToLower();
+
+            AssetImporter tmp = AssetImporter.GetAtPath(path);
+            if (tmp != null)
+            {
+                //tmp.assetBundleName = bundleName;
+                //tmp.SaveAndReimport();
+
+                // test code - begin
+                if (tmp.assetBundleName != bundleName)
+                {
+                    Debug.LogError(bundleName + " " + path);
+                }
+                // test code - end
+                if (m_Asset2BundleFindMap.ContainsKey(path))
+                {
+                    m_Asset2BundleFindMap[path] = bundleName;
+                }
+                else
+                {
+                    m_Asset2BundleFindMap.Add(path, bundleName);
+                }
+                // build Asset bundle to Asset find map
+                if (!m_Bundle2AssetFindMap.ContainsKey(bundleName))
+                {
+                    m_Bundle2AssetFindMap.Add(bundleName, new List<string>() { path });
+                }
+                else
+                {
+                    m_Bundle2AssetFindMap[bundleName].Add(path);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("error on convert to asset importer " + path);
+            }
+        }
         private bool IsInIgnoreList(string path)
         {
             for (int i = 0; i < m_IgnoreList.Length; ++i)
@@ -509,25 +789,25 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
             }
             return res;
         }
-        private bool CheckIsSameNameFileInList(List<FileInfo> list)
+        private bool CheckIsSameNameFileInList(List<string> list)
         {
             if (null == list || list.Count == 0)
             {
                 return false;
             }
-            bool res = true;
+            bool res = false;
             HashSet<string> nameList = new HashSet<string>();
             for (int i = 0; i < list.Count; ++i)
             {
                 var file = list[i];
-                if (nameList.Contains(file.Name))
+                if (nameList.Contains(file))
                 {
-                    res = false;
-                    Debug.LogError("Same name asset " + file.Name);
+                    res = true;
+                    Debug.LogError("Same name asset " + file);
                 }
                 else
                 {
-                    nameList.Add(file.Name);
+                    nameList.Add(file);
                 }
             }
             return res;
@@ -580,10 +860,6 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
         {
             return path.EndsWith(".unity");
         }
-        private bool IsPathIncludePath(string sourcePath, string targetpath)
-        {
-            return targetpath.StartsWith(sourcePath);
-        }
         private void TestPrintRefCount(Dictionary<string, int> refCountMap)
         {
             Dictionary<string, object> tmpMap = new Dictionary<string, object>();
@@ -592,6 +868,23 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
                 tmpMap.Add(elem.Key, elem);
             }
             FileUtils.WriteStringFile(m_strOutputPath + "/RefCount.txt", Json.Serialize(tmpMap));
+        }
+        private bool CheckIsFilePathInResourceDir(List<string> allFile)
+        {
+            if (allFile == null || allFile.Count == 0)
+            {
+                return false;
+            }
+            bool res = false;
+            for (int i = 0; i < allFile.Count; ++i)
+            {
+                if (allFile[i].IndexOf("Resources") != -1)
+                {
+                    res = true;
+                    Debug.LogError("Asset name with error " + allFile[i]);
+                }
+            }
+            return res;
         }
         #endregion
 
