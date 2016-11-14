@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Common.Tool;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Common.Tool;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,7 +19,7 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
             public string name;
             public int treeDeepth;
         }
-        private string[] m_IgnoreList = new string[] {".meta",".svn",".cs"};
+        private string[] m_IgnoreList = new string[] {".meta",".svn"};
         private string m_strUGUIAtlasPath;
         private string m_strNGUIAtlasPath;
         private string m_strDependentAssetRootPath;
@@ -219,8 +219,9 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
                     continue;
                 }
                 // add to ready list
-                string relatePathName = FixPathToRelatePathFormate(files[i].FullName);
-                allFile.Add(relatePathName);
+                string tmpPath = FixPathToMutiPlantformFormate(files[i].FullName);
+                tmpPath = FixPathToRelatePathFormate(tmpPath);
+                allFile.Add(tmpPath);
             }
             var allDepList = AssetDatabase.GetDependencies(allFile.ToArray());
 
@@ -541,9 +542,13 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
             {
                 return;
             }
+            bool keepGoing = false;
             if (null == rootName)
             {
                 bundleGroupMap.Add(curbundlename, new List<string>() { selfName });
+                // mark
+                markList.Add(selfName);
+                keepGoing = true;
             }
             else
             {
@@ -554,27 +559,24 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
                 {
                     // add self to root group
                     bundleGroupMap[curbundlename].Add(selfName);
-                }
-                else
-                {
-                    // add self to new group
-                    curbundlename = selfName;
-                    bundleGroupMap.Add(curbundlename, new List<string>() {selfName});
+
+                    // mark
+                    markList.Add(selfName);
+                    keepGoing = true;
                 }
             }
-
-            // mark
-            markList.Add(selfName);
-
-            var deps = AssetDatabase.GetDependencies(selfName, false);
-            for (int i = 0; i < deps.Length; ++i)
+            if (keepGoing)
             {
-                if (IsInIgnoreList(deps[i]))
+                var deps = AssetDatabase.GetDependencies(selfName, false);
+                for (int i = 0; i < deps.Length; ++i)
                 {
-                    continue;
+                    if (IsInIgnoreList(deps[i]))
+                    {
+                        continue;
+                    }
+                    string name = deps[i];
+                    SetBundleNameByRoot(selfName, name, curbundlename, bundleGroupMap, allAssetRefMap, markList);
                 }
-                string name = deps[i];
-                SetBundleNameByRoot(selfName, name, curbundlename,bundleGroupMap, allAssetRefMap,markList);
             }
         }
         private void AddRefCount(string path,Dictionary<string,int> refCountMap )
@@ -699,6 +701,11 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
         #region tool
         private void DoSetBundleName(string bundleName, string path)
         {
+            if (path.EndsWith(".cs"))
+            {
+                // do noting
+                return;
+            }
             // set to lower
             bundleName = bundleName.ToLower();
 
@@ -709,7 +716,7 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
                 //tmp.SaveAndReimport();
 
                 // test code - begin
-                if (tmp.assetBundleName != bundleName)
+                if (tmp.assetBundleName != bundleName && path.IndexOf('@') == -1)
                 {
                     Debug.LogError(bundleName + " " + path);
                 }

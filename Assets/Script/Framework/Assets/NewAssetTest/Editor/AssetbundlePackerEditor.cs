@@ -89,6 +89,16 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
                     }
                 }
                 EditorGUILayout.EndHorizontal();
+
+                GUILayout.Space(20f);
+                EditorGUILayout.BeginHorizontal();
+                {
+                    if (GUILayout.Button("test", GUILayout.Width(300f)))
+                    {
+                        Test();
+                    }
+                }
+                EditorGUILayout.EndHorizontal();
             }
             EditorGUILayout.EndVertical();
         }
@@ -111,6 +121,15 @@ namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
         private void AutosetBundle()
         {
             m_Handler.BeginSetBundleName(m_strUGUIAtlasPath,m_strNGUIAtlasPath,m_strDependentAssetRootPath,m_strOutputPath,TextureImporterType.Advanced,TextureImporterFormat.ARGB16);
+        }
+
+        private void Test()
+        {
+            var dps = AssetDatabase.GetDependencies("Assets/ArtCQQ/camRoot.prefab");
+            for (int i = 0; i < dps.Length; ++i)
+            {
+                Debug.Log(dps[i]);
+            }
         }
     }
 }
