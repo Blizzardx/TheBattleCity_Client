@@ -267,6 +267,9 @@ namespace Assets.Script.Framework.Assets.NewAssetTest
             // add to loaded list
             m_LoadedBundleMap.Add(bundleInfo.GetName(), bundleInfo);
 
+            // update refrence count - add refrence count
+            ChangeAssetbundleRefrenceCount(bundleInfo.GetName(), true);
+
             // check is in callback list
             List<Action<AssetbundleInfo>> callbackList = null;
             m_CallbackMap.TryGetValue(bundleInfo.GetName(), out callbackList);
