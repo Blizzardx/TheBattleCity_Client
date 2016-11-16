@@ -7,6 +7,7 @@ using Object = UnityEngine.Object;
 
 namespace Framework.Asset.Obsolete
 {
+    [Obsolete("ResourceManager is obsolete. Use AssetManager")]
     public class ResourceManager : MonoSingleton<ResourceManager>
     {
         private Dictionary<string, Object>                  m_LoadedAssetMap;

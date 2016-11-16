@@ -33,6 +33,7 @@ namespace Framework.Asset.Obsolete
         public string bundleName;
         public Action<string, AssetBundle> callBack;
     }
+    [Obsolete("AssetbundleManager is obsolete. Use Framework.Asset.AssetbundleManager")]
     public class AssetbundleManager : MonoSingleton<AssetbundleManager>
     {
         private Dictionary<string, AssetBundle>             m_LoadedBundleMap;
