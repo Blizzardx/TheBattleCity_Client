@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Framework.Asset
+namespace Framework.Asset.Obsolete
 {
     public class AssetInfo
     {

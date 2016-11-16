@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.Script.Framework.Assets.NewAssetTest.Editor
+namespace Framework.Asset.Editor
 {
     class AssetbundlePacker
     {

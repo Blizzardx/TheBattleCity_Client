@@ -2,8 +2,8 @@
 using UnityEngine;
 using System.Collections;
 using Common.Tool;
-using Framework.Asset;
-using ResourceManager = Framework.Asset.ResourceManager;
+using Framework.Asset.Obsolete;
+using ResourceManager = Framework.Asset.Obsolete.ResourceManager;
 
 public class SceneManager : MonoSingleton<SceneManager>
 {

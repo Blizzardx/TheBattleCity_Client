@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Framework.Asset;
+using Framework.Asset.Obsolete;
 using Object = UnityEngine.Object;
 public enum PerloadAssetType
 {

@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Object = UnityEngine.Object;
 
-namespace Framework.Asset
+namespace Framework.Asset.Obsolete
 {
     public class ResourceManager : MonoSingleton<ResourceManager>
     {

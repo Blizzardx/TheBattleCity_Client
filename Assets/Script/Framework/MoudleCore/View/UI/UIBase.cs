@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Common.Component;
-using Framework.Asset;
+using Framework.Asset.Obsolete;
 using Framework.Common;
 using Framework.Event;
 using Framework.Message;

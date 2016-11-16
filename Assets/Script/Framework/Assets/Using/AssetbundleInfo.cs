@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Script.Framework.Assets.NewAssetTest
+namespace Framework.Asset
 {
     internal class AssetbundleInfo
     {
