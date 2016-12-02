@@ -8,19 +8,12 @@ using UnityEngine;
 
 public class BattleManager
 {
-    public enum UseFrameStatus
-    {
-        Wait,
-        Exec,
-        Skip,
-    }
     private const int m_iMinExeFrameCount = 8;
     private const int m_iMaxExeFrameCount = 12;
     private const int m_iExeLogicFrameSpace = 30;
     
     private List<BattlePlayerController>    m_PlayerList;
     private Queue<BattleFrameData>          m_LogicFrameQueue = new Queue<BattleFrameData>();
-    private UseFrameStatus                  m_FrameStatus;
     private float   m_fDuringTime   = -1.0f;
     private float   m_fLastTime;
     private int     m_iClientFrame = 0;
@@ -34,7 +27,7 @@ public class BattleManager
         m_CmdHandlerMgr.Initialize();
 
         m_fDuringTime = 0;
-        m_FrameStatus = UseFrameStatus.Wait;
+
         CustomTickTask.Instance.RegisterToUpdateList(Update);
         EventDispatcher.Instance.RegistEvent(EventIdDefine.BeginLoadBattle, OnRecieveBeginLoadBattle);
         EventDispatcher.Instance.RegistEvent(EventIdDefine.BattleBegin,OnRecieveBattleBegin);
@@ -110,16 +103,6 @@ public class BattleManager
     {
         
     }
-    private void LogicUpdate(BattleFrameData cmd)
-    {
-        ++ m_iClientFrame;
-        for (int i = 0; i < cmd.CharCommandList.Count; ++i)
-        {
-            var cmdList = cmd.CharCommandList[i].CommandList;
-            var cmdInfoList = m_CmdAnayzerMgr.DecodeCmd(cmd.CharCommandList[i].CharId,cmdList);
-            m_CmdHandlerMgr.HandlerCmd(cmdInfoList);
-        }
-    }
     private void Update()
     {
         ExecLogicFrame();
@@ -134,63 +117,17 @@ public class BattleManager
     }
     private void ExecLogicFrame()
     {
-        switch (m_FrameStatus)
-        {
-            case UseFrameStatus.Wait:
-                LogicFrameWait();
-                break;
-            case UseFrameStatus.Exec:
-                LogicFrameExec();
-                break;
-            case UseFrameStatus.Skip:
-                LogicFrameSkip();
-                break;
-        }
+      
     }
-    private void LogicFrameWait()
+    private void LogicUpdate(BattleFrameData cmd)
     {
-        if (m_LogicFrameQueue.Count >= m_iMinExeFrameCount)
+        ++ m_iClientFrame;
+        for (int i = 0; i < cmd.CharCommandList.Count; ++i)
         {
-            m_FrameStatus = UseFrameStatus.Exec;
+            var cmdList = cmd.CharCommandList[i].CommandList;
+            var cmdInfoList = m_CmdAnayzerMgr.DecodeCmd(cmd.CharCommandList[i].CharId,cmdList);
+            m_CmdHandlerMgr.HandlerCmd(cmdInfoList);
         }
-    }
-    private void LogicFrameExec()
-    {
-        float thisTime = Time.realtimeSinceStartup;
-        if (m_fLastTime < 0)
-        {
-            m_fLastTime = thisTime;
-        }
-        m_fDuringTime = (1000.0f)*(thisTime - m_fLastTime);
-        if (m_fDuringTime < m_iExeLogicFrameSpace)
-        {
-            return;
-        }
-        m_fLastTime += (0.001f)*m_iExeLogicFrameSpace;
-        Debug.Log(" logic frame time " + thisTime*1000.0f);
-
-        if (m_LogicFrameQueue.Count > m_iMaxExeFrameCount)
-        {
-            m_FrameStatus = UseFrameStatus.Skip;
-        }
-
-        var cmd = m_LogicFrameQueue.Dequeue();
-        LogicUpdate(cmd);
-
-        if (m_LogicFrameQueue.Count == 0)
-        {
-            m_FrameStatus = UseFrameStatus.Wait;
-        }
-    }
-    private void LogicFrameSkip()
-    {
-        do
-        {
-            var cmd = m_LogicFrameQueue.Dequeue();
-            LogicUpdate(cmd);
-
-        } while (m_LogicFrameQueue.Count > m_iMinExeFrameCount);
-        m_FrameStatus = UseFrameStatus.Exec;
     }
     #endregion
 
