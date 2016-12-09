@@ -1,0 +1,210 @@
+﻿using System;
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
+
+public class XMLSerilizeTest : MonoBehaviour
+{
+    public string path;
+	// Use this for initialization
+	void Star1t ()
+    {
+        TreeXmlConfig root = new TreeXmlConfig();
+	    root.id = 0;
+	    root.childList = new List<TreeXmlConfig>();
+
+        //root
+        TreeXmlConfig l = new TreeXmlConfig();
+	    l.id = 1;
+	    l.childList = new List<TreeXmlConfig>();
+	    root.childList.Add(l);
+
+        TreeXmlConfig r = new TreeXmlConfig();
+        r.id = 2;
+        r.childList = new List<TreeXmlConfig>();
+        root.childList.Add(r);
+
+        // left
+        TreeXmlConfig l1 = new TreeXmlConfig();
+        l1.id = 3;
+        l.childList.Add(l1);
+
+        TreeXmlconfig_1 l2 = new TreeXmlconfig_1();
+        l2.id = 4;
+        l2.username = "baoxue";
+        l.childList.Add(l2);
+
+        // right
+        TreeXmlConfig r1 = new TreeXmlConfig();
+        r1.id = 5;
+        r.childList.Add(r1);
+
+        var content = XmlConfigBase.Serialize(root,new Type[] {typeof(TreeXmlconfig_1) });
+        File.WriteAllText(path, content);
+
+    }
+	
+	// Update is called once per frame
+	void Update ()
+    {
+	
+	}
+
+    void Start()
+    {
+        TestCreatetree.Test();
+    }
+}
+public abstract class XmlConfigBase
+{
+    public static string Serialize<T>(T config, Type[] typelist = null) where T : XmlConfigBase, new()
+    {
+        XmlSerializer serializer = null;
+        if (null == typelist || typelist.Length == 0)
+        {
+            serializer = new XmlSerializer(typeof (T));
+        }
+        else
+        {
+            serializer = new XmlSerializer(typeof(T), typelist);
+        }
+
+        using (Stream outputStream = new MemoryStream(64))
+        {
+            XmlTextWriter a = new XmlTextWriter(outputStream, Encoding.UTF8);
+            a.Formatting = Formatting.Indented;
+            serializer.Serialize(a, config);
+            byte[] bytes = new byte[outputStream.Length];
+            outputStream.Position = 0;
+            outputStream.Read(bytes, 0, bytes.Length);
+
+            Encoding encoding = Encoding.UTF8;
+            string res = encoding.GetString(bytes);
+            return res;
+        }
+    }
+    public static T DeSerialize<T>(string xmlData, Type[] typelist = null) where T : XmlConfigBase, new()
+    {
+        Encoding encoding = Encoding.UTF8;
+        byte[] data = encoding.GetBytes(xmlData);
+        XmlSerializer serializer = null;
+        if (null == typelist || typelist.Length == 0)
+        {
+            serializer = new XmlSerializer(typeof(T));
+        }
+        else
+        {
+            serializer = new XmlSerializer(typeof(T), typelist);
+        }
+
+        T sysConfig = null;
+        using (MemoryStream stream = new MemoryStream(data))
+        {
+            sysConfig = serializer.Deserialize(stream) as T;
+        }
+        return sysConfig;
+    }
+}
+[XmlRoot("root")]
+public class TreeXmlConfig : XmlConfigBase
+{
+    [XmlAttribute("id")]
+    public int id;
+
+    [XmlArray("childList")]
+    public List<TreeXmlConfig> childList { get; set; }
+}
+
+public class TreeXmlconfig_1 : TreeXmlConfig
+{
+    [XmlAttribute("username")]
+    public string username;
+}
+
+public class Node1
+{
+    public int index;
+    public List<Node1> childList;
+}
+public class Node2
+{
+    public int index;
+    public List<Node2> childList;
+}
+
+public class Create2By1
+{
+    public Node2 Create(Node1 root)
+    {
+        Node2 root2 = null;
+        CreateTree(root, ref root2);
+        return root2;
+    }
+
+    private void CreateTree(Node1 source, ref Node2 target)
+    {
+        // do copy here 
+        target = new Node2();
+        target.childList = new List<Node2>();
+        target.index = source.index;
+
+        if (null == source.childList || source.childList.Count == 0)
+        {
+            return;
+        }
+        foreach (var elem in source.childList)
+        {
+            Node2 elem2 = null;
+            CreateTree(elem, ref elem2);
+            target.childList.Add(elem2);
+        }
+    }
+}
+
+public class TestCreatetree
+{
+    public static void Test()
+    {
+        Node1 root = new Node1();
+        root.index = 0;
+        root.childList = new List<Node1>();
+
+        // l
+        Node1 l = new Node1();
+        l.index = 1;
+        l.childList = new List<Node1>();
+        root.childList.Add(l);
+
+        // r
+        Node1 r = new Node1();
+        r.index = 2;
+        r.childList = new List<Node1>();
+        root.childList.Add(r);
+
+        // l1
+        Node1 l1 = new Node1();
+        l1.index = 3;
+        l1.childList = new List<Node1>();
+        l.childList.Add(l1);
+
+        // l2
+        Node1 l2 = new Node1();
+        l2.index = 4;
+        l2.childList = new List<Node1>();
+        l.childList.Add(l2);
+
+        //r1
+        Node1 r1 = new Node1();
+        r1.index = 5;
+        r1.childList = new List<Node1>();
+        r.childList.Add(r1);
+
+        var tool = new Create2By1();
+        var root2 = tool.Create(root);
+    }
+}
