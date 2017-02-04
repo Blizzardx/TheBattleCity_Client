@@ -10,12 +10,10 @@ public class BattleManager
 {
     private List<PlayerController>          m_PlayerList;
     private Queue<BattleFrameData>          m_LogicFrameQueue = new Queue<BattleFrameData>();
-    private float   m_fDuringTime   = -1.0f;
-    private float   m_fLastTime;
-    private int     m_iClientFrame = 0;
-    private BattleCmdAnalysisManager m_CmdAnayzerMgr = new BattleCmdAnalysisManager();
-    private BattleCmdHandlerManager m_CmdHandlerMgr = new BattleCmdHandlerManager();
-    private static BattleManager m_Instance;
+    private BattleCmdAnalysisManager        m_CmdAnayzerMgr = new BattleCmdAnalysisManager();
+    private BattleCmdHandlerManager         m_CmdHandlerMgr = new BattleCmdHandlerManager();
+    private int                             m_iClientFrame = 0;
+    private static BattleManager            m_Instance;
 
     #region public interface
     public BattleManager()
@@ -26,15 +24,11 @@ public class BattleManager
     {
         m_CmdAnayzerMgr.Initialize();
         m_CmdHandlerMgr.Initialize();
-
-        m_fDuringTime = 0;
-
         CustomTickTask.Instance.RegisterToUpdateList(Update);
         EventDispatcher.Instance.RegistEvent(EventIdDefine.BeginLoadBattle, OnRecieveBeginLoadBattle);
         EventDispatcher.Instance.RegistEvent(EventIdDefine.BattleBegin,OnRecieveBattleBegin);
         EventDispatcher.Instance.RegistEvent(EventIdDefine.BattleEnd, OnRecieveBattleEnd);
         EventDispatcher.Instance.RegistEvent(EventIdDefine.BattleLogicFrame, OnRecieveLogicFrame);
-        
     }
     public void InitBattleScene()
     {
@@ -61,9 +55,9 @@ public class BattleManager
         msg.CommandData = realCmd;
         NetworkManager.Instance.SendMsgToServer(msg);
     }
-    public int GetClientFrame()
+    public static int GetClientFrame()
     {
-        return m_iClientFrame;
+        return m_Instance.m_iClientFrame;
     }
     #endregion
 
@@ -90,13 +84,12 @@ public class BattleManager
     private void Distructor()
     {
         CustomTickTask.Instance.UnRegisterFromUpdateList(Update);
-
     }
     private void OnRecieveCmd(SCBattleLogicFrame msg)
     {
         foreach (var elem in msg.BattleFrameDataList)
         {
-            Debug.Log(" frame " + elem.FrameIndex + " : count " + elem.CharCommandList.Count);
+            //Debug.Log(" frame " + elem.FrameIndex + " : count " + elem.CharCommandList.Count);
             m_LogicFrameQueue.Enqueue(elem);
         }
     }
@@ -108,7 +101,7 @@ public class BattleManager
     {
         
     }
-    private void BattleUpdate()
+    private void BattleFrameUpdate()
     {
         for (int i = 0; i < m_PlayerList.Count; ++i)
         {
@@ -160,7 +153,7 @@ public class BattleManager
             var cmdInfoList = m_CmdAnayzerMgr.DecodeCmd(cmd.CharCommandList[i].CharId,cmdList);
             m_CmdHandlerMgr.HandlerCmd(cmdInfoList);
         }
-        BattleUpdate();
+        BattleFrameUpdate();
     }
     #endregion
 }

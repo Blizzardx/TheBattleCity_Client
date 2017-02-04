@@ -11,9 +11,4 @@ public class PlayerPosCom : MonoBehaviour
     {
         m_Id = index++;
     }
-    // Use this for initialization
-    void Start()
-    {
-
-    }
 }
