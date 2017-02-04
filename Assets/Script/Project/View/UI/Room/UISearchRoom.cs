@@ -2,9 +2,11 @@
 
 class UISearchRoom : UIBase
 {
-    protected override void OnCreate()
+    protected override PreloadAssetInfo SetSourceName()
     {
-        base.OnCreate();
-        SetResourceName("BuildIn/UI/Prefab/Room/UIWindow_SearchRoom", PerloadAssetType.BuildInAsset);
+        var info = new PreloadAssetInfo();
+        info.assetName = "BuildIn/UI/Prefab/Room/UIWindow_SearchRoom";
+        info.assetType = PerloadAssetType.BuildInAsset;
+        return info;
     }
 }

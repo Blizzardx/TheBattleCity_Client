@@ -118,10 +118,18 @@ public partial class RoomHandler:HandlerBase
 
         HandlerModelData<RoomModel>(RoomModel.Index,RoomModel.KeyPlayerList, msg.PlayerInfomation);
     }
+    public void EndBattle()
+    {
+        SceneManager.Instance.LoadScene<SceneMenu>();
+    }
 
     #endregion
 
     #region battle
+    public PlayerInfo GetSelfInfo()
+    {
+        return null;
+    }
     private void OnBattleBegin(IMessage obj)
     {
         EventDispatcher.Instance.BroadcastAsync(EventIdDefine.BattleBegin);
@@ -144,4 +152,5 @@ public partial class RoomHandler:HandlerBase
         EventDispatcher.Instance.BroadcastAsync(EventIdDefine.BeginLoadBattle);
     }
     #endregion
+
 }

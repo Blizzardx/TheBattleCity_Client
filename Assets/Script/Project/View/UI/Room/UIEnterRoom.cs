@@ -8,13 +8,14 @@ class UIEnterRoom : UIBase
 {
     private UIInput m_InputName;
     private RoomInfo m_RoomInfo;
-
-    protected override void OnCreate()
+    
+    protected override PreloadAssetInfo SetSourceName()
     {
-        base.OnCreate();
-        SetResourceName("BuildIn/UI/Prefab/Room/UIWindow_EnterRoom", PerloadAssetType.BuildInAsset);
+        var info = new PreloadAssetInfo();
+        info.assetName = "BuildIn/UI/Prefab/Room/UIWindow_EnterRoom";
+        info.assetType = PerloadAssetType.BuildInAsset;
+        return info;
     }
-
     protected override void OnInit()
     {
         base.OnInit();

@@ -4,19 +4,18 @@ using UnityEngine;
 
 public class UILoading : UIBase
 {
-    protected override void OnCreate()
+    protected override PreloadAssetInfo SetSourceName()
     {
-        base.OnCreate();
-        SetResourceName("BuildIn/UI/Prefab/Loading/UIWindow_Loading",PerloadAssetType.BuildInAsset);
-        //SetResource(Resources.Load("BuildIn/UI/Prefab/Loading/UIWindow_Loading") as GameObject);
+        var info = new PreloadAssetInfo();
+        info.assetName = "BuildIn/UI/Prefab/Loading/UIWindow_Loading";
+        info.assetType = PerloadAssetType.BuildInAsset;
+        return info;
     }
-
     protected override void OnInit()
     {
         base.OnInit();
         RegisterEvent(EventIdDefine.LoadingSceneProcess, OnProcess);
     }
-
     private void OnProcess(EventElement obj)
     {
         Debug.Log("UILoading process " + (float)obj.eventParam);

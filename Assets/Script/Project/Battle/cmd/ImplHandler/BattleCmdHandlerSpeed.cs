@@ -1,4 +1,7 @@
 ﻿using System;
+using Framework.Common;
+using Framework.Event;
+using UnityEngine;
 
 class BattleCmdHandlerSpeed : BattleCmdHandlerBase
 {
@@ -10,5 +13,7 @@ class BattleCmdHandlerSpeed : BattleCmdHandlerBase
     public void HandleCmd(BattleCmdInfo info)
     {
         // to do
+        BattleCmdInfo_Speed speedInfo = info as BattleCmdInfo_Speed;
+        EventDispatcher.Instance.Broadcast(EventIdDefine.BattleCmdSpeed, speedInfo);
     }
 }

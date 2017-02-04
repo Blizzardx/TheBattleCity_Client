@@ -14,7 +14,12 @@
 		private UILabel m_LabelName;
 		private UIInput m_InputName;
 
-    protected override void AutoRegisterMember()
+     protected override PreloadAssetInfo SetSourceName()
+     {
+         throw new System.NotImplementedException();
+     }
+
+     protected override void AutoRegisterMember()
     {
 		m_ButtonCreate = GetChildComponent<UIButton>("BtnCreate");;
 		m_ButtonSearch = GetChildComponent<UIButton>("BtnSearch");;

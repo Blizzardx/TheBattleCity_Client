@@ -36,6 +36,7 @@ class SceneOnlineBattle : SceneBase
         
 
         UIManager.Instance.CloseWindow<UILoading>();
+        UIManager.Instance.OpenWindow<UIBattle>(UIManager.WindowLayer.Window);
         HandlerManager.Instance.GetHandler<RoomHandler>(RoomHandler.Index).BattleLoadEnd();
     }
     protected override void OnProcess(float process)

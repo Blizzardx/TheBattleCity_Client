@@ -1,4 +1,6 @@
 ﻿using System;
+using Framework.Common;
+using Framework.Event;
 using UnityEngine;
 
 class BattleCmdHandlerMove : BattleCmdHandlerBase
@@ -12,7 +14,7 @@ class BattleCmdHandlerMove : BattleCmdHandlerBase
     {
         // to do:
         BattleCmdInfo_Move moveInfo = info as BattleCmdInfo_Move;
-        
-        Debug.LogWarning(moveInfo.dir);
+        EventDispatcher.Instance.Broadcast(EventIdDefine.BattleCmdMove,moveInfo);
+        //Debug.LogWarning(moveInfo.dir);
     }
 }

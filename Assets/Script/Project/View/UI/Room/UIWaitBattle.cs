@@ -26,11 +26,13 @@ class UIWaitBattle : UIBase
         }
     }
     private List<PlayerInfo> m_PlayerList;
-
-    protected override void OnCreate()
+    
+    protected override PreloadAssetInfo SetSourceName()
     {
-        base.OnCreate();
-        SetResourceName("BuildIn/UI/Prefab/Room/UIWindow_WaitBattle", PerloadAssetType.BuildInAsset);
+        var info = new PreloadAssetInfo();
+        info.assetName = "BuildIn/UI/Prefab/Room/UIWindow_WaitBattle";
+        info.assetType = PerloadAssetType.BuildInAsset;
+        return info;
     }
     protected override void OnInit()
     {

@@ -9,7 +9,7 @@ public class PlayerPosCom : MonoBehaviour
 
     void Awake()
     {
-        m_Id = ++index;
+        m_Id = index++;
     }
     // Use this for initialization
     void Start()

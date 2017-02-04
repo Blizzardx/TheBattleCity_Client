@@ -8,19 +8,20 @@ using UnityEngine;
 
 public class BattleManager
 {
-    private const int m_iMinExeFrameCount = 8;
-    private const int m_iMaxExeFrameCount = 12;
-    private const int m_iExeLogicFrameSpace = 30;
-    
-    private List<BattlePlayerController>    m_PlayerList;
+    private List<PlayerController>          m_PlayerList;
     private Queue<BattleFrameData>          m_LogicFrameQueue = new Queue<BattleFrameData>();
     private float   m_fDuringTime   = -1.0f;
     private float   m_fLastTime;
     private int     m_iClientFrame = 0;
     private BattleCmdAnalysisManager m_CmdAnayzerMgr = new BattleCmdAnalysisManager();
     private BattleCmdHandlerManager m_CmdHandlerMgr = new BattleCmdHandlerManager();
+    private static BattleManager m_Instance;
 
     #region public interface
+    public BattleManager()
+    {
+        m_Instance = this;
+    }
     public void Initialize()
     {
         m_CmdAnayzerMgr.Initialize();
@@ -37,12 +38,16 @@ public class BattleManager
     }
     public void InitBattleScene()
     {
-        m_PlayerList = new List<BattlePlayerController>();
+        m_PlayerList = new List<PlayerController>();
         var list = ModelManager.Instance.GetModel<RoomModel>(RoomModel.Index).GetPlayerInfoList();
         for (int i = 0; i < list.Count; ++i)
         {
-            m_PlayerList.Add(new BattlePlayerController(list[i]));
+            m_PlayerList.Add(new PlayerController(list[i]));
         }
+    }
+    public static void SendBattleCmd(BattleCmdInfo cmd)
+    {
+        m_Instance.SendCmd(cmd);
     }
     public void SendCmd(BattleCmdInfo cmd)
     {
@@ -103,21 +108,48 @@ public class BattleManager
     {
         
     }
+    private void BattleUpdate()
+    {
+        for (int i = 0; i < m_PlayerList.Count; ++i)
+        {
+            m_PlayerList[i].OnCmdUpdate();
+        }
+    }
+    #endregion
+
+    #region frame control
+    private const int m_iMinExeFrameCount = 4;
+    private const int m_iMaxExeFrameCount = 8;
+    private const float m_iExeLogicFrameSpace = 0.02f;
+    private float m_fLastExecFrameTime;
+
     private void Update()
     {
         ExecLogicFrame();
-
-        // test code
-        if (Input.GetMouseButtonDown(0))
-        {
-            BattleCmdInfo_Move cmd = new BattleCmdInfo_Move();
-            cmd.dir = Input.mousePosition;
-            SendCmd(cmd);
-        }
     }
     private void ExecLogicFrame()
     {
-      
+        if (m_LogicFrameQueue.Count < m_iMinExeFrameCount)
+        {
+            Debug.LogWarning("Waitting " + m_LogicFrameQueue.Count);
+            return;
+        }
+        if (m_LogicFrameQueue.Count > m_iMaxExeFrameCount)
+        {
+            Debug.LogWarning("Skiping " + m_LogicFrameQueue.Count);
+            while (m_LogicFrameQueue.Count >= m_iMaxExeFrameCount)
+            {
+                LogicUpdate(m_LogicFrameQueue.Dequeue());
+            }
+            m_fLastExecFrameTime = Time.realtimeSinceStartup;
+            return;
+        }
+        if (Time.realtimeSinceStartup - m_fLastExecFrameTime >= m_iExeLogicFrameSpace)
+        {
+            m_fLastExecFrameTime = Time.realtimeSinceStartup;
+            Debug.LogWarning("Normal " + m_LogicFrameQueue.Count);
+            LogicUpdate(m_LogicFrameQueue.Dequeue());
+        }
     }
     private void LogicUpdate(BattleFrameData cmd)
     {
@@ -128,7 +160,7 @@ public class BattleManager
             var cmdInfoList = m_CmdAnayzerMgr.DecodeCmd(cmd.CharCommandList[i].CharId,cmdList);
             m_CmdHandlerMgr.HandlerCmd(cmdInfoList);
         }
+        BattleUpdate();
     }
     #endregion
-
 }

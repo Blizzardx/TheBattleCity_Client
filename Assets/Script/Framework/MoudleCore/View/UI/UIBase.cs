@@ -9,7 +9,7 @@ using Framework.Event;
 using Framework.Message;
 using Object = UnityEngine.Object;
 
-public class UIBase
+public abstract class UIBase
 {
     public class EventInfo
     {
@@ -163,6 +163,8 @@ public class UIBase
         if (null == m_ObjectRoot)
         {
             SetLoadingStatus(true);
+            m_ResourceInfo = SetSourceName();
+
             // begin load ui window resource from bundle or build in resource
             if (m_ResourceInfo.assetType == PerloadAssetType.BuildInAsset)
             {
@@ -187,6 +189,11 @@ public class UIBase
         if (m_bIsDestroyed)
         {
             // do nothing
+            return;
+        }
+        if (null == obj)
+        {
+            Debug.LogError("can't load ui by name " + name);
             return;
         }
         m_ObjectRoot = GameObject.Instantiate(obj) as GameObject;
@@ -241,12 +248,6 @@ public class UIBase
     #endregion
 
     #region internal function
-    protected void SetResourceName(string name,PerloadAssetType type)
-    {
-        m_ResourceInfo = new PreloadAssetInfo();
-        m_ResourceInfo.assetName = name;
-        m_ResourceInfo.assetType = type;
-    }
     protected void SetResource(GameObject root)
     {
         m_ObjectRoot = root;
@@ -320,7 +321,9 @@ public class UIBase
     }
     #endregion
 
-    #region 
+    #region
+
+    protected abstract PreloadAssetInfo SetSourceName();
     protected virtual void OnCreate()
     {
         

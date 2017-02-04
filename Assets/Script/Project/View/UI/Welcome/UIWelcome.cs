@@ -7,10 +7,12 @@ using UnityEngine;
 
 class UIWelcome:UIBase
 {
-    protected override void OnCreate()
+    protected override PreloadAssetInfo SetSourceName()
     {
-        base.OnCreate();
-        SetResourceName("BuildIn/UI/Prefab/MainMenu/Window_Welcom", PerloadAssetType.BuildInAsset);
+        var info = new PreloadAssetInfo();
+        info.assetName = "BuildIn/UI/Prefab/MainMenu/Window_Welcom";
+        info.assetType = PerloadAssetType.BuildInAsset;
+        return info;
     }
 
     protected override void OnInit()

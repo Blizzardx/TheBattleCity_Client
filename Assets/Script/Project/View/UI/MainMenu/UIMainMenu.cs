@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class UIMainMenu:UIBase
 {
-
-    protected override void OnCreate()
+    protected override PreloadAssetInfo SetSourceName()
     {
-        base.OnCreate();
-        SetResourceName("BuildIn/UI/Prefab/MainMenu/Window_SelectMode", PerloadAssetType.BuildInAsset);
+        var info = new PreloadAssetInfo();
+        info.assetName = "BuildIn/UI/Prefab/MainMenu/Window_SelectMode";
+        info.assetType = PerloadAssetType.BuildInAsset;
+        return info;
     }
     protected override void OnInit()
     {

@@ -7,11 +7,17 @@ class UICreateRoom : UIBase
 {
     private UIInput m_InputRoomName;
     private UIInput m_InputPlayerName;
-    
+
+    protected override PreloadAssetInfo SetSourceName()
+    {
+        var info = new PreloadAssetInfo();
+        info.assetName = "BuildIn/UI/Prefab/Room/UIWindow_CreateRoom";
+        info.assetType = PerloadAssetType.BuildInAsset;
+        return info;
+    }
     protected override void OnCreate()
     {
         base.OnCreate();
-        SetResourceName("BuildIn/UI/Prefab/Room/UIWindow_CreateRoom", PerloadAssetType.BuildInAsset);
 
         RegisterEvent(EventIdDefine.CreateRoom, OnCreateRoom);
     }
