@@ -17,6 +17,7 @@ class UIWelcome:UIBase
     {
         base.OnInit();
         UIEventListener.Get(FindChild("Image_bg")).onClick = OnClickEnter;
+        AudioPlayer.Instance.PlayAudio("BuildIn/Audio/music_default", Vector3.zero,true);
     }
 
     private void OnClickEnter(GameObject go)

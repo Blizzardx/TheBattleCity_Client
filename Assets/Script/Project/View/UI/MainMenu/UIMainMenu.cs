@@ -16,7 +16,8 @@ public class UIMainMenu:UIBase
         UIEventListener.Get(FindChild("Button_OnLine")).onClick = OnClickOnLineMode;
         UIEventListener.Get(FindChild("Button_LAN")).onClick = OnClickLANMode;
         UIEventListener.Get(FindChild("Button_Console")).onClick = OnClickConsoleMode;
-
+        AudioPlayer.Instance.StopAllAudio();
+        AudioPlayer.Instance.PlayAudio("BuildIn/Audio/music_menu", Vector3.zero, true);
         RegisterEvent(EventIdDefine.Connected, SocketConnected);
         RegisterEvent(EventIdDefine.ConnectError, SocketConnectError);
     }

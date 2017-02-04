@@ -3,6 +3,7 @@ using Common.Component;
 using Common.Tool;
 using UnityEngine;
 using System;
+using Framework.Asset;
 using Framework.Asset.Obsolete;
 
 public class AudioPlayer:Singleton<AudioPlayer>
@@ -46,9 +47,16 @@ public class AudioPlayer:Singleton<AudioPlayer>
     private const int                   m_iPoolSize = 10;
     private List<AudioCallBackElement> m_AudioCallBacktmpList; 
 
-    public void Initialize()
+    public AudioPlayer()
     {
         m_AudioRoot = ComponentTool.FindChild("AudioPlayer", null);
+        if (null == m_AudioRoot)
+        {
+            // create new and do not destroy on load
+            m_AudioRoot = new GameObject();
+            m_AudioRoot.name = "AudioPlayer";
+            m_AudioRoot.AddComponent<DoNotDestory>();
+        }
         m_AudioClipList = new List<AudioElementStruct>(m_iPoolSize);
         m_AudioStorePool = new Stack<AudioElementStruct>(m_iPoolSize);
         m_AudioCallBacktmpList = new List<AudioCallBackElement>();
@@ -147,6 +155,15 @@ public class AudioPlayer:Singleton<AudioPlayer>
             }
         }
     }
+    public void StopAllAudio()
+    {
+        for (int i = 0; i < m_AudioClipList.Count;++i)
+        {
+            AudioElementStruct elem = m_AudioClipList[i];
+            CollectionAudio(elem);
+        }
+        m_AudioClipList.Clear();
+    }
     public bool IsPlayingAudio(string name)
     {
         foreach(var elem in m_AudioClipList)
@@ -173,7 +190,7 @@ public class AudioPlayer:Singleton<AudioPlayer>
             elem.m_AudioSource = elem.m_Root.AddComponent<AudioSource>();
         }
 
-        elem.m_AudioClip = ResourceManager.Instance.LoadBuildInResourceSync<AudioClip>(resource);
+        elem.m_AudioClip = AssetManager.Instance.LoadAsset<AudioClip>(resource);
         if (elem.m_AudioClip == null)
         {
             Debug.LogError("there is no audio : " + resource);
@@ -202,7 +219,7 @@ public class AudioPlayer:Singleton<AudioPlayer>
             elem.m_AudioSource = elem.m_Root.AddComponent<AudioSource>();
         }
 
-        elem.m_AudioClip = ResourceManager.Instance.LoadBuildInResourceSync<AudioClip>(resource);
+        elem.m_AudioClip = AssetManager.Instance.LoadAsset<AudioClip>(resource);
         if (elem.m_AudioClip == null)
         {
             return null;

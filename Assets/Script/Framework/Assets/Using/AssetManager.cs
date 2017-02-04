@@ -51,6 +51,11 @@ namespace Framework.Asset
         private AssetbundleManager                                              m_AssetbundleMgr;
 
         #region public interface
+
+        private void Awake()
+        {
+            Initialize("", "", false);
+        }
         public void Initialize(string assetbundleDataPath,string manifestName, bool startWithbundle)
         {
             if (startWithbundle)
@@ -83,16 +88,32 @@ namespace Framework.Asset
         #endregion
 
         #region build in asset
-        public T LoadAsset<T>(string name) where T : Object
+
+        public T LoadAsset<T>(string assetName) where T : Object
         {
-            BuildInAssetInfo res = null;
-            if (m_AssetBuildInMap.TryGetValue(name, out res))
+            var tmpRes = LoadAssetInLoadedMap<T>(assetName);
+            if (null != tmpRes)
             {
-                // update refrence count
-                OnAccess(string.Empty,name);
-                return res as T;
+                return tmpRes;
             }
-            return null;
+            tmpRes = Resources.Load<T>(assetName);
+            if (tmpRes != null)
+            {
+                BuildInAssetInfo info = new BuildInAssetInfo();
+                info.IsDestroyed = false;
+                info.AssetName = assetName;
+                info.AssetBody = tmpRes;
+
+                if (m_AssetBuildInMap.ContainsKey(assetName))
+                {
+                    m_AssetBuildInMap[assetName] = info;
+                }
+                else
+                {
+                    m_AssetBuildInMap.Add(assetName, info);
+                }
+            }
+            return tmpRes;
         }
         public void ReleaseAsset(string name)
         {
@@ -104,7 +125,7 @@ namespace Framework.Asset
         }
         public void LoadAssetAsync<T>(string assetName, Action<string, T> callback) where T : Object
         {
-            var tmpRes = LoadAsset<T>(assetName);
+            var tmpRes = LoadAssetInLoadedMap<T>(assetName);
             if (null != tmpRes)
             {
                 callback(assetName, tmpRes);
@@ -114,6 +135,17 @@ namespace Framework.Asset
                 Action<Object> tmpCallback = o => { callback(assetName, o as T); };
                 StartCoroutine(LoadBuildinAssetAsync(assetName, tmpCallback));
             }
+        }
+        private T LoadAssetInLoadedMap<T>(string name) where T : Object
+        {
+            BuildInAssetInfo res = null;
+            if (m_AssetBuildInMap.TryGetValue(name, out res))
+            {
+                // update refrence count
+                OnAccess(string.Empty,name);
+                return res as T;
+            }
+            return null;
         }
         private IEnumerator LoadBuildinAssetAsync(string assetName,Action<Object> callback)
         {
@@ -140,7 +172,7 @@ namespace Framework.Asset
         #endregion
 
         #region asset in asset bundle
-        public T LoadAsset<T>(string assetName, string bundleName) where T : Object
+        public T LoadAssetInLoadedMap<T>(string assetName, string bundleName) where T : Object
         {
             Dictionary<string,InBundleAssetInfo> res = null;
             if (m_AssetInBundleMap.TryGetValue(assetName, out res))
@@ -169,9 +201,16 @@ namespace Framework.Asset
                 }
             }
         }
+        public void LoadAssetAsync<T>(string assetName, string assetBundleName, Action<string, T> callback) where T : Object
+        {
+            LoadAssetAsync<T>(assetName, assetBundleName, (asset, resAssetName, resAssetBundleName) =>
+            {
+                callback(resAssetName, asset);
+            });
+        }
         public void LoadAssetAsync<T>(string assetName, string assetBundleName, Action<T, string, string> callback) where T : Object
         {
-            T tmpRes = LoadAsset<T>(assetName, assetBundleName);
+            T tmpRes = LoadAssetInLoadedMap<T>(assetName, assetBundleName);
             if (null != tmpRes)
             {
                 callback(tmpRes, assetName, assetBundleName);

@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Common.Component;
+using Framework.Asset;
 using Framework.Asset.Obsolete;
 using Framework.Common;
 using Framework.Event;
@@ -166,12 +167,12 @@ public class UIBase
             if (m_ResourceInfo.assetType == PerloadAssetType.BuildInAsset)
             {
                 // load from build in resource
-                ResourceManager.Instance.LoadBuildInResourceAsync(m_ResourceInfo.assetName, WindowLoaded);
+                AssetManager.Instance.LoadAssetAsync<Object>(m_ResourceInfo.assetName, WindowLoaded);
             }
             else if (m_ResourceInfo.assetType == PerloadAssetType.AssetBundleAsset)
             {
                 // load from assetbundle
-                ResourceManager.Instance.LoadAssetFromBundle(m_ResourceInfo.assetName,
+                AssetManager.Instance.LoadAssetAsync<Object>(m_ResourceInfo.assetName,
                     WindowLoaded);
             }
         }
@@ -260,7 +261,7 @@ public class UIBase
     }
     protected void LoadResourceAsync(string assetName, Action<string, Object> callback)
     {
-        ResourceManager.Instance.LoadBuildInResourceAsync(assetName, (name, obj) =>
+        AssetManager.Instance.LoadAssetAsync<Object>(assetName, (name, obj) =>
         {
             if (m_bIsDestroyed)
             {

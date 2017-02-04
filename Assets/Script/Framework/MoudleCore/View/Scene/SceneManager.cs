@@ -2,8 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using Common.Tool;
-using Framework.Asset.Obsolete;
-using ResourceManager = Framework.Asset.Obsolete.ResourceManager;
+using Framework.Asset;
 
 public class SceneManager : MonoSingleton<SceneManager>
 {
@@ -68,7 +67,6 @@ public class SceneManager : MonoSingleton<SceneManager>
     IEnumerator Clear()
     {
         yield return Resources.UnloadUnusedAssets();
-        ResourceManager.Instance.Clear();
-        AssetbundleManager.Instance.Clear();
+        AssetManager.Instance.Clear();
     }
 }

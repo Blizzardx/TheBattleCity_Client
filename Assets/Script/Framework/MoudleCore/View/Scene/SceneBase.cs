@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Framework.Asset.Obsolete;
+using Framework.Asset;
 using Object = UnityEngine.Object;
 public enum PerloadAssetType
 {
     BuildInAsset,
     AssetBundleAsset,
-    AssetBundle,
 }
 public class PreloadAssetInfo
 {
@@ -110,21 +109,14 @@ public abstract class SceneBase
                 if (elem.assetType == PerloadAssetType.BuildInAsset)
                 {
                     // load from build in resource
-                    ResourceManager.Instance.LoadBuildInResourceAsync(elem.assetName, onBeforLoadResourceLoadedCallback);
+                    AssetManager.Instance.LoadAssetAsync(elem.assetName, onBeforLoadResourceLoadedCallback);
                 }
                 else if (elem.assetType == PerloadAssetType.AssetBundleAsset)
                 {
                     // load from assetbundle
-                    ResourceManager.Instance.LoadAssetFromBundle(elem.assetName,
+                    string assetBundleName = AssetbundleHelper.GetBundleNameByAssetName(elem.assetName);
+                    AssetManager.Instance.LoadAssetAsync(elem.assetName, assetBundleName,
                         onBeforLoadResourceLoadedCallback);
-                }
-                else if (elem.assetType == PerloadAssetType.AssetBundle)
-                {
-                    // load asset bundle
-                    AssetbundleManager.Instance.LoadAssetBundle(elem.assetName, (name, bundle) =>
-                    {
-                        onBeforLoadResourceLoadedCallback(name, null);
-                    });
                 }
             }
         }

@@ -42,8 +42,8 @@ namespace Framework.Asset.Obsolete
         private Dictionary<string, AssetInfo>               m_LoadingAssetMap;
         private Dictionary<string, Object>                  m_LoadedAssetMap; 
         private AssetBundleManifest                         m_Manifest;
-        private readonly string                             m_strDataPath           = Application.persistentDataPath + "/Download/resource/";
-        private readonly string                             m_strManifestDataPath   = Application.persistentDataPath + "/Download/resource/Windows";
+        private string m_strDataPath;
+        private string m_strManifestDataPath;
         private List<LoadAssetParam>                        m_LoadAssetList;
         private List<LoadBundleParam>                       m_LoadBundleList;
         private bool                                        m_bIsLoadingManifest;
@@ -51,6 +51,12 @@ namespace Framework.Asset.Obsolete
         private bool m_bIsMarkToClear; 
 
         #region public interface
+
+        private void Awake()
+        {
+            m_strDataPath = Application.persistentDataPath + "/Download/resource/";
+            m_strManifestDataPath = Application.persistentDataPath + "/Download/resource/Windows";
+        }
         public AssetbundleManager()
         {
             m_LoadedBundleMap = new Dictionary<string, AssetBundle>();
