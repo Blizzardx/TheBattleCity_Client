@@ -31,6 +31,9 @@ public class PlayerController
         {
             EventDispatcher.Instance.RegistEvent(EventIdDefine.BattleSelfMove, OnSendSelfMove);
             EventDispatcher.Instance.RegistEvent(EventIdDefine.BattleSelfChangeSpeed, OnSendSelfChangeSpeed);
+            // mark camera
+            var camControl = GameObject.FindObjectOfType<CameraFollow>();
+            camControl.SetTarget(m_ObjRoot.transform);
         }
         // battle cmd event
         EventDispatcher.Instance.RegistEvent(EventIdDefine.BattleCmdMove, OnCmdMove);
