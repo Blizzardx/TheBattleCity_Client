@@ -3,6 +3,9 @@
     // move
     Move,
 
+    // stop move
+    StopMove,
+
     // fire
     Fire,
 

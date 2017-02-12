@@ -38,6 +38,19 @@ public class BattleManager
         {
             m_PlayerList.Add(new PlayerController(list[i]));
         }
+        m_PlayerList.Sort(SortByUid);
+    }
+    private int SortByUid(PlayerController x, PlayerController y)
+    {
+        if(x.GetUid() > y.GetUid())
+        {
+            return 1;
+        }
+        if (x.GetUid() < y.GetUid())
+        {
+            return -1;
+        }
+        return 0;
     }
     public static void SendBattleCmd(BattleCmdInfo cmd)
     {

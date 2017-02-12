@@ -23,7 +23,8 @@ namespace Framework.Common
         public static readonly int BattleLogicFrame = 11;
         public static readonly int BattleSelfMove = 12;
         public static readonly int BattleCmdMove = 13;
-        public static readonly int BattleSelfChangeSpeed = 14;
+        public static readonly int BattleSelfStopMove = 14;
         public static readonly int BattleCmdSpeed = 15;
+        public static readonly int BattleCmdStopMove = 16;
     }
 }

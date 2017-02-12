@@ -1,16 +1,66 @@
-﻿using Framework.Common;
+﻿using System.Runtime.InteropServices;
+using Common.Component;
+using Framework.Common;
 using Framework.Event;
 using UnityEngine;
 
+public class PlayerCmd
+{
+    public PlayerCmd()
+    {
+        m_bDir = false;
+        m_bSpeed = false;
+    }
+
+    private Vector3 m_vDir;
+    public bool     m_bDir;
+    public Vector3 Dir
+    {
+        get
+        {
+            return m_vDir;
+        }
+        set
+        {
+            m_bDir = true;
+            m_vDir = value;
+        }
+    }
+
+    private float m_fSpeed;
+    public bool m_bSpeed;
+    public float Speed
+    {
+        get
+        {
+            return m_fSpeed;
+        }
+        set
+        {
+            m_bDir = true;
+            m_fSpeed = value;
+        }
+    }
+}
 public class PlayerController
 {
     private PlayerCom m_ObjRoot;
     private PlayerInfo m_PlayerInfo;
-    private Vector3 m_vDir;
+    private TemplateQueue<PlayerCmd> m_CmdQueue;
     private float m_fSpeed;
+    private bool m_bIsMoving;
+    
+    #region system
 
+    public int GetUid()
+    {
+        return m_PlayerInfo.Uid;
+    }
     public PlayerController(PlayerInfo playerInfo)
     {
+        m_CmdQueue = new TemplateQueue<PlayerCmd>();
+        m_CmdQueue.Initialize(false);
+
         m_PlayerInfo = playerInfo;
         var posList = GameObject.FindObjectsOfType<PlayerPosCom>();
         for (int i = 0; i < posList.Length; ++i)
@@ -30,7 +80,7 @@ public class PlayerController
         if (ModelManager.Instance.GetModel<RoomModel>(RoomModel.Index).GetSelf().Uid == playerInfo.Uid)
         {
             EventDispatcher.Instance.RegistEvent(EventIdDefine.BattleSelfMove, OnSendSelfMove);
-            EventDispatcher.Instance.RegistEvent(EventIdDefine.BattleSelfChangeSpeed, OnSendSelfChangeSpeed);
+            EventDispatcher.Instance.RegistEvent(EventIdDefine.BattleSelfStopMove, OnSendSelfStopMove);
             // mark camera
             var camControl = GameObject.FindObjectOfType<CameraFollow>();
             camControl.SetTarget(m_ObjRoot.transform);
@@ -38,7 +88,37 @@ public class PlayerController
         // battle cmd event
         EventDispatcher.Instance.RegistEvent(EventIdDefine.BattleCmdMove, OnCmdMove);
         EventDispatcher.Instance.RegistEvent(EventIdDefine.BattleCmdSpeed, OnCmdSpeed);
+        EventDispatcher.Instance.RegistEvent(EventIdDefine.BattleCmdStopMove, OnCmdStopMove);
+
+        m_fSpeed = 0.03f;
     }
+    public void OnCmdUpdate()
+    {
+        var playercmd = m_CmdQueue.Dequeue();
+        while (playercmd != null)
+        {
+            ExecCmd(playercmd);
+            playercmd = m_CmdQueue.Dequeue();
+        }
+        PhyicsCheck();
+        AfterCmdUpdate();
+    }
+    private void PhyicsCheck()
+    {
+        
+    }
+    private void AfterCmdUpdate()
+    {
+        if (m_bIsMoving)
+        {
+            PlayerCmd playerCmd = new PlayerCmd();
+            playerCmd.Dir = m_ObjRoot.transform.forward;
+            m_CmdQueue.Enqueue(playerCmd);
+        }
+    }
+    #endregion
+
+    #region send
     private void OnSendSelfMove(EventElement obj)
     {
         // set move direction
@@ -46,20 +126,16 @@ public class PlayerController
         cmd.dir = (Vector3)obj.eventParam;
         cmd.charId = m_PlayerInfo.Uid;
         BattleManager.SendBattleCmd(cmd);
-
-        // set move speed
-        BattleCmdInfo_Speed cmd1 = new BattleCmdInfo_Speed();
-        cmd1.Speed = 0.03f;
-        cmd1.CharId = m_PlayerInfo.Uid;
-        BattleManager.SendBattleCmd(cmd1);
     }
-    private void OnSendSelfChangeSpeed(EventElement obj)
+    private void OnSendSelfStopMove(EventElement obj)
     {
-        BattleCmdInfo_Speed cmd = new BattleCmdInfo_Speed();
-        cmd.Speed = (float) obj.eventParam;
-        cmd.CharId = m_PlayerInfo.Uid;
+        BattleCmdInfo_StopMove cmd = new BattleCmdInfo_StopMove();
+        cmd.charId = m_PlayerInfo.Uid;
         BattleManager.SendBattleCmd(cmd);
     }
+    #endregion
+
+    #region recieve
     private void OnCmdMove(EventElement obj)
     {
         BattleCmdInfo_Move cmd = obj.eventParam as BattleCmdInfo_Move;
@@ -70,7 +146,25 @@ public class PlayerController
         var tmp = cmd.dir.y;
         cmd.dir.y = cmd.dir.z;
         cmd.dir.z = tmp;
-        m_vDir = cmd.dir;
+        PlayerCmd playerCmd = new PlayerCmd();
+        playerCmd.Dir = cmd.dir;
+        bool isAlradyHavCmd = false;
+        int size = m_CmdQueue.GetCount();
+        for (int i = 0; i < size; ++i)
+        {
+            var incmd = m_CmdQueue.Dequeue();
+            if (incmd.m_bDir)
+            {
+                isAlradyHavCmd = true;
+                incmd.Dir = playerCmd.Dir;
+            }
+            m_CmdQueue.Enqueue(incmd);
+        }
+        if (!isAlradyHavCmd)
+        {
+            m_CmdQueue.Enqueue(playerCmd);
+            m_bIsMoving = true;
+        }
     }
     private void OnCmdSpeed(EventElement obj)
     {
@@ -79,17 +173,49 @@ public class PlayerController
         {
             return;
         }
-        m_fSpeed = cmd.Speed;
+        PlayerCmd playerCmd = new PlayerCmd();
+        playerCmd.Speed = cmd.Speed;
+        m_CmdQueue.Enqueue(playerCmd);
+        m_bIsMoving = true;
     }
-    public void OnCmdUpdate()
+    private void OnCmdStopMove(EventElement obj)
     {
-        if (m_vDir != Vector3.zero)
+        BattleCmdInfo_StopMove cmd = obj.eventParam as BattleCmdInfo_StopMove;
+        if (ModelManager.Instance.GetModel<RoomModel>(RoomModel.Index).GetSelf().Uid != cmd.charId)
         {
-            m_ObjRoot.transform.forward = m_vDir;
+            return;
+        }
+        m_bIsMoving = false;
+    }
+    #endregion
+
+    #region cmd
+    private void ExecCmd(PlayerCmd playercmd)
+    {
+        if (playercmd.m_bSpeed)
+        {
+            ExecCmd_Speed(playercmd.Speed);
+        }
+        if (playercmd.m_bDir)
+        {
+            ExecCmd_Move(playercmd.Dir);
+        }
+    }
+    private void ExecCmd_Move(Vector3 dir)
+    {
+        if (dir != Vector3.zero)
+        {
+            m_ObjRoot.transform.forward = dir;
         }
         if (m_fSpeed > 0.0f)
         {
-            m_ObjRoot.transform.position += m_vDir * m_fSpeed;
+            m_ObjRoot.transform.position += m_ObjRoot.transform.forward * m_fSpeed;
         }
     }
+    private void ExecCmd_Speed(float speed)
+    {
+        m_fSpeed = speed;
+    }
+
+    #endregion
 }

@@ -43,7 +43,7 @@ public class UIBattle : UIBase
     private void OnDragEndHandler(MyUIDragDropItem pos)
     {
         m_ObjHandler.transform.position = m_vHandlerInitPos;
-        EventDispatcher.Instance.Broadcast(EventIdDefine.BattleSelfChangeSpeed, 0f);
+        EventDispatcher.Instance.Broadcast(EventIdDefine.BattleSelfStopMove);
     }
     private void OnClickBack(GameObject go)
     {
