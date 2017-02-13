@@ -207,7 +207,32 @@ public class PlayerController
         {
             m_ObjRoot.transform.forward = dir;
         }
+        if(m_fSpeed <= 0.0f)
+        {
+            return;
+        }
         if (m_fSpeed > 0.0f)
+        {
+            
+        }
+        bool isFixed = false;
+        RaycastHit hit;
+        if (Physics.BoxCast(m_ObjRoot.transform.position, m_ObjRoot.Size, m_ObjRoot.transform.forward, out hit))
+        {
+            //Debug.Log(hit.transform.name + hit.distance);
+            if (hit.distance < m_fSpeed)
+            {
+                isFixed = true;
+                // check angle
+                if (Vector3.Dot(m_ObjRoot.transform.forward.normalized*-1, hit.normal.normalized) < 0.7f)
+                {
+                    hit.distance -= 0.01f;
+                    m_ObjRoot.transform.position += m_ObjRoot.transform.forward * hit.distance;
+                    m_ObjRoot.transform.forward = Vector3.ProjectOnPlane(m_ObjRoot.transform.forward, hit.normal);
+                }
+            }
+        }
+        if (!isFixed)
         {
             m_ObjRoot.transform.position += m_ObjRoot.transform.forward * m_fSpeed;
         }

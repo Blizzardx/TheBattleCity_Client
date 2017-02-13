@@ -24,7 +24,8 @@ partial class MainMenuHandler:HandlerBase
         // try connet to server 
         //NetworkManager.Instance.Connect("120.25.176.42", 1234);
         //NetworkManager.Instance.Connect("192.168.127.128", 8000);
-        NetworkManager.Instance.Connect("127.0.0.1", 1234);
+        //NetworkManager.Instance.Connect("127.0.0.1", 1234);
+        NetworkManager.Instance.Connect("192.168.1.8", 1234);
         return true;
     }
     private void SocketConnectError(IMessage obj)

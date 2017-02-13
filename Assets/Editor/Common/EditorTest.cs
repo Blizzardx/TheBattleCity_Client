@@ -11,12 +11,12 @@ public class EditorTest
     [Test]
     public void b()
     {
-        float l = 10;
-        float r = 100;
-        float a = 0.8f;
-        float v = l * (1 - a) + r * a;
-        Debug.Log(v);
-        v = Mathf.Lerp(l, r, a);
-        Debug.Log(v);
+        Vector3 a = Vector3.one;
+        Vector3 b = new Vector3(1,0,0);
+        Debug.Log(Vector3.Dot(a.normalized, a.normalized));
+        Debug.Log(Vector3.Dot(a.normalized, b.normalized));
+        Debug.Log(Vector3.Dot(new Vector3(1, 0, 0).normalized, new Vector3(1, 1, 0).normalized));
+        Debug.Log(Vector3.Dot(new Vector3(1, 0, 0).normalized, new Vector3(0, 1, 0).normalized));
+        Debug.Log(Vector3.Dot(new Vector3(1, 0, 0).normalized, new Vector3(0, 0.5f, 0).normalized));
     }
 }

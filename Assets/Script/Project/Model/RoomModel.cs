@@ -120,7 +120,13 @@ partial class RoomModel : ModelBase
         NetWork.Auto.PlayerInfo info = obj as NetWork.Auto.PlayerInfo;
         PlayerInfo elem = new PlayerInfo();
         elem.SetData(info);
-
+        for (int i = 0; i < m_PlayerList.Count; ++i)
+        {
+            if (m_PlayerList[i].Uid == elem.Uid)
+            {
+                return;
+            }
+        }
         m_PlayerList.Add(elem);
 
         for (int i = 0; i < m_PlayerList.Count; ++i)
