@@ -4,7 +4,6 @@ using Common.Tool;
 using UnityEngine;
 using System;
 using Framework.Asset;
-using Framework.Asset.Obsolete;
 
 public class AudioPlayer:Singleton<AudioPlayer>
 {

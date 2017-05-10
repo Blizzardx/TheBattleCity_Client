@@ -120,7 +120,7 @@ namespace Framework.Asset.Editor
 
         private void AutosetBundle()
         {
-            m_Handler.BeginSetBundleName(m_strUGUIAtlasPath,m_strNGUIAtlasPath,m_strDependentAssetRootPath,m_strOutputPath,TextureImporterType.Advanced,TextureImporterFormat.ARGB16);
+            m_Handler.BeginSetBundleName(m_strUGUIAtlasPath,m_strNGUIAtlasPath,m_strDependentAssetRootPath,m_strOutputPath,TextureImporterType.Default,TextureImporterFormat.ARGB16);
         }
 
         private void Test()
