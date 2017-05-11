@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using System.Text;
 
 namespace Assets.Scripts.AssetBundle.BuildAssetbundleTool.Editor
 {
@@ -30,6 +31,9 @@ namespace Assets.Scripts.AssetBundle.BuildAssetbundleTool.Editor
         private string m_strUguiPath;
         private string m_strOutputPath;
         private Exception m_ErrorInfo;
+        private const string m_strBundleSuffix = "bundle";
+        private const string m_strSceneAssetExtSuffix = "scene";
+
         private string[] m_IgnoreSuffixList = new string[]
         {
             ".svn",
@@ -205,11 +209,45 @@ namespace Assets.Scripts.AssetBundle.BuildAssetbundleTool.Editor
         }
         private void CheckAllPackAssets()
         {
+            List<BuildAssetElemmentInfo> allAssetList = new List<BuildAssetElemmentInfo>();
 
+            var dataPathPerfix = Application.dataPath.Substring(0, Application.dataPath.IndexOf("Assets"));
+            var realPath = Application.dataPath + "/" + m_strPackByFolderPath;
+            var dir = new DirectoryInfo(realPath);
+            var files = dir.GetFiles("*", SearchOption.AllDirectories);
+
+            for (var i = 0; i < files.Length; ++i)
+            {
+                AssetInfo info = new AssetInfo(files[i].FullName);
+
+                if (info.IsInSuffixList(m_IgnoreSuffixList))
+                {
+                    continue;
+                }
+
+                SetAssetBundleName(info, files[i].Directory.Name);
+            }
         }
         private void SetAndPackUguiAtlas()
         {
+            List<BuildAssetElemmentInfo> allAssetList = new List<BuildAssetElemmentInfo>();
 
+            var dataPathPerfix = Application.dataPath.Substring(0, Application.dataPath.IndexOf("Assets"));
+            var realPath = Application.dataPath + "/" + m_strUguiPath;
+            var dir = new DirectoryInfo(realPath);
+            var files = dir.GetFiles("*", SearchOption.AllDirectories);
+
+            for (var i = 0; i < files.Length; ++i)
+            {
+                AssetInfo info = new AssetInfo(files[i].FullName);
+
+                if (info.IsInSuffixList(m_IgnoreSuffixList))
+                {
+                    continue;
+                }
+
+                SetAssetBundleName(info, files[i].Directory.Name);
+            }
         }
         private void BuildBundlesAndOutput()
         {
@@ -510,9 +548,91 @@ namespace Assets.Scripts.AssetBundle.BuildAssetbundleTool.Editor
         }
         private void SetAssetBundleName(AssetInfo targetAsset,AssetInfo mainAsset)
         {
-            string bundleName = mainAsset.GetFileNameWithoutSuffix() + ".pkg";
+            string bundleName = string.Empty;
+            //判断是不是主资源就是自己 & 是不是unity 场景文件
+            if (targetAsset.GetFullPath() != mainAsset.GetFullPath() && mainAsset.GetFileSuffix() == ".unity")
+            {
+                //unity 不允许 scene bundle 和他的依赖放在一起，在这里分开
+                bundleName = mainAsset.GetFileNameWithoutSuffix() + "_" + m_strSceneAssetExtSuffix ;
+            }
+            else
+            {
+                bundleName = mainAsset.GetFileNameWithoutSuffix();
+            }
             var importer = AssetImporter.GetAtPath(targetAsset.GetRelativePath());
+            DoSetBundleName(importer, bundleName, "." + m_strBundleSuffix);
+        }
+        private void SetAssetBundleName(AssetInfo targetAsset, string bundleName)
+        {            
+            var importer = AssetImporter.GetAtPath(targetAsset.GetRelativePath());
+            DoSetBundleName(importer, bundleName, "." + m_strBundleSuffix);
+        }
+        private void DoSetBundleName(AssetImporter importer, string bundleName, string suffix)
+        {
+            if (string.IsNullOrEmpty(bundleName))
+            {
+                Debug.LogError("error bundle name ,name is null or empty " + bundleName);
+            } 
+
+            // fix bundle name 
+            var lastName = bundleName;
+            var isChange = FixName(ref bundleName);
+            if (isChange)
+            {
+                Debug.LogFormat("auto fix bundle name {0} to {1} ", lastName, bundleName);
+            }
+
+            bundleName += suffix;
             importer.assetBundleName = bundleName;
+        }
+        private bool FixName(ref string curName)
+        {
+            if (string.IsNullOrEmpty(curName))
+            {
+                curName = string.Empty;
+                return true;
+            }
+            bool isChange = false;
+            StringBuilder newName = new StringBuilder();
+
+            for (int i = 0; i < curName.Length; ++i)
+            {
+                if (IsNameLegitimate(curName[i]))
+                {
+                    newName.Append(curName[i]);
+                }
+                else
+                {
+                    isChange = true;
+                    newName.Append("_");
+                }
+            }
+            curName = newName.ToString();
+            return isChange;
+        }
+        private bool IsNameLegitimate(char str)
+        {
+            if (str >= '0' && str <= '9')
+            {
+                return true;
+            }
+            if (str >= 'a' && str <= 'z')
+            {
+                return true;
+            }
+            if (str >= 'A' && str <= 'Z')
+            {
+                return true;
+            }
+            if (str == '_')
+            {
+                return true;
+            }
+            if (str == '-')
+            {
+                return true;
+            }
+            return false;
         }
         #endregion
     }

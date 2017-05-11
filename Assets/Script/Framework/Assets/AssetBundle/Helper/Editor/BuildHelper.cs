@@ -12,6 +12,11 @@ public class BuildHelper
     [MenuItem("BuildAssetbundle/Build")]
     static void BuildAB()
     {
+        var res = EditorUtility.DisplayDialog("Warning", "Are you sure you realy want to do that ? ", "OK", "Cancle");
+        if (!res)
+        {
+            return;
+        }
         BuildAssetbundleTool tool = new BuildAssetbundleTool();
        var e = tool.Build("Data", "Pack", "UGUI", "StreamingAssets/AssetsBundle");
         if(null != e)
@@ -19,10 +24,16 @@ public class BuildHelper
             Debug.LogException(e);
         }
         Debug.Log("Done");
+        EditorUtility.DisplayDialog("information", "Done ", "OK");
     }
     [MenuItem("BuildAssetbundle/ForceBuild")]
     static void BuildABForce()
     {
+        var request = EditorUtility.DisplayDialog("Warning", "Are you sure you realy want to do that ? ", "OK", "Cancle");
+        if (!request)
+        {
+            return;
+        }
         var output = "Assets/StreamingAssets/AssetsBundle";
         var res = BuildPipeline.BuildAssetBundles
        (output,
@@ -40,6 +51,11 @@ public class BuildHelper
     [MenuItem("BuildAssetbundle/ExportInternalAssets")]
     static void UnpackInternalAssets()
     {
+        var res = EditorUtility.DisplayDialog("Warning", "Are you sure you realy want to do that ? ", "OK", "Cancle");
+        if (!res)
+        {
+            return;
+        }
         InternalAssetsExportTool tool = new InternalAssetsExportTool();
         tool.ExportInternalAsset("InternalAssets");
         //AssetInfo info = new AssetInfo("E:\\Project\\unityProjcet\\ABPacker\\Assets\\Art\\tmp 1.mat");
@@ -57,6 +73,11 @@ public class BuildHelper
     [MenuItem("BuildAssetbundle/AutoReplaceInternalAssetsWithCleanup")]
     static void ReplaceInternalAssetsWithCleanup()
     {
+        var res = EditorUtility.DisplayDialog("Warning", "Are you sure you realy want to do that ? ", "OK", "Cancle");
+        if (!res)
+        {
+            return;
+        }
         var internalAssetsExportPath = "InternalAssets";
         if (Directory.Exists(Application.dataPath + "/" + internalAssetsExportPath))
         {
@@ -91,11 +112,42 @@ public class BuildHelper
     [MenuItem("BuildAssetbundle/ReplaceInternalAssets")]
     static public void ReplaceInternalAssets()
     {
+        var res = EditorUtility.DisplayDialog("Warning", "Are you sure you realy want to do that ? ", "OK", "Cancle");
+        if (!res)
+        {
+            return;
+        }
         var tool = new ReplaceInternalAssetTool();
         // replace other asset to use replaced assets     
         tool.ReplaceInternalAssetToBuildInAsset("Data", "InternalAssets", "");
 
         Refresh();
+    }
+    [MenuItem("BuildAssetbundle/ClearAllBundleName")]
+    static public void ClearAllBundleName()
+    {
+        var res = EditorUtility.DisplayDialog("Warning", "Are you sure you realy want to do that ? ", "OK", "Cancle");
+        if (!res)
+        {
+            return;
+        }
+        var names = AssetDatabase.GetAllAssetBundleNames();
+        for(int i=0;i<names.Length;++i)
+        {
+            AssetDatabase.RemoveAssetBundleName(names[i],true);
+        }
+        EditorUtility.DisplayDialog("information", "Done ", "OK");
+    }
+    [MenuItem("BuildAssetbundle/ClearUnusedBundleName")]
+    static public void ClearUnusedBundleName()
+    {
+        var res = EditorUtility.DisplayDialog("Warning", "Are you sure you realy want to do that ? ", "OK", "Cancle");
+        if(!res)
+        {
+            return;
+        }
+        AssetDatabase.RemoveUnusedAssetBundleNames();
+        EditorUtility.DisplayDialog("information", "Done ", "OK");
     }
 
     #region tool
